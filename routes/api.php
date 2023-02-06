@@ -20,4 +20,8 @@ Route::post('/login', [UserController::class, 'login']);
 Route::get('/asset', [AssetController::class, 'asset']);
 
 Route::get('/assetall', [AssetController::class, 'assetall'])->middleware('jwt.verify');
+Route::get('/assetall/{departement_id}', [AssetController::class, 'assetall'])->middleware('jwt.verify');
+Route::post('/asset/store', [AssetController::class, 'store'])->middleware('jwt.verify');
+
+
 Route::get('/user', [UserController::class, 'getAuthenticatedUser'])->middleware('jwt.verify');
