@@ -18,12 +18,24 @@ class UserController extends Controller
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 400);
+            }else{
+                $query = User::all();
+                $success = true;
+                $message = "here is data";
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
-        return response()->json(compact('token'));
+        // dd($query);
+
+        return response()->json([
+            "success" => $success,
+            "message" => $message,
+            "token" => $token,
+            "data" => $query
+        ]);
+        // return response()->json(compact('token'));
     }
 
     public function register(Request $request)
@@ -68,7 +80,6 @@ class UserController extends Controller
         } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
 
             return response()->json(['token_absent'], $e->getStatusCode());
-
         }
 
         return response()->json(compact('user'));

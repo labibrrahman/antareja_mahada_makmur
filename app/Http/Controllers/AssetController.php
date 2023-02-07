@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Asset;
+use App\Models\Upload;
 use Auth;
 use Validator;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Storage;
 
 class AssetController extends Controller
 {
@@ -125,8 +128,77 @@ class AssetController extends Controller
         ]);
     }
 
-    // public function assetall() {
-    //     $data = "Data All Asset";
-    //     return response()->json($data, 200);
-    // }
+    public function get_upload_image($id_asset = null){
+        if ($id_asset){
+            $query = Upload::where('id_asset', $id_asset)->get();
+            $count = count($query);
+            if($count == 0){
+                $success = false;
+                $message = "No Data Avaiable";
+            }else{
+                $success = true;
+                $message = "here is data";
+            }
+        }else{
+            $query = Upload::all();
+            $count = count($query);
+            if($count == 0){
+                $success = false;
+                $message = "No Data Avaiable";
+            }else{
+                $success = true;
+                $message = "here is data";
+            }
+        }
+        // $data['success'] = $success;
+        // $data['message'] = $message;
+        // $data['Total Data'] = $count;
+        // $data['pageData'] = $query;
+
+        // return response()->json($data, 200);
+        return response()->json([
+            "success" => $success,
+            "message" => $message,
+            "Total Data" => $count,
+            "data" => $query
+        ]);
+    }
+
+    public function upload_image(Request $request){
+
+        //BUAT VALIDASI JIKA INPUT DATA GAGAL ATAU UPLOAD FILE GAGAL
+
+        $input = $request->all();
+
+        $validator = Validator::make($request->all(), [
+            "asset_id"=> "required",
+            "user_id"=> "required",
+            "upload_status"=> "required",
+            "upload_image"=> "required|image|mimes:jpg,png,jpeg,gif,svg|max:2048",
+         ]);
+         if ($validator->fails()) {
+            return sendCustomResponse($validator->messages()->first(),  'error', 500);
+         }
+
+        $uploadFolder = 'asset';
+        $image = $request->file('upload_image');
+        $image_uploaded_path = $image->store($uploadFolder, 'public');
+        $data_image = array(
+            "image_name" => basename($image_uploaded_path),
+            "image_url" => Storage::disk('public')->url($image_uploaded_path),
+            "mime" => $image->getClientMimeType()
+        );
+
+        $input["upload_image"] = $image_uploaded_path;
+
+        $data = Upload::create($input);
+
+        // $asset = Asset::create($input);
+        return response()->json([
+            "success" => true,
+            "message" => "Asset created successfully.",
+            "data_image" => $data_image,
+            "data" => $data
+        ]);
+    }
 }
