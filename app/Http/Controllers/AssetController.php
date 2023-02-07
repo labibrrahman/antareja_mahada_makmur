@@ -34,10 +34,6 @@ class AssetController extends Controller
                 $message = "here is data";
             }
         }
-        // $data['success'] = $success;
-        // $data['message'] = $message;
-        // $data['Total Data'] = $count;
-        // $data['pageData'] = $query;
 
         // return response()->json($data, 200);
         return response()->json([
