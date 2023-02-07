@@ -23,6 +23,7 @@ Route::get('/assetall', [AssetController::class, 'assetall'])->middleware('jwt.v
 Route::get('/assetall/{departement_id}', [AssetController::class, 'assetall'])->middleware('jwt.verify');
 Route::post('/asset/store', [AssetController::class, 'store'])->middleware('jwt.verify');
 Route::post('/asset/destroy', [AssetController::class, 'destroy'])->middleware('jwt.verify');
+Route::post('/asset/update/{id}', [AssetController::class, 'update'])->middleware('jwt.verify');
 Route::get('/asset/upload_image', [AssetController::class, 'get_upload_image'])->middleware('jwt.verify');
 Route::post('/asset/upload_image', [AssetController::class, 'upload_image'])->middleware('jwt.verify');
 

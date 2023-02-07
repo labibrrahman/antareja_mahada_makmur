@@ -15,12 +15,11 @@ class AssetController extends Controller
     public function assetall($departement_id = null) {
         if ($departement_id){
             // $query = Asset::where('departement_id', $departement_id)->get();
-            $query = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
-            ->join('categories', 'categories.id', '=', 'assets.category_id')
-            ->join('counts', 'counts.id', '=', 'assets.count_id')
+            $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+            ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
+            ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
             ->where('departement_id', $departement_id)
-            ->get();
-
+            ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
                 $success = false;
@@ -33,7 +32,7 @@ class AssetController extends Controller
             $query = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
             ->join('categories', 'categories.id', '=', 'assets.category_id')
             ->join('counts', 'counts.id', '=', 'assets.count_id')
-            ->get();
+            ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
                 $success = false;
@@ -117,8 +116,9 @@ class AssetController extends Controller
         // return response()->json($data, 200);
     }
 
-    public function update(Request $request){
-        Post::where('id',3)->update(['title'=>'Updated title']);
+    public function update(Request $request, $id)
+    {
+        $input = $request->all();
 
         $validator = Validator::make($input, [
             "asset_number" => "required",
@@ -130,9 +130,55 @@ class AssetController extends Controller
             "asset_po"=> "required",
             "asset_status"=> "required",
             "departement_id"=> "required",
+            "category_id"=> "required",
             "count_id"=> "required"
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'data' => [],
+                'message' => $validator->errors(),
+                'success' => false
+            ]);
+        }
+
+        $asset = Asset::find($id);   
+        $asset->asset_number = $input['asset_number'];
+        $asset->asset_serial_number = $input['asset_serial_number'];
+        $asset->asset_capitalized_on = $input['asset_capitalized_on'];
+        $asset->asset_manager = $input['asset_manager'];
+        $asset->asset_desc = $input['asset_desc'];
+        $asset->asset_quantity = $input['asset_quantity'];
+        $asset->asset_po = $input['asset_po'];
+        $asset->asset_status = $input['asset_status'];
+        $asset->departement_id = $input['departement_id'];
+        $asset->category_id = $input['category_id'];
+        $asset->count_id = $input['count_id'];
+        $asset->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'updated successfully'
+        ]);
     }
+
+    // public function update(Request $request){
+        
+    //     Post::where('id',3)->update(['title'=>'Updated title']);
+
+    //     $validator = Validator::make($input, [
+    //         "asset_number" => "required",
+    //         "asset_serial_number"=> "required",
+    //         "asset_capitalized_on"=> "required",
+    //         "asset_manager"=> "required",
+    //         "asset_desc"=> "required",
+    //         "asset_quantity"=> "required",
+    //         "asset_po"=> "required",
+    //         "asset_status"=> "required",
+    //         "departement_id"=> "required",
+    //         "count_id"=> "required"
+    //     ]);
+    // }
 
     public function destroy(Request $request){
         $input = $request->all();
