@@ -128,6 +128,19 @@ class AssetController extends Controller
         ]);
     }
 
+    public function destroy(Request $request){
+        $input = $request->all();
+
+        $deleted = Asset::where('id', $input['id'])->delete();
+        
+        return response()->json([
+        "success" => true,
+        "message" => "Asset deleted successfully.",
+        "data" => $deleted
+        ]);
+    }
+    
+
     public function get_upload_image($id_asset = null){
         if ($id_asset){
             $query = Upload::where('id_asset', $id_asset)->get();
@@ -201,4 +214,10 @@ class AssetController extends Controller
             "data" => $data
         ]);
     }
+
+    // public function destroy(Request $request){
+    //     $input = $request->all();
+
+    //     // $deleted = Asset::where('id', 0)->delete();
+    // }
 }
