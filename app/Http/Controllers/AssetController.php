@@ -171,7 +171,7 @@ class AssetController extends Controller
 
     public function upload_image(Request $request){
 
-        //BUAT VALIDASI JIKA INPUT DATA GAGAL ATAU UPLOAD FILE GAGA
+        //BUAT VALIDASI JIKA INPUT DATA GAGAL ATAU UPLOAD FILE GAGAL
 
         $input = $request->all();
 
