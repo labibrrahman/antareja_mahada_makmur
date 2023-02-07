@@ -139,7 +139,7 @@ class AssetController extends Controller
         "data" => $deleted
         ]);
     }
-    
+
 
     public function get_upload_image($id_asset = null){
         if ($id_asset){
@@ -163,12 +163,7 @@ class AssetController extends Controller
                 $message = "here is data";
             }
         }
-        // $data['success'] = $success;
-        // $data['message'] = $message;
-        // $data['Total Data'] = $count;
-        // $data['pageData'] = $query;
 
-        // return response()->json($data, 200);
         return response()->json([
             "success" => $success,
             "message" => $message,
