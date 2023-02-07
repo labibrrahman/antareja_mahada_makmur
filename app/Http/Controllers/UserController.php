@@ -19,20 +19,28 @@ class UserController extends Controller
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 400);
             }else{
-                $query = User::all();
+                $query = User::join('departments', 'departments.id', '=', 'users.departement_id')->get();
                 $success = true;
                 $message = "here is data";
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
+        
+        $query = $query->map(function($append_data) use($token) {
+            $append_data->token = $token;
+            return $append_data;
+        });
+          
+        // $query->hahahahahahaha = "TestUser";
+        // $query->push();
 
-        // dd($query);
+        // $haha = response()->json($query);
+        // dd($haha);
 
         return response()->json([
             "success" => $success,
             "message" => $message,
-            "token" => $token,
             "data" => $query
         ]);
         // return response()->json(compact('token'));

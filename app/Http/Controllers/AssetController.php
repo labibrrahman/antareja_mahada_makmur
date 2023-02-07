@@ -14,7 +14,13 @@ class AssetController extends Controller
 {
     public function assetall($departement_id = null) {
         if ($departement_id){
-            $query = Asset::where('departement_id', $departement_id)->get();
+            // $query = Asset::where('departement_id', $departement_id)->get();
+            $query = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
+            ->join('categories', 'categories.id', '=', 'assets.category_id')
+            ->join('counts', 'counts.id', '=', 'assets.count_id')
+            ->where('departement_id', $departement_id)
+            ->get();
+
             $count = count($query);
             if($count == 0){
                 $success = false;
@@ -24,7 +30,10 @@ class AssetController extends Controller
                 $message = "here is data";
             }
         }else{
-            $query = Asset::all();
+            $query = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
+            ->join('categories', 'categories.id', '=', 'assets.category_id')
+            ->join('counts', 'counts.id', '=', 'assets.count_id')
+            ->get();
             $count = count($query);
             if($count == 0){
                 $success = false;
