@@ -17,7 +17,10 @@ class UserController extends Controller
         
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
+                return response()->json([
+                    "success" => false,
+                    'error' => 'Username and password do not match'
+                ], 400);
             }else{
                 $query = User::join('departments', 'departments.id', '=', 'users.departement_id')->get();
                 $success = true;
