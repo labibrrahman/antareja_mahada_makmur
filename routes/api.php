@@ -24,8 +24,9 @@ Route::get('/assetall/{departement_id}', [AssetController::class, 'assetall'])->
 Route::post('/asset/store', [AssetController::class, 'store'])->middleware('jwt.verify');
 Route::post('/asset/destroy', [AssetController::class, 'destroy'])->middleware('jwt.verify');
 Route::post('/asset/update/{id}', [AssetController::class, 'update'])->middleware('jwt.verify');
+
 Route::get('/asset/upload_image', [AssetController::class, 'get_upload_image'])->middleware('jwt.verify');
 Route::post('/asset/upload_image', [AssetController::class, 'upload_image'])->middleware('jwt.verify');
 
-
+Route::post('/user/changePassword/{id}', [UserController::class, 'changePassword'])->middleware('jwt.verify');
 Route::get('/user', [UserController::class, 'getAuthenticatedUser'])->middleware('jwt.verify');

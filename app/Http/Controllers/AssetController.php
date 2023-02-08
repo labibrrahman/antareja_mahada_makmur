@@ -22,10 +22,10 @@ class AssetController extends Controller
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
-                $success = false;
+                $status = false;
                 $message = "No Data Avaiable";
             }else{
-                $success = true;
+                $status = true;
                 $message = "here is data";
             }
         }else{
@@ -35,10 +35,10 @@ class AssetController extends Controller
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
-                $success = false;
+                $status = false;
                 $message = "No Data Avaiable";
             }else{
-                $success = true;
+                $status = true;
                 $message = "here is data";
             }
         }
@@ -46,7 +46,7 @@ class AssetController extends Controller
         
         // return response()->json($data, 200);
         return response()->json([
-            "success" => $success,
+            "status" => $status,
             "message" => $message,
             "Total Data" => $count,
             "data" => $query
@@ -75,7 +75,7 @@ class AssetController extends Controller
 
         $asset = Asset::create($input);
         return response()->json([
-            "success" => true,
+            "status" => true,
             "message" => "Asset created successfully.",
             "data" => $asset
         ]);
@@ -138,7 +138,7 @@ class AssetController extends Controller
             return response()->json([
                 'data' => [],
                 'message' => $validator->errors(),
-                'success' => false
+                'status' => false
             ]);
         }
 
@@ -157,7 +157,7 @@ class AssetController extends Controller
         $asset->save();
 
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'updated successfully'
         ]);
     }
@@ -186,7 +186,7 @@ class AssetController extends Controller
         $deleted = Asset::where('id', $input['id'])->delete();
         
         return response()->json([
-        "success" => true,
+        "status" => true,
         "message" => "Asset deleted successfully.",
         "data" => $deleted
         ]);
@@ -198,26 +198,26 @@ class AssetController extends Controller
             $query = Upload::where('id_asset', $id_asset)->get();
             $count = count($query);
             if($count == 0){
-                $success = false;
+                $status = false;
                 $message = "No Data Avaiable";
             }else{
-                $success = true;
+                $status = true;
                 $message = "here is data";
             }
         }else{
             $query = Upload::all();
             $count = count($query);
             if($count == 0){
-                $success = false;
+                $status = false;
                 $message = "No Data Avaiable";
             }else{
-                $success = true;
+                $status = true;
                 $message = "here is data";
             }
         }
 
         return response()->json([
-            "success" => $success,
+            "status" => $status,
             "message" => $message,
             "Total Data" => $count,
             "data" => $query
@@ -255,7 +255,7 @@ class AssetController extends Controller
 
         // $asset = Asset::create($input);
         return response()->json([
-            "success" => true,
+            "status" => true,
             "message" => "Asset created successfully.",
             "data_image" => $data_image,
             "data" => $data
