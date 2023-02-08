@@ -42,9 +42,6 @@ class AssetController extends Controller
                 $message = "here is data";
             }
         }
-
-        
-        // return response()->json($data, 200);
         return response()->json([
             "status" => $status,
             "message" => $message,
@@ -52,6 +49,44 @@ class AssetController extends Controller
             "data" => $query
         ]);
     }
+
+    public function asset_id($id = null) {
+        $data = '';
+        $data_check = '';
+
+        if ($id){
+            $query = Asset::where('id', $id)->get();
+            foreach($query as $data_query){
+                $data = $data_query;
+            }
+            if($data == ''){
+                return response()->json([
+                    "status" => false,
+                    "message" => "No Data Avaiable"
+                ]);
+            }
+            $query_upload = Upload::where('asset_id', $id)->get();
+            foreach($query_upload as $data_query){
+                $data_check = $data_query;
+            }
+            if($data_check == ''){
+
+            }else{
+                $query['image_upload'] = $query_upload;
+            }
+            $status = true;
+            $message = "here is data";
+        }else{
+            $status = false;
+            $message = "No Data Avaiable";
+        }
+        return response()->json([
+            "status" => $status,
+            "message" => $message,
+            "data" => $query
+        ]);
+    }
+
 
     public function store(Request $request) {
         $input = $request->all();
