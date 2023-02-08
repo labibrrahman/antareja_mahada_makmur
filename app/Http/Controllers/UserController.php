@@ -34,11 +34,16 @@ class UserController extends Controller
             $append_data->token = $token;
             return $append_data;
         });
-          
+
+
+        foreach($query as $data_query){
+            $data = $data_query;
+        }
+
         return response()->json([
             "status" => $success,
             "message" => $message,
-            "data" => $query
+            "data" => $data
         ]);
         // return response()->json(compact('token'));
     }
