@@ -12,13 +12,15 @@ use Illuminate\Support\Facades\Storage;
 
 class AssetController extends Controller
 {
-    public function assetall($departement_id = null) {
-        if ($departement_id){
+    public function assetall($search = null) {
+        if ($search){
             // $query = Asset::where('departement_id', $departement_id)->get();
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
             ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
             ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
-            ->where('departement_id', $departement_id)
+            // ->where('departement_id', $departement_id)
+            ->where('asset_number', 'like', '%' . $search . '%')
+            ->orWhere('asset_desc', 'like', '%' . $search . '%')
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
@@ -196,24 +198,6 @@ class AssetController extends Controller
             'message' => 'updated successfully'
         ]);
     }
-
-    // public function update(Request $request){
-        
-    //     Post::where('id',3)->update(['title'=>'Updated title']);
-
-    //     $validator = Validator::make($input, [
-    //         "asset_number" => "required",
-    //         "asset_serial_number"=> "required",
-    //         "asset_capitalized_on"=> "required",
-    //         "asset_manager"=> "required",
-    //         "asset_desc"=> "required",
-    //         "asset_quantity"=> "required",
-    //         "asset_po"=> "required",
-    //         "asset_status"=> "required",
-    //         "departement_id"=> "required",
-    //         "count_id"=> "required"
-    //     ]);
-    // }
 
     public function destroy(Request $request){
         $input = $request->all();
