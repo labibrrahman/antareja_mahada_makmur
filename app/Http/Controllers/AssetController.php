@@ -105,7 +105,7 @@ class AssetController extends Controller
             if($data_check == ''){
 
             }else{
-                $query['image_upload'] = $query_upload;
+                $data['image_upload'] = $query_upload;
             }
             $status = true;
             $message = "here is data";
@@ -116,7 +116,7 @@ class AssetController extends Controller
         return response()->json([
             "status" => $status,
             "message" => $message,
-            "data" => $query
+            "data" => $data
         ]);
     }
 
