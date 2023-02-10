@@ -57,12 +57,17 @@ class AssetController extends Controller
         ]);
     }
 
-    public function assetbydepartement($departement_id = null) {
+    public function assetbydepartement(Request $request) {
+        $departement_id = $request->input('departement_id');
+        $offset = $request->input('offset') ?? 1;
+        $limit = $request->input('limit') ?? 10000;
+
         if ($departement_id){
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
             ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
             ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
             ->where('departement_id', $departement_id)
+            ->forPage($offset, $limit)
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
@@ -72,7 +77,13 @@ class AssetController extends Controller
                 $status = true;
                 $message = "here is data";
             }
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Parameter is null'
+            ]);
         }
+        
         return response()->json([
             "status" => $status,
             "message" => $message,
