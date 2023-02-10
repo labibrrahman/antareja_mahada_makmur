@@ -19,15 +19,24 @@ class AssetController extends Controller
         if ($search){
             // $query = Asset::where('departement_id', $departement_id)->get();
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
-            ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
-            ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
-            // ->where('departement_id', $departement_id)
-            ->where('asset_number', 'like', '%' . $search . '%')
-            ->orWhere('asset_desc', 'like', '%' . $search . '%')
-            ->offset($offset)->limit($limit)
-            // ->forPage($offset, $limit)
+                ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
+                ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                // ->where('departement_id', $departement_id)
+                ->where('asset_number', 'like', '%' . $search . '%')
+                ->orWhere('asset_desc', 'like', '%' . $search . '%')
+                ->offset($offset)->limit($limit)
+                // ->forPage($offset, $limit)
+                ->get(['assets.*','departments.department','categories.category','counts.count']);
+
+            $query_count = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+                ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
+                ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                // ->where('departement_id', $departement_id)
+                ->where('asset_number', 'like', '%' . $search . '%')
+                ->orWhere('asset_desc', 'like', '%' . $search . '%')
             ->get(['assets.*','departments.department','categories.category','counts.count']);
-            $count = count($query);
+            
+            $count = count($query_count);
             if($count == 0){
                 $status = false;
                 $message = "No Data Avaiable";
@@ -37,12 +46,19 @@ class AssetController extends Controller
             }
         }else{
             $query = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
-            ->join('categories', 'categories.id', '=', 'assets.category_id')
-            ->join('counts', 'counts.id', '=', 'assets.count_id')
-            ->offset($offset)->limit($limit)
-            // ->forPage($offset, $limit)
-            ->get(['assets.*','departments.department','categories.category','counts.count']);
-            $count = count($query);
+                ->join('categories', 'categories.id', '=', 'assets.category_id')
+                ->join('counts', 'counts.id', '=', 'assets.count_id')
+                ->offset($offset)->limit($limit)
+                // ->forPage($offset, $limit)
+                ->get(['assets.*','departments.department','categories.category','counts.count']);
+
+            $query_count = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
+                ->join('categories', 'categories.id', '=', 'assets.category_id')
+                ->join('counts', 'counts.id', '=', 'assets.count_id')
+                ->offset($offset)->limit($limit)
+                // ->forPage($offset, $limit)
+                ->get(['assets.*','departments.department','categories.category','counts.count']);
+            $count = count($query_count);
             if($count == 0){
                 $status = false;
                 $message = "No Data Avaiable";
@@ -66,13 +82,20 @@ class AssetController extends Controller
 
         if ($departement_id){
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
-            ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
-            ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
-            ->where('departement_id', $departement_id)
-            ->offset($offset)->limit($limit)
-            // ->forPage($offset, $limit)
-            ->get(['assets.*','departments.department','categories.category','counts.count']);
-            $count = count($query);
+                ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
+                ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                ->where('departement_id', $departement_id)
+                ->offset($offset)->limit($limit)
+                // ->forPage($offset, $limit)
+                ->get(['assets.*','departments.department','categories.category','counts.count']);
+
+            $query_count = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+                ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
+                ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                ->where('departement_id', $departement_id)
+                // ->forPage($offset, $limit)
+                ->get(['assets.*','departments.department','categories.category','counts.count']);
+            $count = count($query_count);
             if($count == 0){
                 $status = false;
                 $message = "No Data Avaiable";
