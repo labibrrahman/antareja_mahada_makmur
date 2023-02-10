@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\Storage;
 
 class AssetController extends Controller
 {
-    public function assetall($search = null) {
+    public function assetall(Request $request) {
+        $search = $request->input('search');
+        $offset = $request->input('offset') ?? 0;
+        $limit = $request->input('limit') ?? 10000;
         if ($search){
             // $query = Asset::where('departement_id', $departement_id)->get();
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
@@ -21,6 +24,7 @@ class AssetController extends Controller
             // ->where('departement_id', $departement_id)
             ->where('asset_number', 'like', '%' . $search . '%')
             ->orWhere('asset_desc', 'like', '%' . $search . '%')
+            ->offset($offset)->limit($limit)
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
@@ -34,6 +38,7 @@ class AssetController extends Controller
             $query = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
             ->join('categories', 'categories.id', '=', 'assets.category_id')
             ->join('counts', 'counts.id', '=', 'assets.count_id')
+            ->offset($offset)->limit($limit)
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
@@ -76,9 +81,11 @@ class AssetController extends Controller
         ]);
     }
 
-    public function asset_id($id = null) {
+    public function asset_id(Request $request) {
+        $id = $request->input('id');
         $data = '';
         $data_check = '';
+        $query = '';
 
         if ($id){
             $query = Asset::where('id', $id)->get();
