@@ -21,8 +21,8 @@ Route::get('/asset', [AssetController::class, 'asset']);
 
 Route::get('/assetall', [AssetController::class, 'assetall'])->middleware('jwt.verify');
 Route::get('/asset', [AssetController::class, 'asset_id'])->middleware('jwt.verify');
-Route::get('/assetall/{id}', [AssetController::class, 'assetall'])->middleware('jwt.verify');
-Route::get('/asset/assetbydepartement/{departement_id}', [AssetController::class, 'assetbydepartement'])->middleware('jwt.verify');
+Route::get('/assetall', [AssetController::class, 'assetall'])->middleware('jwt.verify');
+Route::get('/asset/assetbydepartement', [AssetController::class, 'assetbydepartement'])->middleware('jwt.verify');
 Route::post('/asset/store', [AssetController::class, 'store'])->middleware('jwt.verify');
 Route::post('/asset/destroy', [AssetController::class, 'destroy'])->middleware('jwt.verify');
 Route::post('/asset/update/{id}', [AssetController::class, 'update'])->middleware('jwt.verify');
