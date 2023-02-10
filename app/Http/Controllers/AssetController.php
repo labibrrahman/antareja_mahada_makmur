@@ -14,7 +14,7 @@ class AssetController extends Controller
 {
     public function assetall(Request $request) {
         $search = $request->input('search');
-        $offset = $request->input('offset') ?? 0;
+        $offset = $request->input('offset') ?? 1;
         $limit = $request->input('limit') ?? 10000;
         if ($search){
             // $query = Asset::where('departement_id', $departement_id)->get();
@@ -24,7 +24,7 @@ class AssetController extends Controller
             // ->where('departement_id', $departement_id)
             ->where('asset_number', 'like', '%' . $search . '%')
             ->orWhere('asset_desc', 'like', '%' . $search . '%')
-            ->offset($offset)->limit($limit)
+            ->forPage($offset, $limit)
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
@@ -38,7 +38,7 @@ class AssetController extends Controller
             $query = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
             ->join('categories', 'categories.id', '=', 'assets.category_id')
             ->join('counts', 'counts.id', '=', 'assets.count_id')
-            ->offset($offset)->limit($limit)
+            ->forPage($offset, $limit)
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
