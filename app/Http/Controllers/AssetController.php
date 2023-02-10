@@ -24,7 +24,8 @@ class AssetController extends Controller
             // ->where('departement_id', $departement_id)
             ->where('asset_number', 'like', '%' . $search . '%')
             ->orWhere('asset_desc', 'like', '%' . $search . '%')
-            ->forPage($offset, $limit)
+            ->offset($offset)->limit($limit)
+            // ->forPage($offset, $limit)
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
@@ -38,7 +39,8 @@ class AssetController extends Controller
             $query = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
             ->join('categories', 'categories.id', '=', 'assets.category_id')
             ->join('counts', 'counts.id', '=', 'assets.count_id')
-            ->forPage($offset, $limit)
+            ->offset($offset)->limit($limit)
+            // ->forPage($offset, $limit)
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
@@ -67,7 +69,8 @@ class AssetController extends Controller
             ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
             ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
             ->where('departement_id', $departement_id)
-            ->forPage($offset, $limit)
+            ->offset($offset)->limit($limit)
+            // ->forPage($offset, $limit)
             ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query);
             if($count == 0){
