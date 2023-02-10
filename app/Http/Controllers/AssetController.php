@@ -125,7 +125,11 @@ class AssetController extends Controller
         $query = '';
 
         if ($id){
-            $query = Asset::where('id', $id)->get();
+            $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+                ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
+                ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                ->where('assets.id', $id)
+                ->get(['assets.*','departments.department','categories.category','counts.count']);
             foreach($query as $data_query){
                 $data = $data_query;
             }
