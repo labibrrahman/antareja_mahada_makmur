@@ -33,19 +33,8 @@ Route::post('/asset/upload_image', [AssetController::class, 'upload_image'])->mi
 Route::post('/user/changePassword/{id}', [UserController::class, 'changePassword'])->middleware('jwt.verify');
 Route::get('/user', [UserController::class, 'getAuthenticatedUser'])->middleware('jwt.verify');
 
-Route::get('storage/{filename}', function ($filename)
-{
-    $path = storage_path($filename);
-
-    if (!File::exists($path)) {
-        abort(404);
-    }
-
-    $file = File::get($path);
-    $type = File::mimeType($path);
-
-    $response = Response::make($file, 200);
-    $response->header("Content-Type", $type);
-
-    return $response;
+Route::get('/storage/link', function() {
+    $command = 'storage:link';
+    $result = Artisan::call($command);
+    return Artisan::output();
 });
