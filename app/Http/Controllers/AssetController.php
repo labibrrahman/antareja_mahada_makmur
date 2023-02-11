@@ -77,6 +77,7 @@ class AssetController extends Controller
 
     public function assetbydepartement(Request $request) {
         $departement_id = $request->input('departement_id');
+        $search = $request->input('search');
         $offset = $request->input('offset') ?? 1;
         $limit = $request->input('limit') ?? 10000;
 
@@ -84,6 +85,10 @@ class AssetController extends Controller
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                 ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                ->where(function($query_or) use ($search) {
+                    $query_or->where('asset_number', 'like', '%' . $search . '%')
+                            ->orWhere('asset_desc', 'like', '%' . $search . '%');
+                })
                 ->where('departement_id', $departement_id)
                 ->offset($offset)->limit($limit)
                 // ->forPage($offset, $limit)
@@ -92,6 +97,10 @@ class AssetController extends Controller
             $query_count = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                 ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                ->where(function($query_or)  use ($search) {
+                    $query_or->where('asset_number', 'like', '%' . $search . '%')
+                            ->orWhere('asset_desc', 'like', '%' . $search . '%');
+                })
                 ->where('departement_id', $departement_id)
                 // ->forPage($offset, $limit)
                 ->get(['assets.*','departments.department','categories.category','counts.count']);
@@ -141,6 +150,7 @@ class AssetController extends Controller
             }
             $query_upload = Upload::where('asset_id', $id)->get();
             foreach($query_upload as $data_query){
+                $data_query->upload_image = 'https://kitadev.xyz/storage/'.$data_query->upload_image;
                 $data_check = $data_query;
             }
             if($data_check == ''){
