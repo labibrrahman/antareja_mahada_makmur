@@ -70,7 +70,7 @@ class AssetController extends Controller
         return response()->json([
             "status" => $status,
             "message" => $message,
-            "Total Data" => $count,
+            "total_data" => $count,
             "data" => $query
         ]);
     }
@@ -113,7 +113,7 @@ class AssetController extends Controller
         return response()->json([
             "status" => $status,
             "message" => $message,
-            "Total Data" => $count,
+            "total_data" => $count,
             "data" => $query
         ]);
     }
@@ -310,7 +310,7 @@ class AssetController extends Controller
         return response()->json([
             "status" => $status,
             "message" => $message,
-            "Total Data" => $count,
+            "total_data" => $count,
             "data" => $query
         ]);
     }
