@@ -34,12 +34,12 @@ class CountController extends Controller
                 ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
                 ->where('departement_id', $departement_id)
 
-                ->when($mode == 'hide', function ($query_) {
-                    return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                ->when($mode == 'mutation', function ($query_) {
+                    return $query_->whereIn('assets.id',MutationsDet::select('asset_id'));
                 })
-                ->when($mode == 'hide', function ($query_) {
-                    return $query_->whereNotIn('assets.id',Upload::select('asset_id'));
-                })
+                // ->when($mode == 'hide', function ($query_) {
+                //     return $query_->whereIn('assets.id',Upload::select('asset_id'));
+                // })
 
                 ->get(['assets.*','departments.department','categories.category','counts.count']);
             $count = count($query_count);
