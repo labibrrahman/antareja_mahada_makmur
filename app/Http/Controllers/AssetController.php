@@ -92,20 +92,23 @@ class AssetController extends Controller
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
                             ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
-                ->when($mode == 'mutation_upload', function ($query) {
-                    $query->where(function($query_) {
-                        $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'))
-                        ->orwhereNotIn('assets.id',Upload::select('asset_id'));
-                    });
+                
+                ->when($mode == 'hide', function ($query_) {
+                    return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
                 })
+
+                ->when($mode == 'hide', function ($query_) {
+                    return $query_->whereNotIn('assets.id',Upload::select('asset_id'));
+                })
+
                 ->when($mode == 'mutation', function ($query) {
-                    $query->where(function($query_) {
-                        $query_->whereIn('assets.id',MutationsDet::select('asset_id'));
+                    $query->where(function($query) {
+                        $query->whereIn('assets.id',MutationsDet::select('asset_id'));
                     });
                 })
                 ->when($mode == 'upload', function ($query) {
-                    $query->where(function($query_) {
-                        $query_->whereIn('assets.id',Upload::select('asset_id'));
+                    $query->where(function($query) {
+                        $query->whereIn('assets.id',Upload::select('asset_id'));
                     });
                 })
 
@@ -120,20 +123,23 @@ class AssetController extends Controller
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
                             ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
-                ->when($mode == 'mutation_upload', function ($query) {
-                    $query->where(function($query_) {
-                        $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'))
-                        ->orwhereNotIn('assets.id',Upload::select('asset_id'));
-                    });
+
+                ->when($mode == 'hide', function ($query_) {
+                    return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
                 })
+
+                ->when($mode == 'hide', function ($query_) {
+                    return $query_->whereNotIn('assets.id',Upload::select('asset_id'));
+                })
+
                 ->when($mode == 'mutation', function ($query) {
-                    $query->where(function($query_) {
-                        $query_->whereIn('assets.id',MutationsDet::select('asset_id'));
+                    $query->where(function($query) {
+                        $query->whereIn('assets.id',MutationsDet::select('asset_id'));
                     });
                 })
                 ->when($mode == 'upload', function ($query) {
-                    $query->where(function($query_) {
-                        $query_->whereIn('assets.id',Upload::select('asset_id'));
+                    $query->where(function($query) {
+                        $query->whereIn('assets.id',Upload::select('asset_id'));
                     });
                 })
 
