@@ -111,6 +111,9 @@ class AssetController extends Controller
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
                             ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
+                ->when(isset($showMutation), function ($query) {
+                    $query->where('assets.asset_status','');
+                })
                 ->where('departement_id', $departement_id)
                 // ->forPage($offset, $limit)
                 ->get(['assets.*','departments.department','categories.category','counts.count']);
