@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MutationsController;
+use App\Http\Controllers\CountController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,6 +33,9 @@ Route::get('/asset/upload_image', [AssetController::class, 'get_upload_image'])-
 Route::post('/asset/upload_image', [AssetController::class, 'upload_image'])->middleware('jwt.verify');
 
 Route::post('/mutation', [MutationsController::class, 'insertMutation'])->middleware('jwt.verify');
+
+Route::get('/home/asset', [CountController::class, 'asset'])->middleware('jwt.verify');
+Route::get('/home/latestdata', [CountController::class, 'latestData'])->middleware('jwt.verify');
 
 Route::post('/user/changePassword/{id}', [UserController::class, 'changePassword'])->middleware('jwt.verify');
 Route::get('/user', [UserController::class, 'getAuthenticatedUser'])->middleware('jwt.verify');
