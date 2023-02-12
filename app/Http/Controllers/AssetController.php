@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Asset;
 use App\Models\Upload;
+use App\Models\MutationsDet;
 use Auth;
 use Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,26 +81,34 @@ class AssetController extends Controller
         $search = $request->input('search');
         $offset = $request->input('offset') ?? 1;
         $limit = $request->input('limit') ?? 10000;
-        $showMutation = $request->input('showmutation');
-        if($showMutation == 'true'){
-            $showMutation = true;
-        }else{
-            $showMutation = null;
-        }
-
+        $mode = $request->input('mode');
 
         if ($departement_id){
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                 ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
                 ->where('departement_id', $departement_id)
-                ->where(function($query_or) use ($search) {
+                ->when($search != '', function($query_or) use ($search) {
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
                             ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
-                ->when(isset($showMutation), function ($query) {
-                    $query->where('assets.asset_status','');
+                ->when($mode == 'mutation_upload', function ($query) {
+                    $query->where(function($query_) {
+                        $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'))
+                        ->orwhereNotIn('assets.id',Upload::select('asset_id'));
+                    });
                 })
+                ->when($mode == 'mutation', function ($query) {
+                    $query->where(function($query_) {
+                        $query_->whereIn('assets.id',MutationsDet::select('asset_id'));
+                    });
+                })
+                ->when($mode == 'upload', function ($query) {
+                    $query->where(function($query_) {
+                        $query_->whereIn('assets.id',Upload::select('asset_id'));
+                    });
+                })
+
                 ->offset($offset)->limit($limit)
                 // ->forPage($offset, $limit)
                 ->get(['assets.*','departments.department','categories.category','counts.count']);
@@ -107,13 +116,27 @@ class AssetController extends Controller
             $query_count = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                 ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
-                ->where(function($query_or)  use ($search) {
+                ->when($search != '', function($query_or) use ($search) {
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
                             ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
-                ->when(isset($showMutation), function ($query) {
-                    $query->where('assets.asset_status','');
+                ->when($mode == 'mutation_upload', function ($query) {
+                    $query->where(function($query_) {
+                        $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'))
+                        ->orwhereNotIn('assets.id',Upload::select('asset_id'));
+                    });
                 })
+                ->when($mode == 'mutation', function ($query) {
+                    $query->where(function($query_) {
+                        $query_->whereIn('assets.id',MutationsDet::select('asset_id'));
+                    });
+                })
+                ->when($mode == 'upload', function ($query) {
+                    $query->where(function($query_) {
+                        $query_->whereIn('assets.id',Upload::select('asset_id'));
+                    });
+                })
+
                 ->where('departement_id', $departement_id)
                 // ->forPage($offset, $limit)
                 ->get(['assets.*','departments.department','categories.category','counts.count']);
