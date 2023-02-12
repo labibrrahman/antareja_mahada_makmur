@@ -80,16 +80,26 @@ class AssetController extends Controller
         $search = $request->input('search');
         $offset = $request->input('offset') ?? 1;
         $limit = $request->input('limit') ?? 10000;
+        $showMutation = $request->input('showmutation');
+        if($showMutation == 'true'){
+            $showMutation = true;
+        }else{
+            $showMutation = null;
+        }
+
 
         if ($departement_id){
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                 ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                ->where('departement_id', $departement_id)
                 ->where(function($query_or) use ($search) {
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
                             ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
-                ->where('departement_id', $departement_id)
+                ->when(isset($showMutation), function ($query) {
+                    $query->where('assets.asset_status','');
+                })
                 ->offset($offset)->limit($limit)
                 // ->forPage($offset, $limit)
                 ->get(['assets.*','departments.department','categories.category','counts.count']);
@@ -170,7 +180,6 @@ class AssetController extends Controller
             "data" => $data
         ]);
     }
-
 
     public function store(Request $request) {
         $input = $request->all();
@@ -293,7 +302,6 @@ class AssetController extends Controller
         ]);
     }
 
-
     public function get_upload_image($id_asset = null){
         if ($id_asset){
             $query = Upload::where('id_asset', $id_asset)->get();
@@ -363,9 +371,4 @@ class AssetController extends Controller
         ]);
     }
 
-    // public function destroy(Request $request){
-    //     $input = $request->all();
-
-    //     // $deleted = Asset::where('id', 0)->delete();
-    // }
 }

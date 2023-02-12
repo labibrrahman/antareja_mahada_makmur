@@ -31,16 +31,17 @@ class MutationsController extends Controller
             }
 
             $data = array();
+            $arr_id_asset = array();
+
             foreach($request->data as $det_mutation){
                 $data[] = ['mutasi_id'=>$id_mutation, 'asset_id'=> $det_mutation['asset_id'], 'description'=>$det_mutation['desc']];
             }
             $mutation = MutationsDet::insert($data); // Eloquent approach
             if($mutation == true){
                 foreach($request->data as $det_mutation){
-                    $asset = Asset::find($det_mutation['asset_id']);   
-                    $asset->asset_status = $request->status;
-                    $asset->save();
+                    $arr_id_asset[] = ['asset_status' => $det_mutation['asset_id']];
                 }
+                $asset = Asset::whereIn('id', $arr_id_asset)->update(['asset_status'=>$request->status]);
             }
             return response()->json([
                 "status" => $mutation,
