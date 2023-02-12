@@ -147,6 +147,11 @@ class AssetController extends Controller
                         $query->whereIn('assets.id',Upload::select('asset_id'));
                     });
                 })
+                ->when($mode == 'upload', function ($query) {
+                    $query->where(function($query) {
+                        $query->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                    });
+                })
 
                 ->where('departement_id', $departement_id)
                 // ->forPage($offset, $limit)
