@@ -109,7 +109,7 @@ class CountController extends Controller
                     $status = true;
                     $message = "here is data";
                 }
-            }else if($mode == 'mutation'){
+            }else{
                 $query_count = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                     ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                     ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
@@ -118,9 +118,6 @@ class CountController extends Controller
                     ->when($mode == 'mutation', function ($query_) {
                         return $query_->whereIn('assets.id',MutationsDet::select('asset_id'));
                     })
-                    // ->when($mode == 'hide', function ($query_) {
-                    //     return $query_->whereIn('assets.id',Upload::select('asset_id'));
-                    // })
 
                     ->get(['assets.*','departments.department','categories.category','counts.count']);
                 $count = count($query_count);
