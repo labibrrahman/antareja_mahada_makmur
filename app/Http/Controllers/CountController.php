@@ -33,8 +33,8 @@ class CountController extends Controller
                     ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                     ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
                     ->where('departement_id', $departement_id)
+                    ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
                     ->orderBy('assets.created_at', 'DESC')
-                    ->limit($limit)
                     ->get(['assets.*','departments.department','categories.category','counts.count']);
                 $total_asset = count($query_count_asset);
                 // if($count == 0){
@@ -50,6 +50,7 @@ class CountController extends Controller
                     ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                     ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
                     ->where('departement_id', $departement_id)
+                    ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
                     ->orderBy('uploads.created_at', 'DESC')
                     ->groupBy(
                         [   
@@ -79,6 +80,7 @@ class CountController extends Controller
                     ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                     ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
                     ->where('departement_id', $departement_id)
+                    ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
                     ->orderBy('uploads.created_at', 'DESC')
                     ->groupBy(
                         [   
@@ -100,7 +102,6 @@ class CountController extends Controller
                             'assets.updated_by','departments.department','categories.category','counts.count'
                         ]
                     )
-                    ->limit($limit)
                     ->get(['assets.*','departments.department','categories.category','counts.count']);
 
                 // $total_label = count($query_count);
