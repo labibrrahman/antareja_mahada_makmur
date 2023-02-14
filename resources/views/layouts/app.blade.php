@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="{{asset('assets/css/fontawesome-free/css/all.min.css')}}" media="all">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('assets/css/adminlte.min.css')}}">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -46,6 +48,7 @@
 <!-- AdminLTE App -->
 <script src="{{asset('assets/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{asset('assets/js/demo.js') }}"></script>
+{{-- <script src="{{asset('assets/js/demo.js') }}"></script> --}}
+
 </body>
 </html>

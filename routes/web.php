@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\AssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,5 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('/asset', [AssetController::class, 'index'])->name('asset');
+Route::get('/asset/data', [AssetController::class, 'getData'])->name('asset.data');

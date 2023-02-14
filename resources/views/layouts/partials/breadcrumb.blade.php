@@ -10,7 +10,7 @@
             
           @foreach(Request::segments() as $segment)
           <li class="breadcrumb-item">
-              <a href="{{ route('contact') }}">{{$segment}}</a>
+              <a href="{{ route('asset') }}">{{$segment}}</a>
           </li>
           @endforeach
           </ol>
