@@ -18,6 +18,7 @@ class Asset extends Model
     'asset_po',
     'asset_status',
     'departement_id',
+    'category_id',
     'count_id',
     'location',
     "asset_condition",
