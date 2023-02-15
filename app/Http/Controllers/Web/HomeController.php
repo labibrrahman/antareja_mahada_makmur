@@ -37,8 +37,8 @@ class HomeController extends Controller
                                                     ->get())];
         }
 
-        $labelAsset = array();
-        $labelAsset[0] = ['Month','Asset'];
+        // $labelAsset = array();
+        // $labelAsset[0] = ['Month','Asset'];
         $getCategory = Asset::select('category_id')->groupBy('category_id')->get();
         $getCategoryCode = array();
         $dataCategory = json_decode($getCategory);
