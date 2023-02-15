@@ -385,11 +385,13 @@ class AssetController extends Controller
             "asset_id"=> "required",
             "user_id"=> "required",
             "upload_status"=> "required",
-            "upload_image"=> "required|image|mimes:jpg,png,jpeg,gif,svg|max:2048",
+            "upload_image"=> "required|image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+            "location"=> "required",
+            "asset_condition"=> "required",
          ]);
-         if ($validator->fails()) {
-            return sendCustomResponse($validator->messages()->first(),  'error', 500);
-         }
+         if($validator->fails()){
+            return $validator->errors();       
+        }
 
         $uploadFolder = 'asset';
         $image = $request->file('upload_image');

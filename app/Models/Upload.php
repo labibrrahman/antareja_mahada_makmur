@@ -14,5 +14,7 @@ class Upload extends Model
     'user_id',
     'upload_status',
     'upload_image',
+    'location',
+    'asset_condition',
     ];
 }
