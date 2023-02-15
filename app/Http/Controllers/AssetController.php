@@ -236,6 +236,7 @@ class AssetController extends Controller
             "asset_po"=> "required",
             "departement_id"=> "required",
             "count_id"=> "required",
+            "category_id"=> "required",
             "location"=> "required",
             "asset_condition"=> "required",
         ]);
