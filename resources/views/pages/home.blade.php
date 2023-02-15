@@ -22,8 +22,13 @@
         <div>
           <div id="pemasukan" class="page_speed_392943554"></div>
         </div>
+        <br>
         <div>
           <div id="label" class="page_speed_392943554"></div>
+        </div>
+        <br>
+        <div>
+          <div id="category" class="page_speed_392943554"></div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
@@ -38,20 +43,24 @@
 <script type="text/javascript">
   var DataPemasukan = <?php echo $data_pemasukan; ?>;
   var LabelAsset = <?php echo $label_asset; ?>;
+  var asset_by_category = <?php echo $asset_by_category; ?>;
   
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(pemasukan);
   google.charts.setOnLoadCallback(label);
+  google.charts.setOnLoadCallback(asset_category);
+  
   function pemasukan() {
     var data = google.visualization.arrayToDataTable(DataPemasukan);
     var options = {
       title: 'Asset Masukan/Bulan',
       curveType: 'function',
-      legend: { position: 'bottom' }
+      legend: { position: 'bottom' },
     };
     var chart = new google.visualization.LineChart(document.getElementById('pemasukan'));
     chart.draw(data, options);
   }
+
   function label() {
     var data = google.visualization.arrayToDataTable(LabelAsset);
     var options = {
@@ -60,6 +69,18 @@
       legend: { position: 'bottom' }
     };
     var chart = new google.visualization.LineChart(document.getElementById('label'));
+    chart.draw(data, options);
+  }
+
+  function asset_category() {
+    var data = google.visualization.arrayToDataTable(asset_by_category);
+    var options = {
+      title: 'Asset By Category',
+      curveType: 'function',
+      legend: { position: 'bottom' },
+      hAxis: {format:''}
+    };
+    var chart = new google.visualization.BarChart(document.getElementById('category'));
     chart.draw(data, options);
   }
 </script>

@@ -24,34 +24,46 @@ class HomeController extends Controller
         $pemasukanAsset = array();
         $pemasukanAsset[0] = ['Month','Asset'];
         for ($i=1; $i < $month_monitoring; $i++) { 
-            $pemasukanAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')->whereMonth('created_at', $i)->get())];
+            $pemasukanAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
+                                                            ->where('assets.departement_id',1)
+                                                            ->whereMonth('created_at', $i)->get())];
         }
 
         $labelAsset = array();
         $labelAsset[0] = ['Month','Asset'];
         for ($i=1; $i < $month_monitoring; $i++) { 
             $labelAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
+                                                    ->where('assets.departement_id',1)
                                                     ->whereIn('assets.id',Upload::select('asset_id'))
                                                     ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
                                                     ->whereMonth('created_at', $i)
                                                     ->get())];
         }
 
-        // $labelAsset = array();
-        // $labelAsset[0] = ['Month','Asset'];
-        $getCategory = Asset::select('category_id')->groupBy('category_id')->get();
+        $dataByCategory = array();
+        $dataByCategory[0] = ['Category','data'];
+        $getCategory = Asset::select('category_id')
+                        ->where('departement_id',1)
+                        ->groupBy('category_id')->get();
         $getCategoryCode = array();
         $dataCategory = json_decode($getCategory);
+        $i = 1;
         foreach($dataCategory as $data){
-            $get_category_name = Categories::select('category')->where('id', $data->category_id)->get();
+            $get_category_name = Categories::select('id','category')->where('id', $data->category_id)->get();
             $category_name = json_decode($get_category_name)[0]->category;
-            //Set Jumlah Category yang tersedia pada asset
+            $category_count = count(Asset::select('id')
+                                ->where('departement_id',1)
+                                ->where('category_id',json_decode($get_category_name)[0]->id)
+                                ->get());
+            
+            $dataByCategory[$i] = [$category_name, $category_count];
+            $i++;
         }
-
 
         return view('pages.home',['title' => 'Dashboard'])
             ->with('data_pemasukan',json_encode($pemasukanAsset))
-            ->with('label_asset',json_encode($labelAsset));
+            ->with('label_asset',json_encode($labelAsset))
+            ->with('asset_by_category',json_encode($dataByCategory));
     }
 
     /**
