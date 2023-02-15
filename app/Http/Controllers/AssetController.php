@@ -236,7 +236,9 @@ class AssetController extends Controller
             "asset_po"=> "required",
             "asset_status"=> "required",
             "departement_id"=> "required",
-            "count_id"=> "required"
+            "count_id"=> "required",
+            "location"=> "required",
+            "asset_condition"=> "required",
         ]);
 
         if($validator->fails()){
@@ -386,8 +388,6 @@ class AssetController extends Controller
             "user_id"=> "required",
             "upload_status"=> "required",
             "upload_image"=> "required|image|mimes:jpg,png,jpeg,gif,svg|max:5048",
-            "location"=> "required",
-            "asset_condition"=> "required",
          ]);
          if($validator->fails()){
             return $validator->errors();       
@@ -413,6 +413,72 @@ class AssetController extends Controller
             "data_image" => $data_image,
             "data" => $data
         ]);
+    }
+
+    public function upload_(Request $request)
+    {
+        $input = $request->all();
+
+        $validator = Validator::make($request->all(), [
+            "asset_id"=> "required",
+            "user_id"=> "required",
+            "upload_status"=> "required",
+            "upload_image"=> "image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+            "location"=> "required",
+            "asset_condition"=> "required",
+        ]);
+        if($validator->fails()){
+            return $validator->errors();       
+        }
+
+        $data = Upload::select('upload_image')->where('id', $input['id'])->get();
+        foreach($data as $datas){
+            dd($data);
+
+        }
+
+        // dd($input);
+        // file_exists(public_path('path/to/asset.png'));
+
+        // $uploadFolder = 'asset';
+        // $image = $request->file('upload_image');
+        // $image_uploaded_path = $image->store($uploadFolder, 'public');
+        // $data_image = array(
+        //     "image_name" => basename($image_uploaded_path),
+        //     "image_url" => Storage::disk('public')->url($image_uploaded_path),
+        //     "mime" => $image->getClientMimeType()
+        // );
+
+        // $input["upload_image"] = $image_uploaded_path;
+
+        // $data = Upload::create($input);
+
+        // // $asset = Asset::create($input);
+        // return response()->json([
+        //     "status" => true,
+        //     "message" => "Asset created successfully.",
+        //     "data_image" => $data_image,
+        //     "data" => $data
+        // ]);
+
+        // $asset = Asset::find($id);   
+        // $asset->asset_number = $input['asset_number'];
+        // $asset->asset_serial_number = $input['asset_serial_number'];
+        // $asset->asset_capitalized_on = $input['asset_capitalized_on'];
+        // $asset->asset_manager = $input['asset_manager'];
+        // $asset->asset_desc = $input['asset_desc'];
+        // $asset->asset_quantity = $input['asset_quantity'];
+        // $asset->asset_po = $input['asset_po'];
+        // $asset->asset_status = $input['asset_status'];
+        // $asset->departement_id = $input['departement_id'];
+        // $asset->category_id = $input['category_id'];
+        // $asset->count_id = $input['count_id'];
+        // $asset->save();
+
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'updated successfully'
+        // ]);
     }
 
 }

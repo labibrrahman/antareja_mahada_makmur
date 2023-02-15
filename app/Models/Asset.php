@@ -19,5 +19,7 @@ class Asset extends Model
     'asset_status',
     'departement_id',
     'count_id',
+    'location',
+    "asset_condition",
     ];
 }
