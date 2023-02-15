@@ -20,7 +20,10 @@
           
         </div>
         <div>
-          <div id="linechart" class="page_speed_392943554"></div>
+          <div id="pemasukan" class="page_speed_392943554"></div>
+        </div>
+        <div>
+          <div id="label" class="page_speed_392943554"></div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
@@ -33,18 +36,30 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-  var visitor = <?php echo $visitor; ?>;
-  console.log(visitor);
+  var DataPemasukan = <?php echo $data_pemasukan; ?>;
+  var LabelAsset = <?php echo $label_asset; ?>;
+  
   google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(drawChart);
-  function drawChart() {
-    var data = google.visualization.arrayToDataTable(visitor);
+  google.charts.setOnLoadCallback(pemasukan);
+  google.charts.setOnLoadCallback(label);
+  function pemasukan() {
+    var data = google.visualization.arrayToDataTable(DataPemasukan);
     var options = {
-      title: 'Grafik Pemasukan Asset Selama 4 Bulan',
+      title: 'Asset Masukan/Bulan',
       curveType: 'function',
       legend: { position: 'bottom' }
     };
-    var chart = new google.visualization.ColumnChart(document.getElementById('linechart'));
+    var chart = new google.visualization.LineChart(document.getElementById('pemasukan'));
+    chart.draw(data, options);
+  }
+  function label() {
+    var data = google.visualization.arrayToDataTable(LabelAsset);
+    var options = {
+      title: 'Label Asset/Bulan',
+      curveType: 'function',
+      legend: { position: 'bottom' }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('label'));
     chart.draw(data, options);
   }
 </script>
