@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\AssetController;
+use App\Http\Controllers\Web\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,26 @@ use App\Http\Controllers\Web\AssetController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/asset', [AssetController::class, 'index'])->name('asset');
-Route::get('/asset/data', [AssetController::class, 'getData'])->name('asset.data');
+// Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [LoginController::class, 'login'])->name('login');
+Route::post('actionlogin', [LoginController::class, 'actionlogin'])->name('actionlogin');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout');
+    Route::get('/asset', [AssetController::class, 'index'])->name('asset');
+    Route::get('/asset/data', [AssetController::class, 'getData'])->name('asset.data');
+});
+
+
+// Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
+// Route::post('/login/authenticate', [LoginController::class, 'authenticate'])->name('login.authenticate');
+// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::prefix('admin')->group(function () {
+//         Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+//         Route::get('/asset', [AssetController::class, 'index'])->name('asset');
+//         Route::get('/asset/data', [AssetController::class, 'getData'])->name('asset.data');
+//     });
+// });

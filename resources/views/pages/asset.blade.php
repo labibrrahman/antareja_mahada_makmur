@@ -47,15 +47,22 @@
   $(document).ready(function(){
     // DataTable
     $('#empTable').DataTable({
-       processing: true,
-       serverSide: true,
-       ajax: "{{route('asset.data')}}",
-       columns: [
-          { data: 'id' },
-          { data: 'username' },
-          { data: 'name' },
-          { data: 'email' },
-       ]
+      destroy: true,
+      iDisplayLength: 10,
+      oLanguage: {
+          sProcessing: "loading..."
+      },
+      responsive: 'true',
+      processing: true,
+      serverSide: true,
+      ajax: "{{route('asset.data')}}",
+      dataSrc: "",
+      columns: [
+        { data: 'asset_number' },
+        { data: 'department' },
+        { data: 'category' },
+        { data: 'count' },
+      ]
     });
 
   });
