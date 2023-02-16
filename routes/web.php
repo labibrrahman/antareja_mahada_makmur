@@ -25,6 +25,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout');
     Route::get('/asset', [AssetController::class, 'index'])->name('asset');
     Route::get('/asset/data', [AssetController::class, 'getData'])->name('asset.data');
+    Route::post('/asset/get_data_asset', [AssetController::class, 'getDataAsset'])->name('asset.get_data_asset');
+    Route::post('/asset/store_price', [AssetController::class, 'storePrice'])->name('asset.store_price');
+    
 });
 
 

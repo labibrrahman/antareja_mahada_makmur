@@ -3,7 +3,8 @@ namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Models\Asset;
-use DB;
+use Validator;
+use DataTables;
 class AssetController extends Controller
 {
 
@@ -12,56 +13,54 @@ class AssetController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.asset', ['title' => 'Asset']);
+      if ($request->ajax()) {
+        $data = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+        ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
+        ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+        ->get(['assets.*','departments.department as department','category','counts.count as count']);
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                      $btn = '<a href="" data-toggle="modal" onclick=getasset_ajax('.$row['id'].') data-target="#exampleModal" class="edit btn btn-success btn-sm">Add Price</a>';
+                      return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+      }
+      return view('pages.asset', ['title' => 'Asset']);
     }
 
-    public function getData(Request $request){
+    public function getDataAsset(Request $request)
+    {
+          $post = $request->all();
+          $query = Asset::select('*')->where('id' , $post['id'])->get();
+          foreach($query as $query_data){
+            $data = $query_data;
+          }
+          return json_decode($data);
+    }
 
-        // Total records
-   
-        // Fetch records
-        // $records = Employees::orderBy($columnName,$columnSortOrder)
-        //   ->where('employees.name', 'like', '%' .$searchValue . '%')
-        //   ->select('employees.*')
-        //   ->skip($start)
-        //   ->take($rowperpage)
-        //   ->get();
-   
-        $records = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
-                ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
-                ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
-                ->get(['assets.asset_number as asset_number','departments.department as department','categories as category','counts.count as count']);
+    public function storePrice(Request $request)
+    {
+      $input = $request->all();
 
-        $totalRecords = count($records);
-        dd($record);
-        $data_arr = array();
-        
-        foreach($records as $record){
-           $id = $record->id;
-           $username = $record->username;
-           $name = $record->name;
-           $email = $record->email;
-   
-           $data_arr[] = array(
-             "id" => $id,
-             "username" => $username,
-             "name" => $name,
-             "email" => $email
-           );
-        }
-   
-        $response = array(
-           "draw" => intval($draw),
-           "iTotalRecords" => $totalRecords,
-           "iTotalDisplayRecords" => $totalRecords,
-           "aaData" => $data_arr
-        );
-   
-        echo json_encode($response);
-        exit;
+      $validator = Validator::make($input, [
+        'id_asset' => 'required',
+        'asset_price' => 'required',
+      ]);
+
+      if($validator->fails()){
+	        return back()->with('warning', 'Data is null');
       }
+
+      $asset = Asset::find($input['id_asset']);   
+      $asset->asset_price = $input['asset_price'];
+      $asset->save();
+
+      return back()->with('success', "Input Asset Price successfully");
+    }
 
     /**
      * Show the application contact.

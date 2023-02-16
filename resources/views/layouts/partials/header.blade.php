@@ -17,7 +17,7 @@
       <!-- Navbar Search -->
       <li class="nav-item">
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Logout</a>
+          <a href="{{ route('actionlogout') }}" class="nav-link">Logout</a>
         </li>
       </li>
     </ul>

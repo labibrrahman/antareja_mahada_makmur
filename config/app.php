@@ -165,6 +165,8 @@ return [
         //JWT
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        
         /*
          * Package Service Providers...
          */

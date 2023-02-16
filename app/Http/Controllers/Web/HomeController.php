@@ -6,6 +6,8 @@ use App\Models\Asset;
 use App\Models\Upload;
 use App\Models\MutationsDet;
 use App\Models\Categories;
+use Illuminate\Support\Facades\Auth;
+use Session;
 use DB;
 class HomeController extends Controller
 {
@@ -25,7 +27,7 @@ class HomeController extends Controller
         $pemasukanAsset[0] = ['Month','Asset'];
         for ($i=1; $i < $month_monitoring; $i++) { 
             $pemasukanAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
-                                                            ->where('assets.departement_id',1)
+                                                            ->where('assets.departement_id',Session::get('departement_id'))
                                                             ->whereMonth('created_at', $i)->get())];
         }
 
@@ -33,7 +35,7 @@ class HomeController extends Controller
         $labelAsset[0] = ['Month','Asset'];
         for ($i=1; $i < $month_monitoring; $i++) { 
             $labelAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
-                                                    ->where('assets.departement_id',1)
+                                                    ->where('assets.departement_id',Session::get('departement_id'))
                                                     ->whereIn('assets.id',Upload::select('asset_id'))
                                                     ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
                                                     ->whereMonth('created_at', $i)
@@ -43,7 +45,7 @@ class HomeController extends Controller
         $dataByCategory = array();
         $dataByCategory[0] = ['Category','data'];
         $getCategory = Asset::select('category_id')
-                        ->where('departement_id',1)
+                        ->where('departement_id',Session::get('departement_id'))
                         ->groupBy('category_id')->get();
         $getCategoryCode = array();
         $dataCategory = json_decode($getCategory);
@@ -52,7 +54,7 @@ class HomeController extends Controller
             $get_category_name = Categories::select('id','category')->where('id', $data->category_id)->get();
             $category_name = json_decode($get_category_name)[0]->category;
             $category_count = count(Asset::select('id')
-                                ->where('departement_id',1)
+                                ->where('departement_id',Session::get('departement_id'))
                                 ->where('category_id',json_decode($get_category_name)[0]->id)
                                 ->get());
             

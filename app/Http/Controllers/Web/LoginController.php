@@ -25,6 +25,11 @@ class LoginController extends Controller
         ];
 
         if (Auth::Attempt($data)) {
+
+            $data_user = json_decode(Auth::user());
+            Session::put('id', $data_user->id);
+            Session::put('username', $data_user->username);
+            Session::put('departement_id', $data_user->departement_id);
             return redirect('dashboard');
         }else{
             Session::flash('error', 'Username atau Password Salah');
@@ -34,6 +39,7 @@ class LoginController extends Controller
 
     public function actionlogout()
     {
+        Session::flush();
         Auth::logout();
         return redirect('/');
     }
