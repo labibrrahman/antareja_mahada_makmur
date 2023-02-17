@@ -140,7 +140,14 @@
                   </div>
                   <div class="form-group">
                     <label for="asset_condition" class="col-form-label">Condition :</label>
-                    <input type="text" class="form-control" max="10" id="asset_condition" name="asset_condition">
+                    <select id="asset_condition" name="asset_condition" class="select2 form-control" style="width:100%">
+                      <option value="">- Set Condition -</option>
+                        <option value="sb">Sangat Baik</option>
+                        <option value="b">Baik</option>
+                        <option value="c">Cukup</option>
+                        <option value="k">Kurang</option>
+                        <option value="sk">Sangat Kurang</option>
+                    </select>
                   </div>
               </div>
               <div class="modal-footer">
