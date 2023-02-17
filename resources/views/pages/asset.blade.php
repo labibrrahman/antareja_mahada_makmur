@@ -7,7 +7,7 @@
   <div class="card">
         <div class="card-header ">
           <div class="card-tools">
-            <a href="#" class="edit btn btn-primary btn-sm">Add Asset + </a>
+            <a href="#" data-toggle="modal" data-target="#insertAsset" class="edit btn btn-primary btn-sm">Add Asset + </a>
           </div>
         </div>
         <div class="card-body">
@@ -60,6 +60,78 @@
                   <div class="form-group">
                     <label for="asset_price" class="col-form-label">Price:</label>
                     <input type="text" class="form-control" id="asset_price" name="asset_price">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="insertAsset" tabindex="-1" role="dialog" aria-labelledby="insertAsset" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="insertAsset">Add Data Asset</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{{ route('asset.store_asset') }}" method="POST">
+              @csrf
+              <div class="modal-body">
+                  <div class="form-group">
+                    <label for="asset_number" class="col-form-label">Asset Number :</label>
+                    <input type="number" class="form-control" id="asset_number" name="asset_number">
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_serial_number" class="col-form-label">Serial Number:</label>
+                    <input type="text" class="form-control" id="asset_serial_number" name="asset_serial_number">
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_capitalized_on" class="col-form-label">Capitalized On:</label>
+                    <input type="date" class="form-control" id="asset_capitalized_on" name="asset_capitalized_on">
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_desc" class="col-form-label">Asset Desc :</label>
+                    <input type="text" class="form-control" id="asset_desc" name="asset_desc">
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_quantity" class="col-form-label">Quantity :</label>
+                    <input type="number" class="form-control" id="asset_quantity" name="asset_quantity">
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_po" class="col-form-label">PO :</label>
+                    <input type="text" class="form-control" id="asset_po" name="asset_po">
+                  </div>
+                  <div class="form-group">
+                    <label for="count_id" class="col-form-label">Count :</label>
+                    <select id="count_id" name="count_id" class="select2 form-control" style="width:100%">
+                      <option value="">- Set Count -</option>
+                      @foreach ($count as $data)
+                        <option value="{{$data->id}}">{{$data->count}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="category_id" class="col-form-label">Category :</label>
+                    <select id="category_id" name="category_id" class="select2 form-control" style="width:100%">
+                      <option value="">- Set Category -</option>
+                      @foreach ($categories as $data)
+                        <option value="{{$data->id}}">{{$data->category}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="location" class="col-form-label">Location :</label>
+                    <input type="text" class="form-control" id="location" name="location">
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_condition" class="col-form-label">Condition :</label>
+                    <input type="text" class="form-control" max="10" id="asset_condition" name="asset_condition">
                   </div>
               </div>
               <div class="modal-footer">

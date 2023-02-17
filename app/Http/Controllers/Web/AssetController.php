@@ -3,8 +3,12 @@ namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Models\Asset;
+use App\Models\Counts;
+use App\Models\Categories;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use DataTables;
+use Session;
 class AssetController extends Controller
 {
 
@@ -19,6 +23,7 @@ class AssetController extends Controller
         $data = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
         ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
         ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+        ->latest()
         ->get(['assets.*','departments.department as department','category','counts.count as count']);
         return Datatables::of($data)
                 ->addIndexColumn()
@@ -29,7 +34,12 @@ class AssetController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
       }
-      return view('pages.asset', ['title' => 'Asset']);
+
+      $count = json_decode(Counts::all());
+      $categories = json_decode(Categories::all());
+      return view('pages.asset', ['title' => 'Asset'])
+      ->with('count',$count)
+      ->with('categories',$categories);
     }
 
     public function getDataAsset(Request $request)
@@ -61,6 +71,36 @@ class AssetController extends Controller
 
       return back()->with('success', "Input Asset Price successfully");
     }
+
+    public function store(Request $request) {
+      $input = $request->all();
+      $input['asset_manager'] = Session::get('id');
+      $input['departement_id'] = Session::get('departement_id');
+      $input['asset_status'] = "-";
+      $validator = Validator::make($input, [
+          "asset_number" => "required",
+          "asset_serial_number"=> "required",
+          "asset_capitalized_on"=> "required",
+          // "asset_manager"=> "required",
+          "asset_desc"=> "required",
+          "asset_quantity"=> "required",
+          "asset_po"=> "required",
+          // "departement_id"=> "required",
+          "count_id"=> "required",
+          "category_id"=> "required",
+          "location"=> "required",
+          "asset_condition"=> "required",
+      ]);
+
+      if($validator->fails()){
+          return $validator->errors();       
+      }
+
+      $asset = Asset::create($input);
+      if($asset){
+        return back()->with('success', "Input Asset successfully");
+      }
+  }
 
     /**
      * Show the application contact.

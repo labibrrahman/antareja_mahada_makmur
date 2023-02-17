@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/asset/data', [AssetController::class, 'getData'])->name('asset.data');
     Route::post('/asset/get_data_asset', [AssetController::class, 'getDataAsset'])->name('asset.get_data_asset');
     Route::post('/asset/store_price', [AssetController::class, 'storePrice'])->name('asset.store_price');
+    Route::post('/asset/store_asset', [AssetController::class, 'store'])->name('asset.store_asset');
     
 });
 
