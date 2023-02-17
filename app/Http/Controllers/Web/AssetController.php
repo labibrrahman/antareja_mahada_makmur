@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Asset;
 use App\Models\Counts;
 use App\Models\Categories;
+use App\Models\Departement;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use DataTables;
@@ -23,7 +24,7 @@ class AssetController extends Controller
         $data = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
         ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
         ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
-        ->latest()
+        ->orderBy('assets.created_at', 'DESC')
         ->get(['assets.*','departments.department as department','category','counts.count as count']);
         return Datatables::of($data)
                 ->addIndexColumn()
@@ -37,8 +38,10 @@ class AssetController extends Controller
 
       $count = json_decode(Counts::all());
       $categories = json_decode(Categories::all());
+      $departement = json_decode(Departement::all());
       return view('pages.asset', ['title' => 'Asset'])
       ->with('count',$count)
+      ->with('departement',$departement)
       ->with('categories',$categories);
     }
 
@@ -74,8 +77,8 @@ class AssetController extends Controller
 
     public function store(Request $request) {
       $input = $request->all();
-      $input['asset_manager'] = Session::get('id');
-      $input['departement_id'] = Session::get('departement_id');
+      // $input['asset_manager'] = Session::get('id');
+      $input['asset_manager'] = "-";
       $input['asset_status'] = "-";
       $validator = Validator::make($input, [
           "asset_number" => "required",
@@ -85,7 +88,7 @@ class AssetController extends Controller
           "asset_desc"=> "required",
           "asset_quantity"=> "required",
           "asset_po"=> "required",
-          // "departement_id"=> "required",
+          "departement_id"=> "required",
           "count_id"=> "required",
           "category_id"=> "required",
           "location"=> "required",

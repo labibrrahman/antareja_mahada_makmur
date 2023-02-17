@@ -108,6 +108,15 @@
                     <input type="text" class="form-control" id="asset_po" name="asset_po">
                   </div>
                   <div class="form-group">
+                    <label for="departement_id" class="col-form-label">Departement :</label>
+                    <select id="departement_id" name="departement_id" class="select2 form-control" style="width:100%">
+                      <option value="">- Set Count -</option>
+                      @foreach ($departement as $data)
+                        <option value="{{$data->id}}">{{$data->department}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group">
                     <label for="count_id" class="col-form-label">Count :</label>
                     <select id="count_id" name="count_id" class="select2 form-control" style="width:100%">
                       <option value="">- Set Count -</option>
