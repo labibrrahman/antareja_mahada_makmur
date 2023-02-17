@@ -110,7 +110,7 @@
                   <div class="form-group">
                     <label for="departement_id" class="col-form-label">Departement :</label>
                     <select id="departement_id" name="departement_id" class="select2 form-control" style="width:100%">
-                      <option value="">- Set Count -</option>
+                      <option value="">- Set Departement -</option>
                       @foreach ($departement as $data)
                         <option value="{{$data->id}}">{{$data->department}}</option>
                       @endforeach
