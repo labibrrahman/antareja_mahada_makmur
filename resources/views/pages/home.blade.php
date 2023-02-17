@@ -19,7 +19,6 @@
         <div class="card-body">
           
         </div>
-        asdasdsadsa
         <div>
           <div id="pemasukan" class="page_speed_392943554"></div>
         </div>
