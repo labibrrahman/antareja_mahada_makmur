@@ -230,6 +230,7 @@ class AssetController extends Controller
     public function store(Request $request) {
         $input = $request->all();
         $input['created_at'] = date('Y-m-d H:i:s');
+        $input['asset_status'] = (($input['asset_status'] == null) || ($input['asset_status'] == '') ? "-":$input['asset_status']);
         $validator = Validator::make($input, [
             "asset_number" => "required",
             "asset_serial_number"=> "required",
