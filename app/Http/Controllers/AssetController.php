@@ -132,6 +132,9 @@ class AssetController extends Controller
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
                             ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
+                ->when($mode == 'all_upload', function ($query_) {
+                    return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                })
 
                 ->when($mode == 'hide', function ($query_) {
                     return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
@@ -421,6 +424,7 @@ class AssetController extends Controller
         $asset = Asset::find($id);   
         $asset->location = $input['location'];
         $asset->asset_condition = $input['asset_condition'];
+        $asset->asset_status = "u";
         $asset->save();
 
         if($asset){
