@@ -28,6 +28,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/asset/get_data_asset', [AssetController::class, 'getDataAsset'])->name('asset.get_data_asset');
     Route::post('/asset/store_price', [AssetController::class, 'storePrice'])->name('asset.store_price');
     Route::post('/asset/store_asset', [AssetController::class, 'store'])->name('asset.store_asset');
+    Route::post('/asset/get_asset', [AssetController::class, 'getAsset'])->name('asset.update_asset');
+    Route::post('/asset/update_asset', [AssetController::class, 'update'])->name('asset.update_asset');
+    Route::post('/asset/deleted_asset', [AssetController::class, 'destroy'])->name('asset.deleted_asset');
     
 });
 

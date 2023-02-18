@@ -29,7 +29,9 @@ class AssetController extends Controller
         return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                      $btn = '<a href="" data-toggle="modal" onclick=getasset_ajax('.$row['id'].') data-target="#exampleModal" class="edit btn btn-success btn-sm">Add Price</a>';
+                      $btn =  '<a href="" data-toggle="modal" onclick=getasset_ajax('.$row['id'].') data-target="#exampleModal" class="edit btn btn-success btn-sm">Add Price</a>&nbsp;'.
+                              '<a href="" data-toggle="modal" onclick=getupdate_ajax('.$row['id'].') data-target="#updateAsset" class="edit btn btn-warning btn-sm">Edit</a>&nbsp;'.
+                              '<a href="" data-toggle="modal" onclick=confirmDelete('.$row['id'].') data-target="#deletedModal" class="edit btn btn-danger btn-sm">Deleted</a>';
                       return $btn;
                 })
                 ->rawColumns(['action'])
@@ -106,7 +108,66 @@ class AssetController extends Controller
       if($asset){
         return back()->with('success', "Input Asset successfully");
       }
+    }
+
+    public function update(Request $request) {
+      $input = $request->all();
+      $id = $input['id_asset'];
+      $input['asset_manager'] = "-";
+      $input['asset_status'] = "-";
+      $input['updated_at'] = date('Y-m-d H:i:s');
+      $input['updated_by'] = Session::get('id');
+      $validator = Validator::make($input, [
+          "asset_number" => "required",
+          "asset_serial_number"=> "required",
+          "asset_capitalized_on"=> "required",
+          "asset_desc"=> "required",
+          "asset_quantity"=> "required",
+          "asset_po"=> "required",
+          "departement_id"=> "required",
+          "count_id"=> "required",
+          "category_id"=> "required",
+          "location"=> "required",
+          "asset_condition"=> "required",
+      ]);
+
+      if($validator->fails()){
+          return back()->with('warning', 'Data is null');
+        }
+
+      $asset = Asset::find($id);   
+      $asset->asset_number = $input['asset_number'];
+      $asset->asset_serial_number = $input['asset_serial_number'];
+      $asset->asset_capitalized_on = $input['asset_capitalized_on'];
+      $asset->asset_manager = $input['asset_manager'];
+      $asset->asset_desc = $input['asset_desc'];
+      $asset->asset_quantity = $input['asset_quantity'];
+      $asset->asset_po = $input['asset_po'];
+      $asset->asset_status = $input['asset_status'];
+      $asset->departement_id = $input['departement_id'];
+      $asset->category_id = $input['category_id'];
+      $asset->count_id = $input['count_id'];
+      $asset->save();
+
+
+
+      if($asset){
+        return back()->with('success', "Input Asset successfully");
+      }
   }
+
+  public function destroy(Request $request){
+    $input = $request->all();
+    $id = $input['id_asset'];
+    $asset = Asset::destroy($id);
+    if($asset){
+      return back()->with('success', "Deleted Asset successfully");
+    }else{
+      return back()->with('warning', 'Deleted Asset fail');
+    }
+  }
+
+  
 
     /**
      * Show the application contact.
