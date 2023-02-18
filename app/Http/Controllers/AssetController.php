@@ -400,6 +400,7 @@ class AssetController extends Controller
          if($validator->fails()){
             return $validator->errors();       
         }
+        
 
         $uploadFolder = 'asset';
         $image = $request->file('upload_image');
