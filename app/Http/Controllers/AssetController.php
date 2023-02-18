@@ -386,13 +386,17 @@ class AssetController extends Controller
 
         $input = $request->all();
         $input['created_at'] = date('Y-m-d H:i:s');
+        $id = $input['asset_id'];
 
         $validator = Validator::make($request->all(), [
             "asset_id"=> "required",
             "user_id"=> "required",
             "upload_status"=> "required",
             "upload_image"=> "required|image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+            "location"=> "required",
+            "asset_condition"=> "required",
          ]);
+         
          if($validator->fails()){
             return $validator->errors();       
         }
@@ -408,16 +412,25 @@ class AssetController extends Controller
 
         $input["upload_image"] = $image_uploaded_path;
 
-        $data = Upload::create($input);
+        $asset = Asset::find($id);   
+        $asset->location = $input['location'];
+        $asset->asset_condition = $input['asset_condition'];
+        $asset->save();
 
-        // $asset = Asset::create($input);
-        if($data){
-            return response()->json([
-                "status" => true,
-                "message" => "Asset created successfully.",
-                "data_image" => $data_image,
-                "data" => $data
-            ]);
+        if($asset){
+            unset($input['location']);
+            unset($input['asset_condition']);
+            $data = Upload::create($input);
+
+            // $asset = Asset::create($input);
+            if($data){
+                return response()->json([
+                    "status" => true,
+                    "message" => "Asset created successfully.",
+                    "data_image" => $data_image,
+                    "data" => $data
+                ]);
+            }
         }
     }
 
