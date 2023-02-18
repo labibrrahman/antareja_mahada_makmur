@@ -92,7 +92,11 @@ class AssetController extends Controller
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
                             ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
-                
+
+                ->when($mode == 'all_upload', function ($query_) {
+                    return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                })
+
                 ->when($mode == 'hide', function ($query_) {
                     return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
                 })
@@ -400,7 +404,7 @@ class AssetController extends Controller
          if($validator->fails()){
             return $validator->errors();       
         }
-        
+
 
         $uploadFolder = 'asset';
         $image = $request->file('upload_image');
