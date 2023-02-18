@@ -293,6 +293,7 @@ class AssetController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
+        $input['updated_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($input, [
             "asset_number" => "required",
@@ -384,6 +385,7 @@ class AssetController extends Controller
         //BUAT VALIDASI JIKA INPUT DATA GAGAL ATAU UPLOAD FILE GAGAL
 
         $input = $request->all();
+        $input['created_at'] = date('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
             "asset_id"=> "required",
@@ -409,12 +411,14 @@ class AssetController extends Controller
         $data = Upload::create($input);
 
         // $asset = Asset::create($input);
-        return response()->json([
-            "status" => true,
-            "message" => "Asset created successfully.",
-            "data_image" => $data_image,
-            "data" => $data
-        ]);
+        if($data){
+            return response()->json([
+                "status" => true,
+                "message" => "Asset created successfully.",
+                "data_image" => $data_image,
+                "data" => $data
+            ]);
+        }
     }
 
     public function upload_(Request $request)
@@ -439,7 +443,6 @@ class AssetController extends Controller
 
         }
 
-        // dd($input);
         // file_exists(public_path('path/to/asset.png'));
 
         // $uploadFolder = 'asset';
