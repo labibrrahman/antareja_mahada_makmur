@@ -225,7 +225,7 @@ class AssetController extends Controller
 
     public function store(Request $request) {
         $input = $request->all();
-
+        $input['created_at'] = date('Y-m-d H:i:s');
         $validator = Validator::make($input, [
             "asset_number" => "required",
             "asset_serial_number"=> "required",
@@ -246,11 +246,13 @@ class AssetController extends Controller
         }
 
         $asset = Asset::create($input);
-        return response()->json([
-            "status" => true,
-            "message" => "Asset created successfully.",
-            "data" => $asset
-        ]);
+        if($asset){
+            return response()->json([
+                "status" => true,
+                "message" => "Asset created successfully.",
+                "data" => $asset
+            ]);
+        }
 
         // $messages = [
         //     'asset_number' => 'hehehehe',
