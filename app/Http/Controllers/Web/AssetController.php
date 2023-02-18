@@ -110,6 +110,7 @@ class AssetController extends Controller
     }
 
     public function update(Request $request) {
+      
       $input = $request->all();
       $id = $input['id_asset'];
       $input['asset_manager'] = "-";
