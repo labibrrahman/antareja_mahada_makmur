@@ -56,7 +56,7 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'full_name' => 'required|string',
-            'handphone' => 'required|string',
+            'handphone' => 'string',
             'departement_id' => 'required|int|exists:App\Models\Departement,id' 
         ]);
 
