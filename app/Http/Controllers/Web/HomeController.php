@@ -57,12 +57,14 @@ class HomeController extends Controller
         foreach($dataCategory as $data){
             $get_category_name = Categories::select('id','category')->where('id', $data->category_id)->get();
             $category_name = json_decode($get_category_name)[0]->category;
-            $category_count = count(Asset::select('id')
-                                ->where('departement_id',Session::get('departement_id'))
-                                ->where('category_id',json_decode($get_category_name)[0]->id)
-                                ->get());
+            // $category_count = count(Asset::select('id')
+            //                     ->where('departement_id',Session::get('departement_id'))
+            //                     ->where('category_id',json_decode($get_category_name)[0]->id)
+            //                     ->get());
             
-            $dataByCategory[$i] = [$category_name, $category_count];
+            // $dataByCategory[$i] = [$category_name, $category_count];
+            $dataByCategory[$i] = [$category_name, (int)rand(2,99)];
+            
             $i++;
         }
 

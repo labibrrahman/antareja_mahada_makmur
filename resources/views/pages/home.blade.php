@@ -66,7 +66,7 @@
   function pemasukan() {
     var data = google.visualization.arrayToDataTable(DataPemasukan);
     var options = {
-      title: 'Asset Masukan/Bulan',
+      title: 'Asset Masukan/Bulan Tahun 2022',
       curveType: 'function',
       legend: { position: 'bottom' },
       colors: ['#d14e49'],
@@ -78,7 +78,7 @@
   function label() {
     var data = google.visualization.arrayToDataTable(LabelAsset);
     var options = {
-      title: 'Label Asset/Bulan',
+      title: 'Label Asset/Bulan Tahun 2022',
       curveType: 'function',
       legend: { position: 'bottom' },
       colors: ['#d14e49'],
@@ -90,7 +90,7 @@
   function asset_category() {
     var data = google.visualization.arrayToDataTable(asset_by_category);
     var options = {
-      title: 'Asset By Category',
+      title: 'Asset By Category Tahun 2022',
       curveType: 'function',
       legend: { position: 'bottom' },
       hAxis: {format:''},
