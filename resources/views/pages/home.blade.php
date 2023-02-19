@@ -10,7 +10,7 @@
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>{{$count_asset}}</h3>
-                <p>Total Asset</p>
+                <p>Total Asset Tahun 2022</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -22,7 +22,7 @@
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>Rp. {{$asset_price}}</h3>
-                <p>Total Harga Asset</p>
+                <p>Total Harga Asset Tahun 2022</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
