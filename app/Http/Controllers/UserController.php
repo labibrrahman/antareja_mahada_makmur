@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -22,7 +23,8 @@ class UserController extends Controller
                     'message' => 'Username and password do not match'
                 ], 400);
             }else{
-                $query = User::join('departments', 'departments.id', '=', 'users.departement_id')->get('users.*','department.department');
+                $id_user = json_decode(Auth::user()->id);
+                $query = User::join('departments', 'departments.id', '=', 'users.departement_id')->where('users.id', $id_user)->get('users.*','department.department');
                 $success = true;
                 $message = "here is data";
             }
