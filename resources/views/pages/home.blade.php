@@ -5,19 +5,31 @@
 
 @section('content')
 <div class="card">
-        {{-- <div class="card-header">
-          <h3 class="card-title">Home</h3>
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-              <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-              <i class="fas fa-times"></i>
-            </button>
+        <div class="card-body row">
+          <div class="col-lg-6 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>{{$count_asset}}</h3>
+                <p>Total Asset</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
           </div>
-        </div> --}}
-        <div class="card-body">
-          
+          <div class="col-lg-6 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>Rp. {{$asset_price}}</h3>
+                <p>Total Harga Asset</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
         </div>
         <div>
           <div id="pemasukan" class="page_speed_392943554"></div>
@@ -38,6 +50,7 @@
       </div>
       <!-- /.card -->
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -56,6 +69,7 @@
       title: 'Asset Masukan/Bulan',
       curveType: 'function',
       legend: { position: 'bottom' },
+      colors: ['#d14e49'],
     };
     var chart = new google.visualization.LineChart(document.getElementById('pemasukan'));
     chart.draw(data, options);
@@ -66,7 +80,8 @@
     var options = {
       title: 'Label Asset/Bulan',
       curveType: 'function',
-      legend: { position: 'bottom' }
+      legend: { position: 'bottom' },
+      colors: ['#d14e49'],
     };
     var chart = new google.visualization.LineChart(document.getElementById('label'));
     chart.draw(data, options);
@@ -78,7 +93,8 @@
       title: 'Asset By Category',
       curveType: 'function',
       legend: { position: 'bottom' },
-      hAxis: {format:''}
+      hAxis: {format:''},
+      colors: ['#d14e49'],
     };
     var chart = new google.visualization.BarChart(document.getElementById('category'));
     chart.draw(data, options);

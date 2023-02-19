@@ -1,8 +1,13 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<style>
+  .active {
+  background-color: red;
+}
+</style>
+<aside class="main-sidebar sidebar-light-danger elevation-4" style="background-color: #ebe1e1">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
       <img src="assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AMM</span>
+      <span class="brand-text font-weight-light" style="color:#000000">AMM</span>
     </a>
 
     <!-- Sidebar -->
@@ -13,7 +18,7 @@
           <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{Session::get('username')}}</a>
+          <a href="#" class="d-block" style="color:#000000">{{Session::get('full_name')}}</a>
         </div>
       </div>
 
@@ -37,16 +42,16 @@
           
           <li class="nav-item">
             <a href="/" class="nav-link {{ $title == 'Dashboard' ? 'active' : '' }}">
-              <i class="nav-icon fas fa-home"></i>
-              <p>
+              <i class="nav-icon fas fa-home" ></i>
+              <p >
                 Dashboard
               </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="/asset" class="nav-link  {{ $title == 'Asset' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-id-card-alt"></i>
-              <p>
+            <i class="nav-icon fas fa-id-card-alt" ></i>
+              <p >
                 Asset
               </p>
             </a>

@@ -29,6 +29,7 @@ class LoginController extends Controller
             $data_user = json_decode(Auth::user());
             Session::put('id', $data_user->id);
             Session::put('username', $data_user->username);
+            Session::put('full_name', $data_user->full_name);
             Session::put('departement_id', $data_user->departement_id);
             return redirect('dashboard');
         }else{

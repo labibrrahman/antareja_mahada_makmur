@@ -13,8 +13,8 @@
   {{-- <link rel="stylesheet" href="{{asset('assets/css/fontawesome-free/css/all.min.css')}}" media="all"> --}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
   <!-- Theme style -->
-  {{-- <link rel="stylesheet" href="{{asset('assets/css/adminlte.min.css')}}"> --}}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="{{asset('assets/css/adminlte.min.css')}}">
+  {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css"> --}}
 
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
 </head>
@@ -47,11 +47,10 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-{{-- <script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script> --}}
-<script src="{{asset('assets/js/adminlte.min.js') }}"></script>
+
 <!-- Bootstrap 4 -->
 <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{asset('assets/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE App -->
 <!-- AdminLTE for demo purposes -->
 {{-- <script src="{{asset('assets/js/demo.js') }}"></script> --}}

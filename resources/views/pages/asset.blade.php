@@ -10,7 +10,7 @@
             <a href="#" data-toggle="modal" data-target="#insertAsset" class="edit btn btn-primary btn-sm">Add Asset + </a>
           </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="overflow-y: scroll; height:750px;">
           <table id='empTable' width='100%' border="1" style='border-collapse: collapse;'>
             <thead>
               <tr>
@@ -28,7 +28,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          Footer
+
         </div>
         <!-- /.card-footer-->
       </div>
@@ -275,8 +275,8 @@
         </div>
       </div>
 @endsection
-    <!-- jQuery CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- jQuery CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- Datatables JS CDN -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
