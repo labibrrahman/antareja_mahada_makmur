@@ -74,8 +74,6 @@ class UserController extends Controller
             'handphone' => $request->get('handphone'),
             'departement_id' => $request->get('departement_id'),
         ]);
-        dd($user->all());
-
         $token = JWTAuth::fromUser($user);
 
         $user = $user->map(function($append_data) use($token) {
