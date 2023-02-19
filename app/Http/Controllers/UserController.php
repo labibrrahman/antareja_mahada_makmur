@@ -76,10 +76,10 @@ class UserController extends Controller
         ]);
         $token = JWTAuth::fromUser($user);
 
-        $user = $user->map(function($append_data) use($token) {
-            $append_data->token = $token;
-            return $append_data;
-        });
+        // $user = $user->map(function($append_data) use($token) {
+        //     $append_data->token = $token;
+        //     return $append_data;
+        // });
 
         return response()->json([
             "status" => true,
