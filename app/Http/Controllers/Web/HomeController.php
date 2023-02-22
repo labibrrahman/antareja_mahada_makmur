@@ -26,24 +26,29 @@ class HomeController extends Controller
         $pemasukanAsset = array();
         $pemasukanAsset[0] = ['Month','Asset'];
         for ($i=1; $i <= $month_monitoring; $i++) { 
-            // $pemasukanAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
-            //                                                 // ->where('assets.departement_id',Session::get('departement_id'))
-            //                                                 ->whereMonth('created_at', $i)
-            //                                                 ->whereYear('created_at', $year_monitoring)
-            //                                                 ->get())];
-                $pemasukanAsset[$i] = [$month[$i-1], (int)rand(2,99)];
+            $pemasukanAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
+                                                            // ->where('assets.departement_id',Session::get('departement_id'))
+                                                            ->whereMonth('created_at', $i)
+                                                            ->whereYear('created_at', $year_monitoring)
+                                                            ->get())];
+
+                //dummy
+                // $pemasukanAsset[$i] = [$month[$i-1], (int)rand(2,99)];
         }
 
         $labelAsset = array();
         $labelAsset[0] = ['Month','Asset'];
         for ($i=1; $i <= $month_monitoring; $i++) { 
-            // $labelAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
-            //                                         // ->where('assets.departement_id',Session::get('departement_id'))
-            //                                         ->whereIn('assets.id',Upload::select('asset_id'))
-            //                                         ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
-            //                                         ->whereMonth('created_at', $i)
-            //                                         ->get())];
-            $labelAsset[$i] = [$month[$i-1], (int)rand(2,99)];
+            $labelAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
+                                                    // ->where('assets.departement_id',Session::get('departement_id'))
+                                                    ->whereIn('assets.id',Upload::select('asset_id'))
+                                                    ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
+                                                    ->whereMonth('created_at', $i)
+                                                    ->whereYear('created_at', $year_monitoring)
+                                                    ->get())];
+
+            //dummy
+            // $labelAsset[$i] = [$month[$i-1], (int)rand(2,99)];
         }
 
         $dataByCategory = array();
@@ -57,12 +62,14 @@ class HomeController extends Controller
         foreach($dataCategory as $data){
             $get_category_name = Categories::select('id','category')->where('id', $data->category_id)->get();
             $category_name = json_decode($get_category_name)[0]->category;
-            // $category_count = count(Asset::select('id')
-            //                     ->where('departement_id',Session::get('departement_id'))
-            //                     ->where('category_id',json_decode($get_category_name)[0]->id)
-            //                     ->get());
+            $category_count = count(Asset::select('id')
+                                ->where('departement_id',Session::get('departement_id'))
+                                ->where('category_id',json_decode($get_category_name)[0]->id)
+                                ->get());
             
-            // $dataByCategory[$i] = [$category_name, $category_count];
+            $dataByCategory[$i] = [$category_name, $category_count];
+
+            // dummy
             $dataByCategory[$i] = [$category_name, (int)rand(2,99)];
             
             $i++;
@@ -78,14 +85,20 @@ class HomeController extends Controller
             $data_price = (int)$price->asset_price;
             $setPrice = $data_price + $setPrice;
         }
-        
         $setPrice = number_format($setPrice, 2);
+
+
+        $getAllYear = '';
+        $queryYear = Asset::select(DB::raw('YEAR(created_at) as year'))
+                    ->groupBy('year')
+                    ->get();
 
         return view('pages.home',['title' => 'Dashboard'])
             ->with('data_pemasukan',json_encode($pemasukanAsset))
             ->with('label_asset',json_encode($labelAsset))
             ->with('asset_by_category',json_encode($dataByCategory))
             ->with('asset_price',$setPrice)
+            ->with('year',$queryYear)
             ->with('count_asset',$countAsset);
     }
 

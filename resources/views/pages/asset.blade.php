@@ -5,33 +5,33 @@
 
 @section('content')
   <div class="card">
-        <div class="card-header ">
-          <div class="card-tools">
-            <a href="#" data-toggle="modal" data-target="#insertAsset" class="edit btn btn-primary btn-sm">Add Asset + </a>
-          </div>
-        </div>
-        <div class="card-body" style="overflow-y: scroll; height:750px;">
-          <table id='empTable' width='100%' border="1" style='border-collapse: collapse;'>
-            <thead>
-              <tr>
-                <th>no</th>
-                <th>id</th>
-                <th>Asset Number</th>
-                <th>Asset</th>
-                <th>Quantity</th>
-                <th>Department</th>
-                <th>Price</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-
-        </div>
-        <!-- /.card-footer-->
+    <div class="card-header ">
+      <div class="card-tools">
+        <a href="#" data-toggle="modal" data-target="#insertAsset" class="edit btn btn-primary btn-sm">Add Asset + </a>
       </div>
+    </div>
+    <div class="card-body" style="overflow-y: scroll; height:750px;">
+      <table id='empTable' width='100%' border="1" style='border-collapse: collapse;'>
+        <thead>
+          <tr>
+            <th>no</th>
+            <th>id</th>
+            <th>Asset Number</th>
+            <th>Asset</th>
+            <th>Quantity</th>
+            <th>Department</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+
+    </div>
+    <!-- /.card-footer-->
+  </div>
       <!-- /.card -->
 
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -144,9 +144,9 @@
                       <option value="">- Set Condition -</option>
                         <option value="sb">Sangat Baik</option>
                         <option value="b">Baik</option>
-                        <option value="c">Cukup</option>
-                        <option value="k">Kurang</option>
-                        <option value="sk">Sangat Kurang</option>
+                        <option value="rd">Rusak, diperbaiki</option>
+                        <option value="rt">Rusak, tidak dapat diperbaiki</option>
+                        <option value="h">Hilang</option>
                     </select>
                   </div>
               </div>
@@ -230,12 +230,11 @@
                   <div class="form-group">
                     <label for="asset_condition_edit" class="col-form-label">Condition :</label>
                     <select id="asset_condition_edit" name="asset_condition" class="select2 form-control" style="width:100%">
-                      <option value="">- Set Condition -</option>
-                        <option value="sb">Sangat Baik</option>
-                        <option value="b">Baik</option>
-                        <option value="c">Cukup</option>
-                        <option value="k">Kurang</option>
-                        <option value="sk">Sangat Kurang</option>
+                      <option value="sb">Sangat Baik</option>
+                      <option value="b">Baik</option>
+                      <option value="rd">Rusak, diperbaiki</option>
+                      <option value="rt">Rusak, tidak dapat diperbaiki</option>
+                      <option value="h">Hilang</option>
                     </select>
                   </div>
               </div>
@@ -274,6 +273,7 @@
           </div>
         </div>
       </div>
+
 @endsection
   <!-- jQuery CDN -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -390,5 +390,13 @@ $(function () {
       }
     })
   }
+
+  $(function(){
+      $(".btnPrint").printPage({
+          url: "{{ route('berita_acara')}}", 
+          attr: "href",
+          message:"Your document is being created"
+      });
+  });
 
   </script>

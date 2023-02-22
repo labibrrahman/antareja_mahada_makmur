@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\AssetController;
 use App\Http\Controllers\Web\LoginController;
+use App\Http\Controllers\Web\BeritaAcaraController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ use App\Http\Controllers\Web\LoginController;
 // Route::get('/', [HomeController::class, 'index']);
 Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::post('actionlogin', [LoginController::class, 'actionlogin'])->name('actionlogin');
+Route::get('register', [LoginController::class, 'register'])->name('register');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
@@ -32,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/asset/update_asset', [AssetController::class, 'update'])->name('asset.update_asset');
     Route::post('/asset/deleted_asset', [AssetController::class, 'destroy'])->name('asset.deleted_asset');
     
+    Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
+    Route::get('/berita_acara/tinjauan_asset', [BeritaAcaraController::class, 'tinjauan_asset'])->name('berita_acara.tinjauan_asset');
+
 });
 
 

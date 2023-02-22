@@ -3,51 +3,62 @@
     'elementActive' => $title
 ])
 
+
 @section('content')
 <div class="card">
-        <div class="card-body row">
-          <div class="col-lg-6 col-6">
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>{{$count_asset}}</h3>
-                <p>Total Asset Tahun 2022</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <div class="col-lg-6 col-6">
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>Rp. {{$asset_price}}</h3>
-                <p>Total Harga Asset Tahun 2022</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
+  <div class="card-body row">
+    <div class="form-group">
+      <select id="asset_condition" name="asset_condition" class=" form-control">
+        <option value="">- Select Year -</option>
+        @foreach ($year as $data_year)
+            <option value="{{$data_year->year}}">{{$data_year->year}}</option>
+        @endforeach
+      </select>
+    </div>
+  </div>
+  <div class="card-body row">
+    <div class="col-lg-6 col-6">
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3>{{$count_asset}}</h3>
+          <p>Total Asset Tahun 2022</p>
         </div>
-        <div>
-          <div id="pemasukan" class="page_speed_392943554"></div>
+        <div class="icon">
+          <i class="ion ion-bag"></i>
         </div>
-        <br>
-        <div>
-          <div id="label" class="page_speed_392943554"></div>
-        </div>
-        <br>
-        <div>
-          <div id="category" class="page_speed_392943554"></div>
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-          
-        </div>
-        <!-- /.card-footer-->
+        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
+    </div>
+    <div class="col-lg-6 col-6">
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3>Rp. {{$asset_price}}</h3>
+          <p>Total Harga Asset Tahun 2022</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-bag"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div id="pemasukan" class="page_speed_392943554"></div>
+  </div>
+  <br>
+  <div>
+    <div id="label" class="page_speed_392943554"></div>
+  </div>
+  <br>
+  <div>
+    <div id="category" class="page_speed_392943554"></div>
+  </div>
+  <!-- /.card-body -->
+  <div class="card-footer">
+    
+  </div>
+  <!-- /.card-footer-->
+</div>
       <!-- /.card -->
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -99,4 +110,5 @@
     var chart = new google.visualization.BarChart(document.getElementById('category'));
     chart.draw(data, options);
   }
+
 </script>

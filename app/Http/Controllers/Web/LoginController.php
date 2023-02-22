@@ -38,6 +38,11 @@ class LoginController extends Controller
         }
     }
 
+    public function register(Request $request)
+    {
+        return view('pages.auth.register.index');
+    }
+
     public function actionlogout()
     {
         Session::flush();

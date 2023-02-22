@@ -51,6 +51,8 @@
 <!-- Bootstrap 4 -->
 <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{asset('assets/js/adminlte.min.js') }}"></script>
+<script src="{{asset('assets/plugins/print-page/js/jquery.printPage.js') }}"></script>
+
 <!-- AdminLTE App -->
 <!-- AdminLTE for demo purposes -->
 {{-- <script src="{{asset('assets/js/demo.js') }}"></script> --}}

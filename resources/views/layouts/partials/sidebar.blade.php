@@ -6,8 +6,8 @@
 <aside class="main-sidebar sidebar-light-danger elevation-4" style="background-color: #ebe1e1">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-      <img src="assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light" style="color:#000000">AMM</span>
+      <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light" style="color:#000000"><b>AMM</b></span>
     </a>
 
     <!-- Sidebar -->
@@ -53,6 +53,14 @@
             <i class="nav-icon fas fa-id-card-alt" ></i>
               <p >
                 Asset
+              </p>
+            </a>
+          </li>  
+          <li class="nav-item">
+            <a href="/berita_acara" class="nav-link  {{ $title == 'Berita Acara' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-id-card-alt" ></i>
+              <p >
+                Berita Acara
               </p>
             </a>
           </li>  
