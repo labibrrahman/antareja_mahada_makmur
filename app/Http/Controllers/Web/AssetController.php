@@ -127,8 +127,6 @@ class AssetController extends Controller
           "departement_id"=> "required",
           "count_id"=> "required",
           "category_id"=> "required",
-          "location"=> "required",
-          "asset_condition"=> "required",
       ]);
 
       if($validator->fails()){

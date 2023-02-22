@@ -174,23 +174,23 @@
                   <input type="hidden" id="id_asset_edit" name="id_asset">
                   <div class="form-group">
                     <label for="asset_number_edit" class="col-form-label">Asset Number :</label>
-                    <input type="number" class="form-control" id="asset_number_edit" name="asset_number">
+                    <input required type="number" class="form-control" id="asset_number_edit" name="asset_number">
                   </div>
                   <div class="form-group">
                     <label for="asset_serial_number_edit" class="col-form-label">Serial Number:</label>
-                    <input type="text" class="form-control" id="asset_serial_number_edit" name="asset_serial_number">
+                    <input required type="text" class="form-control" id="asset_serial_number_edit" name="asset_serial_number">
                   </div>
                   <div class="form-group">
                     <label for="asset_capitalized_on_edit" class="col-form-label">Capitalized On:</label>
-                    <input type="date" class="form-control" id="asset_capitalized_on_edit" name="asset_capitalized_on">
+                    <input required type="date" class="form-control" id="asset_capitalized_on_edit" name="asset_capitalized_on">
                   </div>
                   <div class="form-group">
                     <label for="asset_desc_edit" class="col-form-label">Asset Desc :</label>
-                    <input type="text" class="form-control" id="asset_desc_edit" name="asset_desc">
+                    <input required type="text" class="form-control" id="asset_desc_edit" name="asset_desc">
                   </div>
                   <div class="form-group">
                     <label for="asset_quantity_edit" class="col-form-label">Quantity :</label>
-                    <input type="number" class="form-control" id="asset_quantity_edit" name="asset_quantity">
+                    <input required type="number" class="form-control" id="asset_quantity_edit" name="asset_quantity">
                   </div>
                   <div class="form-group">
                     <label for="asset_po_edit" class="col-form-label">PO :</label>
