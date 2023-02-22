@@ -75,68 +75,27 @@ td,tr, div{
                 </table>
                 <br>
                 <table width="100%" style="border-collapse: collapse" border="1">
-                    <thead>
-                        <tr style="text-align:center;font-size:9px">
-                            <th>Asset</th>
-                            <th>Class</th>
-                            <th>Capitalized on</th>
-                            <th>QTY </th>
-                            <th>OUN </th>
-                            <th>Asset description</th>
-                            <th>Acquis.val. </th>
-                            <th>Accum.dep. </th>
-                            <th>Book val. </th>
-                            <th>Currency</th>
-                            <th>Jenis</th>
-                            <th>Status</th>
-                            <th>Lokasi</th>
-                            <th>PIC</th>
-                            <th>FOTO 1</th>
-                            <th>FOTO 2</th>
-                            <th>FOTO 3</th>
-                            <th>Penilaian Kondisi</th>
-                            <th>Status Pengguna</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($asset_data as $data)
-                        <tr style="font-size:9px">
-                            <td>{{$data->asset_number}}</td>
-                            <td>{{$data->category_id}}</td>
-                            <td>{{$data->asset_capitalized_on}}</td>
-                            <td>{{$data->asset_quantity}}</td>
-                            <td>{{$data->count}}</td>
-                            <td>{{$data->asset_desc}}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{{$data->category}}</td>
-                            <td>{{$data->asset_condition}}</td>
-                            <td>{{$data->location}}</td>
-                            <td></td>
-                            @for ($i = 0; $i < 3; $i++)
-                                <?php 
-                                if(isset($data->photo[$i])){ 
-                                    $file = 'https://kitadev.xyz/storage/'.$data->photo[$i];
-                                }else{
-                                    $file = 'https://kitadev.xyz/storage/';
-                                }
-                                $file_headers = @get_headers($file);
-                                if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
-                                    if($data->photo[$i]){ 
-                                    ?>
-                                        <td><img alt="img_asset" src="{{'https://kitadev.xyz/storage/'.$data->photo[$i]}}" width="30px"></td>
-                                    <?php } 
-                                }else{?>
-                                    <td></td>
-                                <?php } ?>
-                            @endfor
-                            <td>{{$data->asset_status}}</td>
-                            <td></td>
-                        </tr>
-                        @endforeach
-                    </tbody>
+                    <tr style="text-align:center;font-size:9px">
+                        <td>Asset</td>
+                        <td>Class</td>
+                        <td>Capitalized on</td>
+                        <td>QTY </td>
+                        <td>OUN </td>
+                        <td>Asset description</td>
+                        <td>Acquis.val. </td>
+                        <td>Accum.dep. </td>
+                        <td>Book val. </td>
+                        <td>Currency</td>
+                        <td>Jenis</td>
+                        <td>Status</td>
+                        <td>Lokasi</td>
+                        <td>PIC</td>
+                        <td>FOTO 1</td>
+                        <td>FOTO 2</td>
+                        <td>FOTO 3</td>
+                        <td>Penilaian Kondisi</td>
+                        <td>Status Pengguna</td>
+                    </tr>
                 </table>
             </div>
         </fieldset> 
