@@ -25,7 +25,7 @@
         <div class="col-lg-5">
             <main class="form-signin">
                 <form>
-                    <img class="mb-4" src="{{ asset('images/logo.png') }}" alt="" width="100"
+                    <img class="mb-4" src="{{ asset('assets/images/logo.png') }}" alt="" width="100"
                         height="100" height="57">
                     <h1 class="h3 mb-3 fw-normal">Please Login</h1>
 

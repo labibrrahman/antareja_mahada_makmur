@@ -19,7 +19,7 @@
             <form action="{{ route('actionlogin') }}" method="post">
             @csrf
                 <div class="form-group" style="text-align:center">
-                    <img class="mb-4" src="{{ asset('images/logo.png') }}" alt="" width="100" height="100" height="57">
+                    <img class="mb-4" src="{{ asset('assets/images/logo.png') }}" alt="" width="100" height="100" height="57">
                     <h1 class="h3 mb-3 fw-normal">Login</h1>
                 </div>
                 <div class="form-group">

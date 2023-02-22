@@ -28,7 +28,7 @@ td,tr, div{
                 <table border="0" style="border-collapse: collapse" class="header" width="100%">
                     <tr>
                         <td>
-                            <img alt="logo" src="{{ asset('images/amm_header.png') }}" width="100%">
+                            <img alt="logo" src="{{ asset('assets/images/amm_header.png') }}" width="100%">
                         </td>
                     </tr>
                     <tr>
