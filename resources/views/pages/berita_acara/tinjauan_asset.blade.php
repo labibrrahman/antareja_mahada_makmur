@@ -124,14 +124,14 @@ td,tr, div{
                                 }
                                 $file_headers = @get_headers($file);
                                 var_dump($file_headers);
-                                if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+                                if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {?>
+                                    <td></td>
+                                <?php }else{
                                     if($data->photo[$i]){ 
                                     ?>
                                         <td><img alt="img_asset" src="{{'https://kitadev.xyz/storage/'.$data->photo[$i]}}" width="30px"></td>
                                     <?php } 
-                                }else{?>
-                                    <td></td>
-                                <?php } ?>
+                                } ?>
                             @endfor
                             <td>{{$data->asset_status}}</td>
                             <td></td>
