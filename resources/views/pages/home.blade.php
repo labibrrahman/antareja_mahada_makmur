@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="card">
-  <div class="card-body row">
+  {{-- <div class="card-body row">
     <div class="form-group">
       <select id="asset_condition" name="asset_condition" class=" form-control">
         <option value="">- Select Year -</option>
@@ -15,7 +15,7 @@
         @endforeach
       </select>
     </div>
-  </div>
+  </div> --}}
   <div class="card-body row">
     <div class="col-lg-6 col-6">
       <div class="small-box bg-danger">
@@ -76,6 +76,13 @@
   
   function pemasukan() {
     var data = google.visualization.arrayToDataTable(DataPemasukan);
+    var view = new google.visualization.DataView(data);
+    view.setColumns([0, 1, {
+          calc: "stringify",
+          sourceColumn: 1,
+          type: "string",
+          role: "annotation"
+    },]);
     var options = {
       title: 'Asset Masukan/Bulan Tahun 2022',
       curveType: 'function',
@@ -83,11 +90,18 @@
       colors: ['#d14e49'],
     };
     var chart = new google.visualization.LineChart(document.getElementById('pemasukan'));
-    chart.draw(data, options);
+    chart.draw(view, options);
   }
 
   function label() {
     var data = google.visualization.arrayToDataTable(LabelAsset);
+    var view = new google.visualization.DataView(data);
+    view.setColumns([0, 1, {
+          calc: "stringify",
+          sourceColumn: 1,
+          type: "string",
+          role: "annotation"
+    },]);
     var options = {
       title: 'Label Asset/Bulan Tahun 2022',
       curveType: 'function',
@@ -95,7 +109,7 @@
       colors: ['#d14e49'],
     };
     var chart = new google.visualization.LineChart(document.getElementById('label'));
-    chart.draw(data, options);
+    chart.draw(view, options);
   }
 
   function asset_category() {

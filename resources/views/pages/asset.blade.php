@@ -178,7 +178,7 @@
                   </div>
                   <div class="form-group">
                     <label for="asset_serial_number_edit" class="col-form-label">Serial Number:</label>
-                    <input required type="text" class="form-control" id="asset_serial_number_edit" name="asset_serial_number">
+                    <input type="text" class="form-control" id="asset_serial_number_edit" name="asset_serial_number">
                   </div>
                   <div class="form-group">
                     <label for="asset_capitalized_on_edit" class="col-form-label">Capitalized On:</label>

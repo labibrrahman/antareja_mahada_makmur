@@ -115,11 +115,11 @@ class AssetController extends Controller
       $id = $input['id_asset'];
       $input['asset_manager'] = "-";
       $input['asset_status'] = "-";
+      $input['asset_serial_number'] = $input['asset_serial_number'] ?? "-";
       $input['updated_at'] = date('Y-m-d H:i:s');
       $input['updated_by'] = Session::get('id');
       $validator = Validator::make($input, [
           "asset_number" => "required",
-          "asset_serial_number"=> "required",
           "asset_capitalized_on"=> "required",
           "asset_desc"=> "required",
           "asset_quantity"=> "required",
