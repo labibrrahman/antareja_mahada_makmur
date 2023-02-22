@@ -123,6 +123,7 @@ td,tr, div{
                                     $file = 'https://kitadev.xyz/storage/';
                                 }
                                 $file_headers = @get_headers($file);
+                                var_dump($file_headers);
                                 if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
                                     if($data->photo[$i]){ 
                                     ?>
