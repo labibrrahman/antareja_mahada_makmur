@@ -114,7 +114,7 @@ td,tr, div{
                             <td>{{$data->category}}</td>
                             <td>{{$data->asset_condition}}</td>
                             <td>{{$data->location}}</td>
-                            <td></td>
+                            <td>{{$data->photo[0]}}</td>
                             @for ($i = 0; $i < 3; $i++)
                                 <?php 
                                 if(isset($data->photo[$i])){ 
