@@ -128,7 +128,7 @@ td,tr, div{
                                 <?php }else{
                                     if($data->photo[$i]){ 
                                     ?>
-                                        <td><img alt="img_asset" src="{{'https://kitadev.xyz/storage/'.$data->photo[$i]}}" width="30px"></td>
+                                        <td><img alt="img_asset" src="{{'https://kitadev.xyz/storage/'.$data->photo[$i]}}" width="100px"></td>
                                     <?php } 
                                 } ?>
                             @endfor
