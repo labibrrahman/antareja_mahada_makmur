@@ -56,6 +56,7 @@ class HomeController extends Controller
         $dataByCategory[0] = ['Category','data'];
         $getCategory = Asset::select('category_id')
                         // ->where('departement_id',Session::get('departement_id'))
+                        ->whereYear('asset_capitalized_on', $year_monitoring)
                         ->groupBy('category_id')->get();
         $getCategoryCode = array();
         $dataCategory = json_decode($getCategory);
