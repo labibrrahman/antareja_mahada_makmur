@@ -21,7 +21,8 @@ class HomeController extends Controller
     {
         $titlechart = "Asset Masuk/Bulan";
         $month_monitoring = 12;
-        $year_monitoring = date("Y"); 
+        $year_monitoring = '2022'; 
+        // $year_monitoring = date("Y"); 
         $month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Des"];
         $pemasukanAsset = array();
         $pemasukanAsset[0] = ['Month','Asset'];
