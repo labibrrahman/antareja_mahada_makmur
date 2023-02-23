@@ -28,8 +28,8 @@ class HomeController extends Controller
         for ($i=1; $i <= $month_monitoring; $i++) { 
             $pemasukanAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
                                                             // ->where('assets.departement_id',Session::get('departement_id'))
-                                                            ->whereMonth('created_at', $i)
-                                                            ->whereYear('created_at', $year_monitoring)
+                                                            ->whereMonth('asset_capitalized_on', $i)
+                                                            ->whereYear('asset_capitalized_on', $year_monitoring)
                                                             ->get())];
 
                 //dummy
@@ -43,8 +43,8 @@ class HomeController extends Controller
                                                     // ->where('assets.departement_id',Session::get('departement_id'))
                                                     ->whereIn('assets.id',Upload::select('asset_id'))
                                                     ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
-                                                    ->whereMonth('created_at', $i)
-                                                    ->whereYear('created_at', $year_monitoring)
+                                                    ->whereMonth('asset_capitalized_on', $i)
+                                                    ->whereYear('asset_capitalized_on', $year_monitoring)
                                                     ->get())];
 
             //dummy
