@@ -107,7 +107,7 @@ td,tr, div{
                             <td>{{$data->asset_quantity}}</td>
                             <td>{{$data->count}}</td>
                             <td>{{$data->asset_desc}}</td>
-                            <td></td>
+                            <td>{{$data->asset_price}}</td>
                             <td></td>
                             <td></td>
                             <td></td>

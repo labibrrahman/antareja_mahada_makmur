@@ -70,7 +70,7 @@ class HomeController extends Controller
             $dataByCategory[$i] = [$category_name, $category_count];
 
             // dummy
-            $dataByCategory[$i] = [$category_name, (int)rand(2,99)];
+            // $dataByCategory[$i] = [$category_name, (int)rand(2,99)];
             
             $i++;
         }

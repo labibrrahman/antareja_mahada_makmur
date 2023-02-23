@@ -24,7 +24,7 @@ class UserController extends Controller
                 ], 400);
             }else{
                 $id_user = json_decode(Auth::user()->id);
-                $query = User::join('departments', 'departments.id', '=', 'users.departement_id')->where('users.id', $id_user)->get('users.*','department.department');
+                $query = User::join('departments', 'departments.id', '=', 'users.departement_id')->where('users.id', $id_user)->get(['users.*','departments.department']);
                 $success = true;
                 $message = "here is data";
             }
@@ -41,6 +41,7 @@ class UserController extends Controller
         foreach($query as $data_query){
             $data = $data_query;
         }
+
 
         return response()->json([
             "status" => $success,
