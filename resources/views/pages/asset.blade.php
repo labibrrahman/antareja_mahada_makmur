@@ -3,6 +3,12 @@
     'elementActive' => 'contact'
 ])
 
+<style>
+  .note{
+    color:red;
+  }
+</style>
+
 @section('content')
   <div class="card">
     <div class="card-header ">
