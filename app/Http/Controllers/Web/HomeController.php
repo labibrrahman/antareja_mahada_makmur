@@ -6,6 +6,7 @@ use App\Models\Asset;
 use App\Models\Upload;
 use App\Models\MutationsDet;
 use App\Models\Categories;
+use App\Models\Departement;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use DB;
@@ -95,13 +96,36 @@ class HomeController extends Controller
                     ->groupBy('year')
                     ->get();
 
+        $departement = json_decode(Departement::all());
+        $dept_count_upload = array();
+        $dept_count_non_upload = array();
+        foreach ($departement as $data_dept) {
+
+            $query_getnonupload = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+                            ->where('departement_id', $data_dept->id)
+                            ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
+                            ->whereNotIn('assets.id',Upload::select('asset_id'))
+                            ->get();
+
+            $query_getupload = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+                            ->where('departement_id', $data_dept->id)   
+                            ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
+                            ->whereIn('assets.id',Upload::select('asset_id'))
+                            ->get();
+
+            $dept_count_non_upload[] = ['dept' => $data_dept->department, 'total'=>count($query_getnonupload)];
+            $dept_count_upload[] = ['dept' => $data_dept->department, 'total'=>count($query_getupload)];
+        }
+
         return view('pages.home',['title' => 'Dashboard'])
             ->with('data_pemasukan',json_encode($pemasukanAsset))
             ->with('label_asset',json_encode($labelAsset))
             ->with('asset_by_category',json_encode($dataByCategory))
             ->with('asset_price',$setPrice)
             ->with('year',$queryYear)
-            ->with('count_asset',$countAsset);
+            ->with('count_asset',$countAsset)
+            ->with('count_asset_upload',$dept_count_upload)
+            ->with('count_asset_noupload',$dept_count_non_upload);
     }
 
     /**

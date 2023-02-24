@@ -5,60 +5,126 @@
 
 
 @section('content')
-<div class="card">
-  {{-- <div class="card-body row">
-    <div class="form-group">
-      <select id="asset_condition" name="asset_condition" class=" form-control">
-        <option value="">- Select Year -</option>
-        @foreach ($year as $data_year)
-            <option value="{{$data_year->year}}">{{$data_year->year}}</option>
-        @endforeach
-      </select>
-    </div>
-  </div> --}}
-  <div class="card-body row">
-    <div class="col-lg-6 col-6">
-      <div class="small-box bg-danger">
-        <div class="inner">
-          <h3>{{$count_asset}}</h3>
-          <p>Total Asset Tahun 2022</p>
+  <div class="card">
+    {{-- <div class="card-body row">
+      <div class="form-group">
+        <select id="asset_condition" name="asset_condition" class=" form-control">
+          <option value="">- Select Year -</option>
+          @foreach ($year as $data_year)
+              <option value="{{$data_year->year}}">{{$data_year->year}}</option>
+          @endforeach
+        </select>
+      </div>
+    </div> --}}
+    <div class="card-body row">
+      <div class="col-lg-6 col-6">
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>{{$count_asset}}</h3>
+            <p>Total Asset Tahun 2022</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
-        <div class="icon">
-          <i class="ion ion-bag"></i>
+      </div>
+      <div class="col-lg-6 col-6">
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>Rp. {{$asset_price}}</h3>
+            <p>Total Harga Asset Tahun 2022</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
-    <div class="col-lg-6 col-6">
-      <div class="small-box bg-danger">
-        <div class="inner">
-          <h3>Rp. {{$asset_price}}</h3>
-          <p>Total Harga Asset Tahun 2022</p>
+  </div>
+
+  <div class="card">
+    <div class="card-body row">
+      <div class="col-lg-6 col-6">
+        <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">&nbsp;Total Asset By Departement (No Label)</h3>
+              <div class="box-tools">
+              </div>
+            </div>
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tbody>
+                  <tr>
+                    <th width="1%">No</th>
+                    <th>Departement</th>
+                    <th>Total</th>
+                  </tr>
+                  <?php $i = 1; ?>
+                  @foreach ($count_asset_noupload as $data)
+                    <tr>
+                      <td><?= $i ?></td>
+                      <td><?= $data['dept'] ?></td>
+                      <td><?= $data['total'] ?></td>
+                    </tr>
+                  <?php $i++; ?>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
         </div>
-        <div class="icon">
-          <i class="ion ion-bag"></i>
+      </div>
+      <div class="col-lg-6 col-6">
+        <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">&nbsp;Total Asset By Departement (Label)</h3>
+              <div class="box-tools">
+              </div>
+            </div>
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tbody>
+                  <tr>
+                    <th width="1%">No</th>
+                    <th>Departement</th>
+                    <th>Total</th>
+                  </tr>
+                  <?php $i = 1; ?>
+                  @foreach ($count_asset_upload as $data)
+                    <tr>
+                      <td><?= $i ?></td>
+                      <td><?= $data['dept'] ?></td>
+                      <td><?= $data['total'] ?></td>
+                    </tr>
+                  <?php $i++; ?>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
   </div>
-  <div>
-    <div id="pemasukan" class="page_speed_392943554"></div>
+
+  <div class="card">
+    <div>
+      <div id="pemasukan" class="page_speed_392943554"></div>
+    </div>
+    <br>
+    <div>
+      <div id="label" class="page_speed_392943554"></div>
+    </div>
+    <br>
+    <div>
+      <div id="category" class="page_speed_392943554"></div>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+      
+    </div>
+    <!-- /.card-footer-->
   </div>
-  <br>
-  <div>
-    <div id="label" class="page_speed_392943554"></div>
-  </div>
-  <br>
-  <div>
-    <div id="category" class="page_speed_392943554"></div>
-  </div>
-  <!-- /.card-body -->
-  <div class="card-footer">
-    
-  </div>
-  <!-- /.card-footer-->
-</div>
       <!-- /.card -->
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

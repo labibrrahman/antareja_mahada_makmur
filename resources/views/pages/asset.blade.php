@@ -16,7 +16,8 @@
         <a href="#" data-toggle="modal" data-target="#insertAsset" class="edit btn btn-primary btn-sm">Add Asset + </a>
       </div>
     </div>
-    <div class="card-body" style="overflow-y: scroll; height:750px;">
+    {{-- <div class="card-body" style="overflow-y: scroll; height:750px;"> --}}
+      <div class="card-body" >
       <table id='empTable' width='100%' border="1" style='border-collapse: collapse;'>
         <thead>
           <tr>
@@ -26,6 +27,7 @@
             <th>Asset</th>
             <th>Quantity</th>
             <th>Department</th>
+            <th>Capitalized On</th>
             <th>Price</th>
             <th>Action</th>
           </tr>
@@ -65,7 +67,7 @@
                   </div>
                   <div class="form-group">
                     <label for="asset_price" class="col-form-label">Price:</label>
-                    <input type="text" class="form-control" id="asset_price" name="asset_price">
+                    <input required type="text" class="form-control" id="asset_price" name="asset_price">
                   </div>
               </div>
               <div class="modal-footer">
@@ -90,32 +92,26 @@
               @csrf
               <div class="modal-body">
                   <div class="form-group">
-                    <label for="asset_number" class="col-form-label">Asset Number :</label>
-                    <input type="number" class="form-control" id="asset_number" name="asset_number">
+                    <label for="asset_number" class="col-form-label"><i class="note">*</i>Asset Number :</label>
+                    <input required type="number" class="form-control" id="asset_number" name="asset_number">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="asset_capitalized_on" class="col-form-label"><i class="note">*</i>Capitalized On:</label>
+                    <input required type="date" class="form-control" id="asset_capitalized_on" name="asset_capitalized_on">
                   </div>
                   <div class="form-group">
-                    <label for="asset_serial_number" class="col-form-label">Serial Number:</label>
-                    <input type="text" class="form-control" id="asset_serial_number" name="asset_serial_number">
+                    <label for="asset_desc" class="col-form-label"><i class="note">*</i>Asset Desc :</label>
+                    <input required type="text" class="form-control" id="asset_desc" name="asset_desc">
                   </div>
                   <div class="form-group">
-                    <label for="asset_capitalized_on" class="col-form-label">Capitalized On:</label>
-                    <input type="date" class="form-control" id="asset_capitalized_on" name="asset_capitalized_on">
+                    <label for="asset_quantity" class="col-form-label"><i class="note">*</i>Quantity :</label>
+                    <input required type="number" class="form-control" id="asset_quantity" name="asset_quantity">
                   </div>
+
                   <div class="form-group">
-                    <label for="asset_desc" class="col-form-label">Asset Desc :</label>
-                    <input type="text" class="form-control" id="asset_desc" name="asset_desc">
-                  </div>
-                  <div class="form-group">
-                    <label for="asset_quantity" class="col-form-label">Quantity :</label>
-                    <input type="number" class="form-control" id="asset_quantity" name="asset_quantity">
-                  </div>
-                  <div class="form-group">
-                    <label for="asset_po" class="col-form-label">PO :</label>
-                    <input type="text" class="form-control" id="asset_po" name="asset_po">
-                  </div>
-                  <div class="form-group">
-                    <label for="departement_id" class="col-form-label">Departement :</label>
-                    <select id="departement_id" name="departement_id" class="select2 form-control" style="width:100%">
+                    <label for="departement_id" class="col-form-label"><i class="note">*</i>Departement :</label>
+                    <select required id="departement_id" name="departement_id" class="select2 form-control" style="width:100%">
                       <option value="">- Set Departement -</option>
                       @foreach ($departement as $data)
                         <option value="{{$data->id}}">{{$data->department}}</option>
@@ -123,8 +119,8 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="count_id" class="col-form-label">Count :</label>
-                    <select id="count_id" name="count_id" class="select2 form-control" style="width:100%">
+                    <label for="count_id" class="col-form-label"><i class="note">*</i>Count :</label>
+                    <select required id="count_id" name="count_id" class="select2 form-control" style="width:100%">
                       <option value="">- Set Count -</option>
                       @foreach ($count as $data)
                         <option value="{{$data->id}}">{{$data->count}}</option>
@@ -132,13 +128,21 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="category_id" class="col-form-label">Category :</label>
-                    <select id="category_id" name="category_id" class="select2 form-control" style="width:100%">
+                    <label for="category_id" class="col-form-label"><i class="note">*</i>Category :</label>
+                    <select required id="category_id" name="category_id" class="select2 form-control" style="width:100%">
                       <option value="">- Set Category -</option>
                       @foreach ($categories as $data)
                         <option value="{{$data->id}}">{{$data->category}}</option>
                       @endforeach
                     </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_serial_number" class="col-form-label">Serial Number:</label>
+                    <input type="text" class="form-control" id="asset_serial_number" name="asset_serial_number">
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_po" class="col-form-label">PO :</label>
+                    <input type="text" class="form-control" id="asset_po" name="asset_po">
                   </div>
                   <div class="form-group">
                     <label for="location" class="col-form-label">Location :</label>
@@ -179,32 +183,25 @@
               <div class="modal-body">
                   <input type="hidden" id="id_asset_edit" name="id_asset">
                   <div class="form-group">
-                    <label for="asset_number_edit" class="col-form-label">Asset Number :</label>
+                    <label for="asset_number_edit" class="col-form-label"><i class="note">*</i>Asset Number :</label>
                     <input required type="number" class="form-control" id="asset_number_edit" name="asset_number">
                   </div>
+
                   <div class="form-group">
-                    <label for="asset_serial_number_edit" class="col-form-label">Serial Number:</label>
-                    <input type="text" class="form-control" id="asset_serial_number_edit" name="asset_serial_number">
-                  </div>
-                  <div class="form-group">
-                    <label for="asset_capitalized_on_edit" class="col-form-label">Capitalized On:</label>
+                    <label for="asset_capitalized_on_edit" class="col-form-label"><i class="note">*</i>Capitalized On:</label>
                     <input required type="date" class="form-control" id="asset_capitalized_on_edit" name="asset_capitalized_on">
                   </div>
                   <div class="form-group">
-                    <label for="asset_desc_edit" class="col-form-label">Asset Desc :</label>
+                    <label for="asset_desc_edit" class="col-form-label"><i class="note">*</i>Asset Desc :</label>
                     <input required type="text" class="form-control" id="asset_desc_edit" name="asset_desc">
                   </div>
                   <div class="form-group">
-                    <label for="asset_quantity_edit" class="col-form-label">Quantity :</label>
+                    <label for="asset_quantity_edit" class="col-form-label"><i class="note">*</i>Quantity :</label>
                     <input required type="number" class="form-control" id="asset_quantity_edit" name="asset_quantity">
                   </div>
                   <div class="form-group">
-                    <label for="asset_po_edit" class="col-form-label">PO :</label>
-                    <input type="text" class="form-control" id="asset_po_edit" name="asset_po">
-                  </div>
-                  <div class="form-group">
-                    <label for="departement_id_edit" class="col-form-label">Departement :</label>
-                    <select id="departement_id_edit" name="departement_id" class="select2 form-control" style="width:100%">
+                    <label for="departement_id_edit" class="col-form-label"><i class="note">*</i>Departement :</label>
+                    <select required id="departement_id_edit" name="departement_id" class="select2 form-control" style="width:100%">
                       <option value="">- Set Departement -</option>
                       @foreach ($departement as $data)
                         <option value="{{$data->id}}">{{$data->department}}</option>
@@ -212,8 +209,8 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="count_id_edit" class="col-form-label">Count :</label>
-                    <select id="count_id_edit" name="count_id" class="select2 form-control" style="width:100%">
+                    <label for="count_id_edit" class="col-form-label"><i class="note">*</i>Count :</label>
+                    <select required id="count_id_edit" name="count_id" class="select2 form-control" style="width:100%">
                       <option value="">- Set Count -</option>
                       @foreach ($count as $data)
                         <option value="{{$data->id}}">{{$data->count}}</option>
@@ -221,13 +218,21 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="category_id_edit" class="col-form-label">Category :</label>
-                    <select id="category_id_edit" name="category_id" class="select2 form-control" style="width:100%">
+                    <label for="category_id_edit" class="col-form-label"><i class="note">*</i>Category :</label>
+                    <select required id="category_id_edit" name="category_id" class="select2 form-control" style="width:100%">
                       <option value="">- Set Category -</option>
                       @foreach ($categories as $data)
                         <option value="{{$data->id}}">{{$data->category}}</option>
                       @endforeach
                     </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_serial_number_edit" class="col-form-label">Serial Number:</label>
+                    <input type="text" class="form-control" id="asset_serial_number_edit" name="asset_serial_number">
+                  </div>
+                  <div class="form-group">
+                    <label for="asset_po_edit" class="col-form-label">PO :</label>
+                    <input type="text" class="form-control" id="asset_po_edit" name="asset_po">
                   </div>
                   <div class="form-group">
                     <label for="location_edit" class="col-form-label">Location :</label>
@@ -309,15 +314,18 @@ $(function () {
             {data: 'asset_desc'},
             {data: 'asset_quantity'},
             {data: 'department'},
+            {data: 'asset_capitalized_on'},
             {data: 'asset_price', render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp' )},
             {data: 'action', orderable: false, searchable: false},
         ],
+        order: [[ 5, 'desc' ]],
         columnDefs: [
             {
                 targets: [ 1 ],
                 orderable: false, //set not orderable
                 visible: false
             },
+            
         ],
     });
   });

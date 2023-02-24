@@ -24,7 +24,7 @@ class AssetController extends Controller
         $data = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
         ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
         ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
-        ->orderBy('assets.created_at', 'DESC')
+        ->orderBy('assets.asset_capitalized_on', 'DESC')
         ->get(['assets.*','departments.department as department','category','counts.count as count']);
         return Datatables::of($data)
                 ->addIndexColumn()

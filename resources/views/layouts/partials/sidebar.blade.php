@@ -1,9 +1,5 @@
-<style>
-  .active {
-  background-color: red;
-}
-</style>
-<aside class="main-sidebar sidebar-light-danger elevation-4" style="background-color: #ebe1e1">
+
+<aside class="main-sidebar sidebar-light-danger elevation-4" style="background-color: #ebe1e1;height:1500px" >
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
       <img src="{{ asset('assets/images/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
