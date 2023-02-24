@@ -134,6 +134,7 @@
   var DataPemasukan = <?php echo $data_pemasukan; ?>;
   var LabelAsset = <?php echo $label_asset; ?>;
   var asset_by_category = <?php echo $asset_by_category; ?>;
+  console.log(asset_by_category);
   
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(pemasukan);
@@ -186,6 +187,7 @@
       legend: { position: 'bottom' },
       hAxis: {format:''},
       colors: ['#d14e49'],
+      height:300,
     };
     var chart = new google.visualization.BarChart(document.getElementById('category'));
     chart.draw(data, options);

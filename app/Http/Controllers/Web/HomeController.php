@@ -66,7 +66,7 @@ class HomeController extends Controller
             $get_category_name = Categories::select('id','category')->where('id', $data->category_id)->get();
             $category_name = json_decode($get_category_name)[0]->category;
             $category_count = count(Asset::select('id')
-                                ->where('departement_id',Session::get('departement_id'))
+                                // ->where('departement_id',Session::get('departement_id'))
                                 ->where('category_id',json_decode($get_category_name)[0]->id)
                                 ->get());
             
