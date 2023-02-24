@@ -24,6 +24,7 @@ Route::get('register', [LoginController::class, 'register'])->name('register');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::post('dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout');
     Route::get('/asset', [AssetController::class, 'index'])->name('asset');
     Route::get('/asset/data', [AssetController::class, 'getData'])->name('asset.data');

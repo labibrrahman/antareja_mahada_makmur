@@ -6,22 +6,26 @@
 
 @section('content')
   <div class="card">
-    {{-- <div class="card-body row">
-      <div class="form-group">
-        <select id="asset_condition" name="asset_condition" class=" form-control">
-          <option value="">- Select Year -</option>
-          @foreach ($year as $data_year)
-              <option value="{{$data_year->year}}">{{$data_year->year}}</option>
-          @endforeach
-        </select>
-      </div>
-    </div> --}}
+    <div class="card-body row">
+      <form action="{{ route('dashboard') }}" method="POST">
+        @csrf
+        <div class="form-group">
+          <select id="set_year" name="set_year" class=" form-control" onchange="filterChange()">
+            <option value="">- This Year -</option>
+            @foreach ($year as $data_year)
+                <option value="{{$data_year->year}}" <?php if ($set_year == $data_year->year) {echo 'selected';}  ?>>{{$data_year->year}}</option>
+            @endforeach
+          </select>
+          <button hidden type="submit" id="filter" class="btn btn-primary">Filter</button>
+        </div>
+      </form>
+    </div>
     <div class="card-body row">
       <div class="col-lg-6 col-6">
         <div class="small-box bg-danger">
           <div class="inner">
             <h3>{{$count_asset}}</h3>
-            <p>Total Asset Tahun 2022</p>
+            <p>Total Asset Tahun <?= $set_year ?></p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
@@ -33,7 +37,7 @@
         <div class="small-box bg-danger">
           <div class="inner">
             <h3>Rp. {{$asset_price}}</h3>
-            <p>Total Harga Asset Tahun 2022</p>
+            <p>Total Harga Asset Tahun <?= $set_year ?></p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
@@ -131,10 +135,15 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
+
+  function filterChange() {
+    var button = document.getElementById('filter');
+    button.form.submit();
+  }
+  
   var DataPemasukan = <?php echo $data_pemasukan; ?>;
   var LabelAsset = <?php echo $label_asset; ?>;
   var asset_by_category = <?php echo $asset_by_category; ?>;
-  console.log(asset_by_category);
   
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(pemasukan);
@@ -151,7 +160,7 @@
           role: "annotation"
     },]);
     var options = {
-      title: 'Asset Masukan/Bulan Tahun 2022',
+      title: 'Asset Masukan/Bulan Tahun <?= $set_year ?>',
       curveType: 'function',
       legend: { position: 'bottom' },
       colors: ['#d14e49'],
@@ -170,7 +179,7 @@
           role: "annotation"
     },]);
     var options = {
-      title: 'Label Asset/Bulan Tahun 2022',
+      title: 'Label Asset/Bulan Tahun <?= $set_year ?>',
       curveType: 'function',
       legend: { position: 'bottom' },
       colors: ['#d14e49'],
@@ -182,7 +191,7 @@
   function asset_category() {
     var data = google.visualization.arrayToDataTable(asset_by_category);
     var options = {
-      title: 'Asset By Category Tahun 2022',
+      title: 'Asset By Category Tahun <?= $set_year ?>',
       curveType: 'function',
       legend: { position: 'bottom' },
       hAxis: {format:''},

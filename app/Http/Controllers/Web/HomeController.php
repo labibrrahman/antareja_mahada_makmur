@@ -18,11 +18,16 @@ class HomeController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
-    {
+    public function index(Request $request)
+    {  
         $titlechart = "Asset Masuk/Bulan";
         $month_monitoring = 12;
-        $year_monitoring = '2022'; 
+        $year_monitoring = date("Y"); 
+        if(isset($request->all()['set_year'])){
+            $year_monitoring = $request->all()['set_year'];
+        }
+        $set_year = $year_monitoring;
+        // $year_monitoring = '2022'; 
         // $year_monitoring = date("Y"); 
         $month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Des"];
         $pemasukanAsset = array();
@@ -62,20 +67,24 @@ class HomeController extends Controller
         $getCategoryCode = array();
         $dataCategory = json_decode($getCategory);
         $i = 1;
-        foreach($dataCategory as $data){
-            $get_category_name = Categories::select('id','category')->where('id', $data->category_id)->get();
-            $category_name = json_decode($get_category_name)[0]->category;
-            $category_count = count(Asset::select('id')
-                                // ->where('departement_id',Session::get('departement_id'))
-                                ->where('category_id',json_decode($get_category_name)[0]->id)
-                                ->get());
-            
-            $dataByCategory[$i] = [$category_name, $category_count];
+        if(empty($dataCategory)){
+            $dataByCategory[1] = ['',0];
+        }else{
+            foreach($dataCategory as $data){
+                $get_category_name = Categories::select('id','category')->where('id', $data->category_id)->get();
+                $category_name = json_decode($get_category_name)[0]->category;
+                $category_count = count(Asset::select('id')
+                                    // ->where('departement_id',Session::get('departement_id'))
+                                    ->where('category_id',json_decode($get_category_name)[0]->id)
+                                    ->get());
+                
+                $dataByCategory[$i] = [$category_name, $category_count];
 
-            // dummy
-            // $dataByCategory[$i] = [$category_name, (int)rand(2,99)];
-            
-            $i++;
+                // dummy
+                // $dataByCategory[$i] = [$category_name, (int)rand(2,99)];
+                
+                $i++;
+            }
         }
 
         $getAllAsset = Asset::all();
@@ -92,7 +101,7 @@ class HomeController extends Controller
 
 
         $getAllYear = '';
-        $queryYear = Asset::select(DB::raw('YEAR(created_at) as year'))
+        $queryYear = Asset::select(DB::raw('YEAR(asset_capitalized_on) as year'))
                     ->groupBy('year')
                     ->get();
 
@@ -103,12 +112,14 @@ class HomeController extends Controller
 
             $query_getnonupload = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                             ->where('departement_id', $data_dept->id)
+                            ->whereYear('asset_capitalized_on', $year_monitoring)
                             ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
                             ->whereNotIn('assets.id',Upload::select('asset_id'))
                             ->get();
 
             $query_getupload = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                             ->where('departement_id', $data_dept->id)   
+                            ->whereYear('asset_capitalized_on', $year_monitoring)
                             ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
                             ->whereIn('assets.id',Upload::select('asset_id'))
                             ->get();
@@ -125,7 +136,8 @@ class HomeController extends Controller
             ->with('year',$queryYear)
             ->with('count_asset',$countAsset)
             ->with('count_asset_upload',$dept_count_upload)
-            ->with('count_asset_noupload',$dept_count_non_upload);
+            ->with('count_asset_noupload',$dept_count_non_upload)
+            ->with('set_year',$set_year);
     }
 
     /**
