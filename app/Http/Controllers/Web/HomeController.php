@@ -87,10 +87,12 @@ class HomeController extends Controller
             }
         }
 
-        $getAllAsset = Asset::all();
+        // $getAllAsset = Asset::all();
+        $getAllAsset = Asset::select('*')->whereYear('asset_capitalized_on', $year_monitoring)->get();
         $countAsset = count($getAllAsset);
 
-        $getPrice = Asset::select('asset_price')->get();
+        // $getPrice = Asset::select('asset_price')->get();
+        $getPrice = Asset::select('asset_price')->whereYear('asset_capitalized_on', $year_monitoring)->get();
         $getPrice = json_decode($getPrice);
         $setPrice = 0;
         foreach($getPrice as $price){
