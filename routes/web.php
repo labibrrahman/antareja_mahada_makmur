@@ -34,7 +34,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/asset/get_asset', [AssetController::class, 'getAsset'])->name('asset.update_asset');
     Route::post('/asset/update_asset', [AssetController::class, 'update'])->name('asset.update_asset');
     Route::post('/asset/deleted_asset', [AssetController::class, 'destroy'])->name('asset.deleted_asset');
-    
+    Route::post('/asset/import', [AssetController::class, 'import'])->name('asset.import');
+
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
     Route::get('/berita_acara/tinjauan_asset', [BeritaAcaraController::class, 'tinjauan_asset'])->name('berita_acara.tinjauan_asset');
 

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use DataTables;
 use Session;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImportAsset;
+
 class AssetController extends Controller
 {
 
@@ -163,6 +166,12 @@ class AssetController extends Controller
     }else{
       return back()->with('warning', 'Deleted Asset fail');
     }
+  }
+
+  public function import(Request $request)
+  {
+    Excel::import(new ImportAsset(), $request->file('file'));
+    return back()->with('success', "Asset has been imported");
   }
 
   

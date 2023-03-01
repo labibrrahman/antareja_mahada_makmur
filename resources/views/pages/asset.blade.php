@@ -13,6 +13,7 @@
   <div class="card">
     <div class="card-header ">
       <div class="card-tools">
+        <a href="#" id="assetimportbtn" class="edit btn btn-primary btn-sm">Import</a>
         <a href="#" data-toggle="modal" data-target="#insertAsset" class="edit btn btn-primary btn-sm">Add Asset + </a>
       </div>
     </div>
@@ -285,6 +286,32 @@
         </div>
       </div>
 
+      <div class="modal fade" id="importmodal" tabindex="-1" role="dialog" aria-labelledby="importmodalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="importmodalLabel">Import Asset Data</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{{ route('asset.import') }}" method="POST" enctype="multipart/form-data">
+              @csrf
+              <div class="modal-body">
+                  <div class="form-group">
+                    <label for="file" class="col-form-label">Import File :</label>
+                    <input type="file" name="file" id="file" class="form-control"/>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
 @endsection
   <!-- jQuery CDN -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -411,6 +438,11 @@ $(function () {
           attr: "href",
           message:"Your document is being created"
       });
+      $('#assetimportbtn').on('click', function() {
+          $('#importmodal').modal('show');
+      });
   });
+
+
 
   </script>

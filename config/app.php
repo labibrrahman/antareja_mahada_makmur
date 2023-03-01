@@ -165,7 +165,11 @@ return [
         //JWT
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
+        //DataTables
         Yajra\DataTables\DataTablesServiceProvider::class,
+
+        //Import Export Excel
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -238,7 +242,11 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class, 
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
+        //DataTables
         'Datatables' => Yajra\DataTables\Facades\DataTables::class,
+
+        //Import Export Excel
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
 
     ],
