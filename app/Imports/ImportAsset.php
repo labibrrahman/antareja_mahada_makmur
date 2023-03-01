@@ -40,8 +40,8 @@ class ImportAsset implements ToModel, WithHeadingRow
             $row['deptarea'] = $dept_id;
         }
 
-        if($row['serial_number'] == null){
-            $row['serial_number'] = '-';
+        if($row['sn'] == null){
+            $row['sn'] = '-';
         }
         if($row['qty'] == null){
             $row['qty'] = '0';
@@ -52,13 +52,13 @@ class ImportAsset implements ToModel, WithHeadingRow
             'category_id' => $row['category'],
             'asset_capitalized_on' => Date::excelToDateTimeObject($row['capitalized_on']),
             'asset_desc' => $row['asset_description'],
-            'asset_serial_number' => $row['serial_number'],
+            'asset_serial_number' => $row['sn'],
             'departement_id' => $row['deptarea'],
             'asset_manager' => $row['pic'],
             'asset_quantity' => $row['qty'],
             'count_id' => $row['oun'],
             'asset_po' => $row['po'],
-            'asset_price' => $row['harga_beli']
+            'asset_price' => $row['accuisition_value']
         ]);
     }
 }

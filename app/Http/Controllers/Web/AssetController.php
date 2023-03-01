@@ -182,12 +182,17 @@ class AssetController extends Controller
     
     );
     if($validator->fails()){
-      return back()->with('warning', 'file extension must xlsx');
+      return back()->with('warning', 'file extension must xlsx or xls');
+    }else{
+      Excel::import(new ImportAsset(), $request->file('file'));
+      return back()->with('success', "Asset has been imported");
     }
-
-    // Excel::import(new ImportAsset(), $request->file('file'));
-    return back()->with('success', "Asset has been imported");
   }
+
+  public function download(){
+    $path = storage_path('app/public/sample_import_asset_excel/test.xlsx');
+    return response()->download($path);
+ }
 
   
 

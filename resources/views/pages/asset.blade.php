@@ -306,6 +306,12 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="file" class="col-form-label"><b>Pastikan file yang akan di import sudah sesuai dengan sample import berikut ini !!!</b></label>
+                <a href="{{ route('download_asset_sample') }}" id="" class="edit btn btn-primary btn-sm">Download Sample Import</a>
+              </div>
+            </div>
             <form action="{{ route('asset.import') }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="modal-body">
