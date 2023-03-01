@@ -18,7 +18,18 @@
       </div>
     </div>
     {{-- <div class="card-body" style="overflow-y: scroll; height:750px;"> --}}
-      <div class="card-body" >
+      <div class="card-body">
+        <div class="col-lg-4 col-md-4 col-xs-12">
+          <div class="form-group row "  style="margin-top:30px;" id ="select_showBy">
+              <label class="mt-2">Show By : &nbsp;&nbsp;</label>
+              <select class="status form-control" name="showBy" id="showBy" style="width:50%;" required="required">
+                  <option value="" selected id="option_show">-- Show All --</option>
+                  @foreach ($departement as $data)
+                    <option value="<?= $data->department ?>" id="option_show" ><?= $data->department ?></option>
+                  @endforeach
+              </select>
+          </div>
+      </div>
       <table id='empTable' width='100%' border="1" style='border-collapse: collapse;'>
         <thead>
           <tr>
@@ -354,6 +365,10 @@ $(function () {
             },
             
         ],
+    });
+
+    $('#showBy').change(function () {
+        table.columns(5).search(this.value).draw();
     });
   });
 
