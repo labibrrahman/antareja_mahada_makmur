@@ -170,7 +170,22 @@ class AssetController extends Controller
 
   public function import(Request $request)
   {
-    Excel::import(new ImportAsset(), $request->file('file'));
+    $validator = Validator::make(
+      [
+          'file'      => $request->file,
+          'extension' => strtolower($request->file->getClientOriginalExtension()),
+      ],
+      [
+          'file'          => 'required',
+          'extension'      => 'required|in:xlsx,xls',
+      ]
+    
+    );
+    if($validator->fails()){
+      return back()->with('warning', 'file extension must xlsx');
+    }
+
+    // Excel::import(new ImportAsset(), $request->file('file'));
     return back()->with('success', "Asset has been imported");
   }
 
