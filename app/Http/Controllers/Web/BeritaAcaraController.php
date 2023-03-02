@@ -29,11 +29,12 @@ class BeritaAcaraController extends Controller
     }
 
     public function tinjauan_asset($departement_id){
+
         $query_asset = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                         ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                         ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
-                        ->when($departement_id != 0, function ($query_) {
-                            return $query_->where('departement_id', $departement_id);
+                        ->when($departement_id != 0, function ($query_) use ($departement_id) {
+                            return $query_->where('assets.departement_id', $departement_id);
                         })
                         ->whereIn('assets.id',Upload::select('asset_id'))
                         ->get(['assets.*','departments.department','categories.id as category_id','categories.category','counts.count']);
@@ -51,6 +52,8 @@ class BeritaAcaraController extends Controller
         $getDept = json_decode(Departement::select('department')->where('id', $departement_id)->get());
         if($getDept == null){
             $getDept = 'ALL';
+        }else{
+            $getDept = reset($getDept)->department;
         }
         return view('pages.berita_acara.tinjauan_asset',['title' => 'Berita Acara'])
         ->with('dept', $getDept)

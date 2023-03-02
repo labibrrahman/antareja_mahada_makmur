@@ -17,7 +17,7 @@
               @endforeach
           </select>
       </div>
-      <a href="#" id="btn" class="btn btn-sm btn-warning tinjauanAsset"><i class="fa fa-print"></i> Print</a>
+      <a href="#" id="tinjauanAsset" class="btn btn-sm btn-warning"><i class="fa fa-print"></i> Print</a>
     </div>
   </div>
 </div>
@@ -37,21 +37,24 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
-    function ba_bydept(){
-      var filter_dept = document.getElementById('filter_dept').value;
-      $(".tinjauanAsset").printPage({
-          url: "{{ route('berita_acara.tinjauan_asset',['id' => "+filter_dept+"])}}", 
-          attr: "href",
-          message:"Your document is being created"
-      });
-    };
+  $(function(){
+    $("#tinjauanAsset").printPage();
+  });
+  function ba_bydept(){
+    var filter_dept = document.getElementById('filter_dept').value;
+    document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept;
+    
+    // $('#btn').click(function(e){e.preventDefault();}).click();
+    // $(".tinjauanAsset").printPage({
+    //     url: '/berita_acara/tinjauan_asset/'+filter_dept, 
+    //     attr: "href",
+    //     message:"Your document is being created"
+    // });
+  };
 
-    $(function(){
-      $(".tinjauanAsset").printPage({
-          url: "{{ route('berita_acara.tinjauan_asset',['id' => 0])}}", 
-          attr: "href",
-          message:"Your document is being created"
-      });
-    });
+  window.onload = function(){  
+    var filter_dept = document.getElementById('filter_dept').value;
+    document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept;
+  };
 
 </script>

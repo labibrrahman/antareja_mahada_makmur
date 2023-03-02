@@ -102,41 +102,47 @@ td,tr, div{
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($asset_data as $data)
-                        <tr style="font-size:9px">
-                            <td>{{$data->asset_number}}</td>
-                            <td>{{$data->category_id}}</td>
-                            <td>{{$data->asset_capitalized_on}}</td>
-                            <td>{{$data->asset_quantity}}</td>
-                            <td>{{$data->count}}</td>
-                            <td>{{$data->asset_desc}}</td>
-                            <td>{{$data->asset_price}}</td>
-                            <td>{{$data->category}}</td>
-                            <td>{{$data->asset_condition}}</td>
-                            <td>{{$data->location}}</td>
-                            <td></td>
-                            @for ($i = 1; $i <= 3; $i++)
-                                <?php 
-                                if(isset($data->photo[$i-1])){ 
-                                    $file = env('APP_URL_STORAGE').'/'.$data->photo[$i-1];
-                                }else{
-                                    $file =  env('APP_URL_STORAGE');
-                                }
-                                if(isset($data->photo[$i-1])){ 
-                                    $check_storage = Storage::disk('public')->exists($data->photo[$i-1]);
-                                    if($check_storage == false) {?>
+                        <?php if((isset($asset_data)) && ($asset_data != null)){ ?>
+                            @foreach ($asset_data as $data)
+                            <tr style="font-size:9px">
+                                <td>{{$data->asset_number}}</td>
+                                <td>{{$data->category_id}}</td>
+                                <td>{{$data->asset_capitalized_on}}</td>
+                                <td>{{$data->asset_quantity}}</td>
+                                <td>{{$data->count}}</td>
+                                <td>{{$data->asset_desc}}</td>
+                                <td>{{$data->asset_price}}</td>
+                                <td>{{$data->category}}</td>
+                                <td>{{$data->asset_condition}}</td>
+                                <td>{{$data->location}}</td>
+                                <td></td>
+                                @for ($i = 1; $i <= 3; $i++)
+                                    <?php 
+                                    if(isset($data->photo[$i-1])){ 
+                                        $file = env('APP_URL_STORAGE').'/'.$data->photo[$i-1];
+                                    }else{
+                                        $file =  env('APP_URL_STORAGE');
+                                    }
+                                    if(isset($data->photo[$i-1])){ 
+                                        $check_storage = Storage::disk('public')->exists($data->photo[$i-1]);
+                                        if($check_storage == false) {?>
+                                            <td></td>
+                                        <?php }else{?>
+                                                <td><img alt="img_asset" src="{{ asset('/storage').'/'.$data->photo[$i-1]}}" width="80px"></td>
+                                        <?php } 
+                                    }else{?>
                                         <td></td>
-                                    <?php }else{?>
-                                            <td><img alt="img_asset" src="{{ asset('/storage').'/'.$data->photo[$i-1]}}" width="80px"></td>
-                                    <?php } 
-                                }else{?>
-                                    <td></td>
-                                <?php }?>
-                            @endfor
-                            <td>{{$data->asset_status}}</td>
-                            <td></td>
-                        </tr>
-                        @endforeach
+                                    <?php }?>
+                                @endfor
+                                <td>{{$data->asset_status}}</td>
+                                <td></td>
+                            </tr>
+                            @endforeach
+                        <?php }else{ ?>
+                            <tr style="font-size:9px">
+                                <td colspan="16" style="text-align:center">No data available in table</td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>

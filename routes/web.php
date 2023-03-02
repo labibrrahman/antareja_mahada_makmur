@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/download_asset_sample', [AssetController::class, 'download'])->name('download_asset_sample');
     
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
-    Route::get('/berita_acara/tinjauan_asset/{id}', [BeritaAcaraController::class, 'tinjauan_asset'])->name('berita_acara.tinjauan_asset');
+    Route::get('/berita_acara/tinjauan_asset/{id}', [BeritaAcaraController::class, 'tinjauan_asset']);
 
 });
 
