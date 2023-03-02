@@ -6,13 +6,27 @@
 
 @section('content')
 <div class="card">
-    {{-- <div class="card-header ">
-      <div class="card-tools">
+  <div class="card-body row" style="padding-bottom:0px">
+    <div class="card-body" >
+      <div class="form-group row" id = "select_filter_dept">
+          <label class="mt-2">Show By : &nbsp;&nbsp;</label>
+          <select class="status form-control" name="filter_dept" id="filter_dept" style="width:50%;" onchange="ba_bydept()">
+              <option value="0" selected id="option_show">-- Show All --</option>
+              @foreach ($departement as $data)
+                <option value="<?= $data->id ?>" id="option_show" ><?= $data->department ?></option>
+              @endforeach
+          </select>
       </div>
-    </div> --}}
-    <div class="card-body" style="height:750px;">
+      <a href="#" id="btn" class="btn btn-sm btn-warning tinjauanAsset"><i class="fa fa-print"></i> Print</a>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body row" style="padding-bottom:0px">
+    <div class="card-body" >
         <a href="#" id="btn" class="btn btn-sm btn-warning btnPrint"><i class="fa fa-print"></i> Print</a>
     </div>
+  </div>
 </div>
 
 @endsection
@@ -23,9 +37,18 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
+    function ba_bydept(){
+      var filter_dept = document.getElementById('filter_dept').value;
+      $(".tinjauanAsset").printPage({
+          url: "{{ route('berita_acara.tinjauan_asset',['id' => "+filter_dept+"])}}", 
+          attr: "href",
+          message:"Your document is being created"
+      });
+    };
+
     $(function(){
-      $(".btnPrint").printPage({
-          url: "{{ route('berita_acara.tinjauan_asset')}}", 
+      $(".tinjauanAsset").printPage({
+          url: "{{ route('berita_acara.tinjauan_asset',['id' => 0])}}", 
           attr: "href",
           message:"Your document is being created"
       });

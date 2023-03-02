@@ -44,8 +44,13 @@ td,tr, div{
                     <tr>
                         <td style="text-align:center;font-size:12px">BERITA ACARA TINJAUAN ASSET AMM SITE ABP</td>
                     </tr>
+                    <?php
+                        $array_bln = array(1=>"I","II","III", "IV", "V","VI","VII","VIII","IX","X", "XI","XII");
+                        $bln = $array_bln[date('n')];
+                       ;
+                    ?>
                     <tr>
-                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/1/FA-PENINJAUAN ASSET/IX/2022</u></td>
+                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/1/FA-PENINJAsAN ASSET/<?=$bln?>/<?php echo date("Y"); ?></u></td>
                     </tr>
                 </table>
                 <br><br>
@@ -60,13 +65,14 @@ td,tr, div{
                     <tr>
                         <td style="vertical-align:top">Departement</td>
                         <td style="vertical-align:top">:</td>
-                        <td style="vertical-align:top"> ..... </td>
+                        <td style="vertical-align:top"> <?= $dept ?> </td>
                         <td style="vertical-align:top"></td>
                         <td style="vertical-align:top">
-                            A = Sangat Baik <br>
+                            SB = Sangat Baik <br>
                             B = Cukup Baik <br>
-                            C = Rusak, dapat diperbaiki <br>
-                            D = Rusak, tidak dapat diperbaiki
+                            RD = Rusak, dapat diperbaiki <br>
+                            RT = Rusak, tidak dapat diperbaiki <br>
+                            H = Hilang
                         </td>
                     </tr>
                     <tr>
@@ -84,9 +90,6 @@ td,tr, div{
                             <th>OUN </th>
                             <th>Asset description</th>
                             <th>Acquis.val. </th>
-                            <th>Accum.dep. </th>
-                            <th>Book val. </th>
-                            <th>Currency</th>
                             <th>Jenis</th>
                             <th>Status</th>
                             <th>Lokasi</th>
@@ -108,26 +111,27 @@ td,tr, div{
                             <td>{{$data->count}}</td>
                             <td>{{$data->asset_desc}}</td>
                             <td>{{$data->asset_price}}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
                             <td>{{$data->category}}</td>
                             <td>{{$data->asset_condition}}</td>
                             <td>{{$data->location}}</td>
                             <td></td>
-                            @for ($i = 0; $i < 3; $i++)
+                            @for ($i = 1; $i <= 3; $i++)
                                 <?php 
-                                if(isset($data->photo[$i])){ 
-                                    $file = 'https://kitadev.xyz/storage/'.$data->photo[$i];
+                                if(isset($data->photo[$i-1])){ 
+                                    $file = env('APP_URL_STORAGE').'/'.$data->photo[$i-1];
                                 }else{
-                                    $file = 'https://kitadev.xyz/storage/';
+                                    $file =  env('APP_URL_STORAGE');
                                 }
-                                $file_headers = @get_headers($file);
-                                if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {?>
+                                if(isset($data->photo[$i-1])){ 
+                                    $check_storage = Storage::disk('public')->exists($data->photo[$i-1]);
+                                    if($check_storage == false) {?>
+                                        <td></td>
+                                    <?php }else{?>
+                                            <td><img alt="img_asset" src="{{ asset('/storage').'/'.$data->photo[$i-1]}}" width="80px"></td>
+                                    <?php } 
+                                }else{?>
                                     <td></td>
-                                <?php }else{?>
-                                        <td><img alt="img_asset" src="{{'https://kitadev.xyz/storage/'.$data->photo[$i]}}" width="80px"></td>
-                                <?php } ?>
+                                <?php }?>
                             @endfor
                             <td>{{$data->asset_status}}</td>
                             <td></td>

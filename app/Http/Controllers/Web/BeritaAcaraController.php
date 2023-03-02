@@ -6,6 +6,7 @@ use App\Models\Asset;
 use App\Models\Upload;
 use App\Models\MutationsDet;
 use App\Models\Categories;
+use App\Models\Departement;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use DB;
@@ -20,16 +21,20 @@ class BeritaAcaraController extends Controller
      */
     public function index()
     {
+        $departement = json_decode(Departement::all());
 
-        // return view('pages.berita_acara.index',['title' => 'Dashboard']);
-        return view('pages.berita_acara.index',['title' => 'Berita Acara']);
+        return view('pages.berita_acara.index',['title' => 'Berita Acara'])
+        ->with('departement',$departement);
         
     }
 
-    public function tinjauan_asset(){
+    public function tinjauan_asset($departement_id){
         $query_asset = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                         ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                         ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                        ->when($departement_id != 0, function ($query_) {
+                            return $query_->where('departement_id', $departement_id);
+                        })
                         ->whereIn('assets.id',Upload::select('asset_id'))
                         ->get(['assets.*','departments.department','categories.id as category_id','categories.category','counts.count']);
 
@@ -40,9 +45,15 @@ class BeritaAcaraController extends Controller
             foreach($get_photo as $set_photo){
                 $data_asset->photo[] = $set_photo->upload_image;
             }
+            $data_asset->count_photo = count($get_photo);
         }
 
+        $getDept = json_decode(Departement::select('department')->where('id', $departement_id)->get());
+        if($getDept == null){
+            $getDept = 'ALL';
+        }
         return view('pages.berita_acara.tinjauan_asset',['title' => 'Berita Acara'])
+        ->with('dept', $getDept)
         ->with('asset_data', $asset);
 
     }
