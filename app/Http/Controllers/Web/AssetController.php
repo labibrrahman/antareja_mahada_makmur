@@ -88,6 +88,7 @@ class AssetController extends Controller
       if($input['asset_serial_number'] == ''){
         $input['asset_serial_number'] = "-";
       }
+      $input['asset_po'] = $input['asset_po'] ?? "-";
       $input['created_at'] = date('Y-m-d H:i:s');
       $input['created_by'] = Session::get('id');
 
@@ -119,6 +120,7 @@ class AssetController extends Controller
       $input['asset_manager'] = "-";
       $input['asset_status'] = "-";
       $input['asset_serial_number'] = $input['asset_serial_number'] ?? "-";
+      $input['asset_po'] = $input['asset_po'] ?? "-";
       $input['updated_at'] = date('Y-m-d H:i:s');
       $input['updated_by'] = Session::get('id');
       $validator = Validator::make($input, [
