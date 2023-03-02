@@ -85,30 +85,30 @@ class AssetController extends Controller
       // $input['asset_manager'] = Session::get('id');
       $input['asset_manager'] = "-";
       $input['asset_status'] = "-";
+      if($input['asset_serial_number'] == ''){
+        $input['asset_serial_number'] = "-";
+      }
       $input['created_at'] = date('Y-m-d H:i:s');
       $input['created_by'] = Session::get('id');
+
       $validator = Validator::make($input, [
           "asset_number" => "required",
           "asset_serial_number"=> "required",
           "asset_capitalized_on"=> "required",
-          // "asset_manager"=> "required",
           "asset_desc"=> "required",
           "asset_quantity"=> "required",
-          "asset_po"=> "required",
           "departement_id"=> "required",
           "count_id"=> "required",
           "category_id"=> "required",
-          "location"=> "required",
-          "asset_condition"=> "required",
       ]);
 
       if($validator->fails()){
-          return $validator->errors();       
-      }
-
-      $asset = Asset::create($input);
-      if($asset){
-        return back()->with('success', "Input Asset successfully");
+        return back()->with('warning', implode(" ", $validator->messages()->all()));
+      }else{
+        $asset = Asset::create($input);
+        if($asset){
+          return back()->with('success', "Input Asset successfully");
+        }
       }
     }
 
@@ -122,14 +122,14 @@ class AssetController extends Controller
       $input['updated_at'] = date('Y-m-d H:i:s');
       $input['updated_by'] = Session::get('id');
       $validator = Validator::make($input, [
-          "asset_number" => "required",
-          "asset_capitalized_on"=> "required",
-          "asset_desc"=> "required",
-          "asset_quantity"=> "required",
-          "asset_po"=> "required",
-          "departement_id"=> "required",
-          "count_id"=> "required",
-          "category_id"=> "required",
+        "asset_number" => "required",
+        "asset_serial_number"=> "required",
+        "asset_capitalized_on"=> "required",
+        "asset_desc"=> "required",
+        "asset_quantity"=> "required",
+        "departement_id"=> "required",
+        "count_id"=> "required",
+        "category_id"=> "required",
       ]);
 
       if($validator->fails()){
@@ -149,8 +149,6 @@ class AssetController extends Controller
       $asset->category_id = $input['category_id'];
       $asset->count_id = $input['count_id'];
       $asset->save();
-
-
 
       if($asset){
         return back()->with('success', "Input Asset successfully");

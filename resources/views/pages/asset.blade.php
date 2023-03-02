@@ -105,7 +105,7 @@
               <div class="modal-body">
                   <div class="form-group">
                     <label for="asset_number" class="col-form-label"><i class="note">*</i>Asset Number :</label>
-                    <input required type="number" class="form-control" id="asset_number" name="asset_number">
+                    <input  type="number" class="form-control" id="asset_number" name="asset_number">
                   </div>
 
                   <div class="form-group">
@@ -114,7 +114,7 @@
                   </div>
                   <div class="form-group">
                     <label for="asset_desc" class="col-form-label"><i class="note">*</i>Asset Desc :</label>
-                    <input required type="text" class="form-control" id="asset_desc" name="asset_desc">
+                    <input type="text" class="form-control" id="asset_desc" name="asset_desc">
                   </div>
                   <div class="form-group">
                     <label for="asset_quantity" class="col-form-label"><i class="note">*</i>Quantity :</label>
