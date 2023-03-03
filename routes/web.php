@@ -40,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
     Route::get('/berita_acara/tinjauan_asset/{id}', [BeritaAcaraController::class, 'tinjauan_asset']);
+    Route::get('/berita_acara/disposal_asset', [BeritaAcaraController::class, 'disposal_asset']);
+    Route::get('/berita_acara/mutasi_asset', [BeritaAcaraController::class, 'mutasi_asset']);
 
 });
 
