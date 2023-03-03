@@ -24,7 +24,15 @@
 <div class="card">
   <div class="card-body row" style="padding-bottom:0px">
     <div class="card-body" >
-        <a href="#" id="btn" class="btn btn-sm btn-warning btnPrint"><i class="fa fa-print"></i> Print</a>
+        <a href="#" id="disposalAsset" class="btn btn-sm btn-warning btnPrint"><i class="fa fa-print"></i> Print</a>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body row" style="padding-bottom:0px">
+    <div class="card-body" >
+        <a href="#" id="mutasiAsset" class="btn btn-sm btn-warning btnPrint"><i class="fa fa-print"></i> Print</a>
     </div>
   </div>
 </div>
@@ -39,22 +47,23 @@
 <script type="text/javascript">
   $(function(){
     $("#tinjauanAsset").printPage();
+    $("#disposalAsset").printPage();
+    $("#mutasiAsset").printPage();
   });
   function ba_bydept(){
     var filter_dept = document.getElementById('filter_dept').value;
     document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept;
-    
-    // $('#btn').click(function(e){e.preventDefault();}).click();
-    // $(".tinjauanAsset").printPage({
-    //     url: '/berita_acara/tinjauan_asset/'+filter_dept, 
-    //     attr: "href",
-    //     message:"Your document is being created"
-    // });
   };
 
   window.onload = function(){  
+
     var filter_dept = document.getElementById('filter_dept').value;
     document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept;
+
+    document.getElementById("disposalAsset").href='/berita_acara/disposal_asset/';
+
+    document.getElementById("mutasiAsset").href='/berita_acara/mutasi_asset/';
+    
   };
 
 </script>
