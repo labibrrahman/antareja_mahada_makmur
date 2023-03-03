@@ -86,7 +86,6 @@ class CategoryAssetController extends Controller
                     ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                     ->where('departement_id',$departement_id)
                     ->groupBy('category_id','categories.category')->get();
- 
                     $count = count($data);
             }
             if($data){
