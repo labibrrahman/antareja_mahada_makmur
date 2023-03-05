@@ -4,7 +4,7 @@
 ])
 
 <style>
-  .note{
+  .note, .image_stat{
     color:red;
   }
 </style>
@@ -63,7 +63,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('asset.store_price') }}" method="POST">
+            <form action="{{ route('asset.store_price') }}" method="POST" id="addPriceForm">
               @csrf
               <div class="modal-body">
                   <div class="form-group">
@@ -100,7 +100,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('asset.store_asset') }}" method="POST">
+            <form action="{{ route('asset.store_asset') }}" method="POST" id="insertAssetForm">
               @csrf
               <div class="modal-body">
                   <div class="form-group">
@@ -190,76 +190,94 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('asset.update_asset') }}" method="POST">
+            <form action="{{ route('asset.update_asset') }}" method="POST" enctype="multipart/form-data" id="updateAssetForm">
               @csrf
               <div class="modal-body">
-                  <input type="hidden" id="id_asset_edit" name="id_asset">
-                  <div class="form-group">
-                    <label for="asset_number_edit" class="col-form-label"><i class="note">*</i>Asset Number :</label>
-                    <input required type="number" class="form-control" id="asset_number_edit" name="asset_number">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="asset_capitalized_on_edit" class="col-form-label"><i class="note">*</i>Capitalized On:</label>
-                    <input required type="date" class="form-control" id="asset_capitalized_on_edit" name="asset_capitalized_on">
-                  </div>
-                  <div class="form-group">
-                    <label for="asset_desc_edit" class="col-form-label"><i class="note">*</i>Asset Desc :</label>
-                    <input required type="text" class="form-control" id="asset_desc_edit" name="asset_desc">
-                  </div>
-                  <div class="form-group">
-                    <label for="asset_quantity_edit" class="col-form-label"><i class="note">*</i>Quantity :</label>
-                    <input required type="number" class="form-control" id="asset_quantity_edit" name="asset_quantity">
-                  </div>
-                  <div class="form-group">
-                    <label for="departement_id_edit" class="col-form-label"><i class="note">*</i>Departement :</label>
-                    <select required id="departement_id_edit" name="departement_id" class="select2 form-control" style="width:100%">
-                      <option value="">- Set Departement -</option>
-                      @foreach ($departement as $data)
-                        <option value="{{$data->id}}">{{$data->department}}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="count_id_edit" class="col-form-label"><i class="note">*</i>Count :</label>
-                    <select required id="count_id_edit" name="count_id" class="select2 form-control" style="width:100%">
-                      <option value="">- Set Count -</option>
-                      @foreach ($count as $data)
-                        <option value="{{$data->id}}">{{$data->count}}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="category_id_edit" class="col-form-label"><i class="note">*</i>Category :</label>
-                    <select required id="category_id_edit" name="category_id" class="select2 form-control" style="width:100%">
-                      <option value="">- Set Category -</option>
-                      @foreach ($categories as $data)
-                        <option value="{{$data->id}}">{{$data->category}}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="asset_serial_number_edit" class="col-form-label">Serial Number:</label>
-                    <input type="text" class="form-control" id="asset_serial_number_edit" name="asset_serial_number">
-                  </div>
-                  <div class="form-group">
-                    <label for="asset_po_edit" class="col-form-label">PO :</label>
-                    <input type="text" class="form-control" id="asset_po_edit" name="asset_po">
-                  </div>
-                  <div class="form-group">
-                    <label for="location_edit" class="col-form-label">Location :</label>
-                    <input type="text" class="form-control" id="location_edit" name="location">
-                  </div>
-                  <div class="form-group">
-                    <label for="asset_condition_edit" class="col-form-label">Condition :</label>
-                    <select id="asset_condition_edit" name="asset_condition" class="select2 form-control" style="width:100%">
-                      <option value="sb">Sangat Baik</option>
-                      <option value="b">Baik</option>
-                      <option value="rd">Rusak, diperbaiki</option>
-                      <option value="rt">Rusak, tidak dapat diperbaiki</option>
-                      <option value="h">Hilang</option>
-                    </select>
-                  </div>
+                <input type="hidden" id="id_asset_edit" name="id_asset">
+                <div class="form-group">
+                  <label for="asset_number_edit" class="col-form-label"><i class="note">*</i>Asset Number :</label>
+                  <input required type="number" class="form-control" id="asset_number_edit" name="asset_number">
+                </div>
+                <div class="form-group">
+                  <label for="asset_capitalized_on_edit" class="col-form-label"><i class="note">*</i>Capitalized On:</label>
+                  <input required type="date" class="form-control" id="asset_capitalized_on_edit" name="asset_capitalized_on">
+                </div>
+                <div class="form-group">
+                  <label for="asset_desc_edit" class="col-form-label"><i class="note">*</i>Asset Desc :</label>
+                  <input required type="text" class="form-control" id="asset_desc_edit" name="asset_desc">
+                </div>
+                <div class="form-group">
+                  <label for="asset_quantity_edit" class="col-form-label"><i class="note">*</i>Quantity :</label>
+                  <input required type="number" class="form-control" id="asset_quantity_edit" name="asset_quantity">
+                </div>
+                <div class="form-group">
+                  <label for="departement_id_edit" class="col-form-label"><i class="note">*</i>Departement :</label>
+                  <select required id="departement_id_edit" name="departement_id" class="select2 form-control" style="width:100%">
+                    <option value="">- Set Departement -</option>
+                    @foreach ($departement as $data)
+                      <option value="{{$data->id}}">{{$data->department}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="count_id_edit" class="col-form-label"><i class="note">*</i>Count :</label>
+                  <select required id="count_id_edit" name="count_id" class="select2 form-control" style="width:100%">
+                    <option value="">- Set Count -</option>
+                    @foreach ($count as $data)
+                      <option value="{{$data->id}}">{{$data->count}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="category_id_edit" class="col-form-label"><i class="note">*</i>Category :</label>
+                  <select required id="category_id_edit" name="category_id" class="select2 form-control" style="width:100%">
+                    <option value="">- Set Category -</option>
+                    @foreach ($categories as $data)
+                      <option value="{{$data->id}}">{{$data->category}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="asset_serial_number_edit" class="col-form-label">Serial Number:</label>
+                  <input type="text" class="form-control" id="asset_serial_number_edit" name="asset_serial_number">
+                </div>
+                <div class="form-group">
+                  <label for="asset_po_edit" class="col-form-label">PO :</label>
+                  <input type="text" class="form-control" id="asset_po_edit" name="asset_po">
+                </div>
+                <div class="form-group">
+                  <label for="location_edit" class="col-form-label">Location :</label>
+                  <input type="text" class="form-control" id="location_edit" name="location">
+                </div>
+                <div class="form-group">
+                  <label for="asset_condition_edit" class="col-form-label">Condition :</label>
+                  <select id="asset_condition_edit" name="asset_condition" class="select2 form-control" style="width:100%">
+                    <option value="sb">Sangat Baik</option>
+                    <option value="b">Baik</option>
+                    <option value="rd">Rusak, diperbaiki</option>
+                    <option value="rt">Rusak, tidak dapat diperbaiki</option>
+                    <option value="h">Hilang</option>
+                  </select>
+                </div>
+                {{-- <div class="form-group">
+                  <input type="hidden" id="id_upload0" name="id_upload0">
+                  <label for="location_edit" class="col-form-label">Foto 1 : <i class="image_stat" id="image_stat0">No Data Available</i></label>
+                  <input type="file" class="form-control" id="file0" name="file0" onchange="readURL1(this);" placeholder="Choose image" id="image">
+                  <img id="image0" src="#" width="150px" class="mt-2" alt="your image" />
+                  <a href="#" id="deletePhoto" class="edit btn btn-danger btn-sm">Delete Photo</a>
+                </div>
+                <div class="form-group">
+                  <input type="hidden" id="id_upload1" name="id_upload1">
+                  <label for="location_edit" class="col-form-label">Foto 2 : <i class="image_stat" id="image_stat1">No Data Available</i></label>
+                  <input type="file" class="form-control" id="file1" name="file1" onchange="readURL2(this);" placeholder="Choose image" id="image">
+                  <img id="image1" src="#" width="150px" class="mt-2" alt="your image" />
+                </div>
+                <div class="form-group">
+                  <input type="hidden" id="id_upload2" name="id_upload2">
+                  <label for="location_edit" class="col-form-label">Foto 3 : <i class="image_stat" id="image_stat2">No Data Available</i></label>
+                  <input type="file" class="form-control" id="file2" name="file2" onchange="readURL3(this);" placeholder="Choose image" id="image">
+                  <img id="image2" src="#" width="150px" class="mt-2" alt="your image" />
+                </div> --}}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -279,7 +297,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('asset.deleted_asset') }}" method="POST">
+            <form action="{{ route('asset.deleted_asset') }}" method="POST" id="deletedAssetForm">
               @csrf
               <input type="text" hidden class="form-control" id="id_asset_deleted" name="id_asset">
 
@@ -312,7 +330,7 @@
                 <a href="{{ route('download_asset_sample') }}" id="" class="edit btn btn-primary btn-sm">Download Sample Import</a>
               </div>
             </div>
-            <form action="{{ route('asset.import') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('asset.import') }}" method="POST" enctype="multipart/form-data" id="importAssetForm">
               @csrf
               <div class="modal-body">
                   <div class="form-group">
@@ -329,6 +347,49 @@
         </div>
       </div>
 
+      <div class="modal fade" id="updateImage" tabindex="-1" role="dialog" aria-labelledby="updateImage" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="updateImage">Photo</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{{ route('asset.update_photo') }}" method="POST" enctype="multipart/form-data" id="updateImageForm">
+              @csrf
+              <div class="modal-body">
+                <input type="hidden" id="id_asset_edit2" name="id_asset">
+                <div class="form-group">
+                  <input type="hidden" id="id_upload0" name="id_upload0">
+                  <label for="location_edit" class="col-form-label">Foto 1 : <i class="image_stat" id="image_stat0">No Data Available</i></label>
+                  <input type="file" class="form-control" id="file0" name="file0" onchange="readURL1(this);" placeholder="Choose image" id="image">
+                  <img id="image0" src="#" width="150px" class="mt-2" alt="your image" />
+                  {{-- <a href="#" id="deletePhoto" class="edit btn btn-danger btn-sm">Delete Photo</a> --}}
+                </div>
+                <div class="form-group">
+                  <input type="hidden" id="id_upload1" name="id_upload1">
+                  <label for="location_edit" class="col-form-label">Foto 2 : <i class="image_stat" id="image_stat1">No Data Available</i></label>
+                  <input type="file" class="form-control" id="file1" name="file1" onchange="readURL2(this);" placeholder="Choose image" id="image">
+                  <img id="image1" src="#" width="150px" class="mt-2" alt="your image" />
+                </div>
+                <div class="form-group">
+                  <input type="hidden" id="id_upload2" name="id_upload2">
+                  <label for="location_edit" class="col-form-label">Foto 3 : <i class="image_stat" id="image_stat2">No Data Available</i></label>
+                  <input type="file" class="form-control" id="file2" name="file2" onchange="readURL3(this);" placeholder="Choose image" id="image">
+                  <img id="image2" src="#" width="150px" class="mt-2" alt="your image" />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
 @endsection
   <!-- jQuery CDN -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -337,7 +398,11 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
+
 $(function () {
+  $("#image0").hide();
+  $("#image1").hide();
+  $("#image2").hide();
     var table = $('#empTable').DataTable({
         iDisplayLength: 10,
         oLanguage: {
@@ -400,7 +465,7 @@ $(function () {
     })
   }
 
-    function getupdate_ajax(id){
+  function getupdate_ajax(id){
     $.ajax({
       url: "{{ route('asset.get_data_asset') }}",
       type: 'POST',
@@ -410,8 +475,8 @@ $(function () {
         id : id,
         _token : '{{ csrf_token() }}'
       },
-      success: function(data){    
-        console.log(data);
+      success: function(data){   
+        console.log(data); 
         $('#id_asset_edit').val(data.id)                
         $("#asset_number_edit").val(data.asset_number)
         $("#asset_serial_number_edit").val(data.asset_serial_number)
@@ -424,6 +489,52 @@ $(function () {
         $("#category_id_edit").val(data.category_id)
         $("#location_edit").val(data.location)
         $("#asset_condition_edit").val(data.asset_condition)
+        $.each(data.photo, function( index, value ) {
+          var image_url = "{{ asset('/storage')}}/"+value.image;
+          $("#id_upload"+index).val(value.id_image);
+          $.get(image_url)
+            .done(function() { 
+              $("#image"+index).attr("src",image_url);
+              $("#image_stat"+index).hide();
+            }).fail(function() { 
+              $("#image_stat"+index).hide(false);
+          })
+        });
+       
+      },
+      error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+          console.log(JSON.stringify(jqXHR));
+          console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+      }
+    })
+  }
+
+  function getupdate_image(id){
+    $.ajax({
+      url: "{{ route('asset.get_data_asset') }}",
+      type: 'POST',
+      // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+      data: {
+        _method: 'POST',
+        id : id,
+        _token : '{{ csrf_token() }}'
+      },
+      success: function(data){    
+        $('#id_asset_edit2').val(data.id)                
+        $.each(data.photo, function( index, value ) {
+          var image_url = "{{ asset('/storage')}}/"+value.image;
+          $("#id_upload"+index).val(value.id_image);
+          $.get(image_url)
+            .done(function() { 
+              $("#image"+index).show();
+              $("#image"+index).attr("src",image_url);
+              $("#image_stat"+index).hide();
+            }).fail(function() { 
+              $("#image_stat"+index).show();
+              $("#image"+index).hide();
+          })
+        });
+       
       },
       error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
           console.log(JSON.stringify(jqXHR));
@@ -464,6 +575,80 @@ $(function () {
       });
   });
 
+  function readURL1(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $("#image0").show();
+        $('#image0').attr('src', e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function readURL2(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $("#image1").show();
+        $('#image1').attr('src', e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function readURL3(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $("#image2").show();
+        $('#image2').attr('src', e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+	$(document).ready(function () {
+    $('#exampleModal').on('hidden.bs.modal', function () {
+      $('#addPriceForm').trigger("reset");
+    })
+    $('#insertAsset').on('hidden.bs.modal', function () {
+      $('#insertAssetForm').trigger("reset");
+    })
+    $('#updateAsset').on('hidden.bs.modal', function () {
+      $('#updateAssetForm').trigger("reset");
+    })
+    $('#deletedModal').on('hidden.bs.modal', function () {
+      $('#deletedAssetForm').trigger("reset");
+    })
+    $('#importmodal').on('hidden.bs.modal', function () {
+      $('#importAssetForm').trigger("reset");
+    })
+    $('#updateImage').on('hidden.bs.modal', function () {
+      $('#updateImageForm').trigger("reset");
+      document.getElementById('image0').src = "#";
+      document.getElementById('image1').src = "#";
+      document.getElementById('image2').src = "#";
+      $('#id_upload0').val('');
+      $('#id_upload1').val('');
+      $('#id_upload2').val('');
+      $('#image0').hide();
+      $('#image1').hide();
+      $('#image2').hide();
+      $('#id_asset_edit').val('');
+      $("#image_stat0").show();
+      $("#image_stat1").show();
+      $("#image_stat2").show();
+    })
+    
+  })  
+  
 
 
   </script>

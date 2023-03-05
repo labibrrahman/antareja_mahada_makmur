@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Models\Asset;
+use App\Models\Upload;
 use App\Models\Counts;
 use App\Models\Categories;
 use App\Models\Departement;
@@ -12,6 +13,7 @@ use DataTables;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportAsset;
+use Illuminate\Support\Facades\Storage;
 
 class AssetController extends Controller
 {
@@ -34,6 +36,7 @@ class AssetController extends Controller
                 ->addColumn('action', function($row){
                       $btn =  '<a href="" data-toggle="modal" onclick=getasset_ajax('.$row['id'].') data-target="#exampleModal" class="edit btn btn-success btn-sm">Add Price</a>&nbsp;'.
                               '<a href="" data-toggle="modal" onclick=getupdate_ajax('.$row['id'].') data-target="#updateAsset" class="edit btn btn-warning btn-sm">Edit</a>&nbsp;'.
+                              '<a href="" data-toggle="modal" onclick=getupdate_image('.$row['id'].') data-target="#updateImage" class="edit btn btn-info btn-sm">Photo</a>&nbsp;'.
                               '<a href="" data-toggle="modal" onclick=confirmDelete('.$row['id'].') data-target="#deletedModal" class="edit btn btn-danger btn-sm">Deleted</a>';
                       return $btn;
                 })
@@ -57,6 +60,15 @@ class AssetController extends Controller
           foreach($query as $query_data){
             $data = $query_data;
           }
+          $query_upload = json_decode(Upload::select('*')->where('asset_id', $post['id'])->get());
+          $photo = [];
+          $i = 0;
+          foreach($query_upload as $data_image){
+            $photo[$i] = array('id_image' => $data_image->id ,'image' => $data_image->upload_image);
+            $i++;
+          }
+          $data->photo = $photo;
+
           return json_decode($data);
     }
 
@@ -70,7 +82,7 @@ class AssetController extends Controller
       ]);
 
       if($validator->fails()){
-	        return back()->with('warning', 'Data is null');
+	        return back()->with('warning', implode(" ", $validator->messages()->all()));
       }
 
       $asset = Asset::find($input['id_asset']);   
@@ -113,7 +125,7 @@ class AssetController extends Controller
       }
     }
 
-    public function update(Request $request) {
+  public function update(Request $request) {
       
       $input = $request->all();
       $id = $input['id_asset'];
@@ -123,6 +135,7 @@ class AssetController extends Controller
       $input['asset_po'] = $input['asset_po'] ?? "-";
       $input['updated_at'] = date('Y-m-d H:i:s');
       $input['updated_by'] = Session::get('id');
+
       $validator = Validator::make($input, [
         "asset_number" => "required",
         "asset_serial_number"=> "required",
@@ -132,11 +145,173 @@ class AssetController extends Controller
         "departement_id"=> "required",
         "count_id"=> "required",
         "category_id"=> "required",
+        // "file0"=> "image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+        // "file1"=> "image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+        // "file2"=> "image|mimes:jpg,png,jpeg,gif,svg|max:5048",
       ]);
 
       if($validator->fails()){
-          return back()->with('warning', 'Data is null');
-        }
+        return back()->with('warning', implode(" ", $validator->messages()->all()));
+      }
+
+      // if((isset($input['file0'])) && ($input['file0'] != null)){
+      //   if($input['id_upload0'] == null){
+      //     //make new input upload
+      //     $set_data_upload = [
+      //       'asset_id' => $id,
+      //       'user_id' => Session::get('id'),
+      //       'upload_status' => 1,
+      //       'created_by' => Session::get('id'),
+      //     ];
+      //     $uploadFolder = 'asset';
+      //     $image = $request->file('file0');
+      //     $image_uploaded_path = $image->store($uploadFolder, 'public');
+      //     $set_data_upload["upload_image"] = $image_uploaded_path;
+          
+      //     $update_asset = Asset::find($id);   
+      //     $update_asset->asset_status = "u";
+      //     $update_asset->save();
+  
+      //     if($update_asset){
+      //         $data = Upload::create($set_data_upload);
+      //     }
+      //   }else{
+      //     //update data upload or image
+      //     $set_data_upload = [
+      //       'asset_id' => $id,
+      //       'user_id' => Session::get('id'),
+      //       'upload_status' => 1
+      //     ];
+      //     $uploadFolder = 'asset';
+      //     $image = $request->file('file0');
+
+      //     $get_image = json_decode(Upload::select('upload_image')->where('id',$input['id_upload0'])->first());
+      //     $stat = Storage::disk('public')->delete($get_image->upload_image);
+
+      //     $image_uploaded_path = $image->store($uploadFolder, 'public');
+      //     $set_data_upload["upload_image"] = $image_uploaded_path;
+
+      //     $update_asset = Asset::find($id);
+      //     $update_asset->asset_status = "u";
+      //     $update_asset->save();
+  
+      //     if($update_asset){
+      //       $upload = Upload::find($input['id_upload0']);
+      //       $upload->asset_id = $set_data_upload['asset_id'];
+      //       $upload->user_id = $set_data_upload['user_id'];
+      //       $upload->upload_image = $set_data_upload['upload_image'];
+      //       $upload->updated_by = $set_data_upload['user_id'];
+      //       $upload->updated_at = date('Y-m-d H:i:s');
+      //       $upload->save();
+      //     }
+      //   }
+      // }
+
+      // if((isset($input['file1'])) && ($input['file1'] != null)){
+      //   if($input['id_upload1'] == null){
+      //     //make new input upload
+      //     $set_data_upload = [
+      //       'asset_id' => $id,
+      //       'user_id' => Session::get('id'),
+      //       'upload_status' => 1,
+      //       'created_by' => Session::get('id'),
+      //     ];
+      //     $uploadFolder = 'asset';
+      //     $image = $request->file('file1');
+      //     $image_uploaded_path = $image->store($uploadFolder, 'public');
+      //     $set_data_upload["upload_image"] = $image_uploaded_path;
+          
+      //     $update_asset = Asset::find($id);   
+      //     $update_asset->asset_status = "u";
+      //     $update_asset->save();
+  
+      //     if($update_asset){
+      //         $data = Upload::create($set_data_upload);
+      //     }
+      //   }else{
+      //     //update data upload or image
+      //     $set_data_upload = [
+      //       'asset_id' => $id,
+      //       'user_id' => Session::get('id'),
+      //       'upload_status' => 1
+      //     ];
+      //     $uploadFolder = 'asset';
+      //     $image = $request->file('file1');
+
+      //     $get_image = json_decode(Upload::select('upload_image')->where('id',$input['id_upload1'])->first());
+      //     $stat = Storage::disk('public')->delete($get_image->upload_image);
+
+      //     $image_uploaded_path = $image->store($uploadFolder, 'public');
+      //     $set_data_upload["upload_image"] = $image_uploaded_path;
+
+      //     $update_asset = Asset::find($id);
+      //     $update_asset->asset_status = "u";
+      //     $update_asset->save();
+  
+      //     if($update_asset){
+      //       $upload = Upload::find($input['id_upload1']);
+      //       $upload->asset_id = $set_data_upload['asset_id'];
+      //       $upload->user_id = $set_data_upload['user_id'];
+      //       $upload->upload_image = $set_data_upload['upload_image'];
+      //       $upload->updated_by = $set_data_upload['user_id'];
+      //       $upload->updated_at = date('Y-m-d H:i:s');
+      //       $upload->save();
+      //     }
+      //   }
+      // }
+
+      // if((isset($input['file2'])) && ($input['file2'] != null)){
+      //   if($input['id_upload2'] == null){
+      //     //make new input upload
+      //     $set_data_upload = [
+      //       'asset_id' => $id,
+      //       'user_id' => Session::get('id'),
+      //       'upload_status' => 1,
+      //       'created_by' => Session::get('id'),
+      //     ];
+      //     $uploadFolder = 'asset';
+      //     $image = $request->file('file2');
+      //     $image_uploaded_path = $image->store($uploadFolder, 'public');
+      //     $set_data_upload["upload_image"] = $image_uploaded_path;
+          
+      //     $update_asset = Asset::find($id);   
+      //     $update_asset->asset_status = "u";
+      //     $update_asset->save();
+  
+      //     if($update_asset){
+      //         $data = Upload::create($set_data_upload);
+      //     }
+      //   }else{
+      //     //update data upload or image
+      //     $set_data_upload = [
+      //       'asset_id' => $id,
+      //       'user_id' => Session::get('id'),
+      //       'upload_status' => 1
+      //     ];
+      //     $uploadFolder = 'asset';
+      //     $image = $request->file('file2');
+
+      //     $get_image = json_decode(Upload::select('upload_image')->where('id',$input['id_upload2'])->first());
+      //     $stat = Storage::disk('public')->delete($get_image->upload_image);
+
+      //     $image_uploaded_path = $image->store($uploadFolder, 'public');
+      //     $set_data_upload["upload_image"] = $image_uploaded_path;
+
+      //     $update_asset = Asset::find($id);
+      //     $update_asset->asset_status = "u";
+      //     $update_asset->save();
+  
+      //     if($update_asset){
+      //       $upload = Upload::find($input['id_upload2']);
+      //       $upload->asset_id = $set_data_upload['asset_id'];
+      //       $upload->user_id = $set_data_upload['user_id'];
+      //       $upload->upload_image = $set_data_upload['upload_image'];
+      //       $upload->updated_by = $set_data_upload['user_id'];
+      //       $upload->updated_at = date('Y-m-d H:i:s');
+      //       $upload->save();
+      //     }
+      //   }
+      // }
 
       $asset = Asset::find($id);   
       $asset->asset_number = $input['asset_number'];
@@ -150,12 +325,197 @@ class AssetController extends Controller
       $asset->departement_id = $input['departement_id'];
       $asset->category_id = $input['category_id'];
       $asset->count_id = $input['count_id'];
+      $asset->asset_condition = $input['asset_condition'];
+      $asset->location = $input['location'];
+      
       $asset->save();
 
       if($asset){
         return back()->with('success', "Input Asset successfully");
       }
   }
+
+  public function update_photo(Request $request) {
+      
+    $input = $request->all();
+
+    $id = $input['id_asset'];
+    $input['updated_at'] = date('Y-m-d H:i:s');
+    $input['updated_by'] = Session::get('id');
+
+    $validator = Validator::make($input, [
+      "file0"=> "image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+      "file1"=> "image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+      "file2"=> "image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+    ]);
+
+    if($validator->fails()){
+      return back()->with('warning', implode(" ", $validator->messages()->all()));
+    }
+
+    if((isset($input['file0'])) && ($input['file0'] != null)){
+      if($input['id_upload0'] == null){
+        //make new input upload
+        $set_data_upload = [
+          'asset_id' => $id,
+          'user_id' => Session::get('id'),
+          'upload_status' => 1,
+          'created_by' => Session::get('id'),
+          'created_at' => date('Y-m-d H:i:s'),
+        ];
+        $uploadFolder = 'asset';
+        $image = $request->file('file0');
+        $image_uploaded_path = $image->store($uploadFolder, 'public');
+        $set_data_upload["upload_image"] = $image_uploaded_path;
+        
+        $update_asset = Asset::find($id);   
+        $update_asset->asset_status = "u";
+        $update_asset->save();
+
+        if($update_asset){
+            $data = Upload::create($set_data_upload);
+        }
+      }else{
+        //update data upload or image
+        $set_data_upload = [
+          'asset_id' => $id,
+          'user_id' => Session::get('id'),
+          'upload_status' => 1
+        ];
+        $uploadFolder = 'asset';
+        $image = $request->file('file0');
+
+        $get_image = json_decode(Upload::select('upload_image')->where('id',$input['id_upload0'])->first());
+        $stat = Storage::disk('public')->delete($get_image->upload_image);
+
+        $image_uploaded_path = $image->store($uploadFolder, 'public');
+        $set_data_upload["upload_image"] = $image_uploaded_path;
+
+        $update_asset = Asset::find($id);
+        $update_asset->asset_status = "u";
+        $update_asset->save();
+
+        if($update_asset){
+          $upload = Upload::find($input['id_upload0']);
+          $upload->asset_id = $set_data_upload['asset_id'];
+          $upload->user_id = $set_data_upload['user_id'];
+          $upload->upload_image = $set_data_upload['upload_image'];
+          $upload->updated_by = $set_data_upload['user_id'];
+          $upload->updated_at = date('Y-m-d H:i:s');
+          $upload->save();
+        }
+      }
+    }
+
+    if((isset($input['file1'])) && ($input['file1'] != null)){
+      if($input['id_upload1'] == null){
+        //make new input upload
+        $set_data_upload = [
+          'asset_id' => $id,
+          'user_id' => Session::get('id'),
+          'upload_status' => 1,
+          'created_by' => Session::get('id'),
+          'created_at' => date('Y-m-d H:i:s'),
+        ];
+        $uploadFolder = 'asset';
+        $image = $request->file('file1');
+        $image_uploaded_path = $image->store($uploadFolder, 'public');
+        $set_data_upload["upload_image"] = $image_uploaded_path;
+        
+        $update_asset = Asset::find($id);   
+        $update_asset->asset_status = "u";
+        $update_asset->save();
+
+        if($update_asset){
+            $data = Upload::create($set_data_upload);
+        }
+      }else{
+        //update data upload or image
+        $set_data_upload = [
+          'asset_id' => $id,
+          'user_id' => Session::get('id'),
+          'upload_status' => 1
+        ];
+        $uploadFolder = 'asset';
+        $image = $request->file('file1');
+
+        $get_image = json_decode(Upload::select('upload_image')->where('id',$input['id_upload1'])->first());
+        $stat = Storage::disk('public')->delete($get_image->upload_image);
+
+        $image_uploaded_path = $image->store($uploadFolder, 'public');
+        $set_data_upload["upload_image"] = $image_uploaded_path;
+
+        $update_asset = Asset::find($id);
+        $update_asset->asset_status = "u";
+        $update_asset->save();
+
+        if($update_asset){
+          $upload = Upload::find($input['id_upload1']);
+          $upload->asset_id = $set_data_upload['asset_id'];
+          $upload->user_id = $set_data_upload['user_id'];
+          $upload->upload_image = $set_data_upload['upload_image'];
+          $upload->updated_by = $set_data_upload['user_id'];
+          $upload->updated_at = date('Y-m-d H:i:s');
+          $upload->save();
+        }
+      }
+    }
+
+    if((isset($input['file2'])) && ($input['file2'] != null)){
+      if($input['id_upload2'] == null){
+        //make new input upload
+        $set_data_upload = [
+          'asset_id' => $id,
+          'user_id' => Session::get('id'),
+          'upload_status' => 1,
+          'created_by' => Session::get('id'),
+          'created_at' => date('Y-m-d H:i:s'),
+        ];
+        $uploadFolder = 'asset';
+        $image = $request->file('file2');
+        $image_uploaded_path = $image->store($uploadFolder, 'public');
+        $set_data_upload["upload_image"] = $image_uploaded_path;
+        
+        $update_asset = Asset::find($id);   
+        $update_asset->asset_status = "u";
+        $update_asset->save();
+
+        if($update_asset){
+            $data = Upload::create($set_data_upload);
+        }
+      }else{
+        //update data upload or image
+        $set_data_upload = [
+          'asset_id' => $id,
+          'user_id' => Session::get('id'),
+          'upload_status' => 1
+        ];
+        $uploadFolder = 'asset';
+        $image = $request->file('file2');
+
+        $get_image = json_decode(Upload::select('upload_image')->where('id',$input['id_upload2'])->first());
+        $stat = Storage::disk('public')->delete($get_image->upload_image);
+
+        $image_uploaded_path = $image->store($uploadFolder, 'public');
+        $set_data_upload["upload_image"] = $image_uploaded_path;
+
+        $update_asset = Asset::find($id);
+        $update_asset->asset_status = "u";
+        $update_asset->save();
+
+        if($update_asset){
+          $upload = Upload::find($input['id_upload2']);
+          $upload->asset_id = $set_data_upload['asset_id'];
+          $upload->user_id = $set_data_upload['user_id'];
+          $upload->upload_image = $set_data_upload['upload_image'];
+          $upload->updated_by = $set_data_upload['user_id'];
+          $upload->updated_at = date('Y-m-d H:i:s');
+          $upload->save();
+        }
+      }
+    }
+      return back()->with('success', "Input Photo successfully");
+}
 
   public function destroy(Request $request){
     $input = $request->all();
@@ -190,9 +550,14 @@ class AssetController extends Controller
   }
 
   public function download(){
+      $path = storage_path('app/public/sample_import_asset_excel/test.xlsx');
+      return response()->download($path);
+  }
+
+  public function download_img($url){
     $path = storage_path('app/public/sample_import_asset_excel/test.xlsx');
     return response()->download($path);
- }
+  }
 
   
 
