@@ -365,7 +365,7 @@
                   <label for="location_edit" class="col-form-label">Foto 1 : <i class="image_stat" id="image_stat0">No Data Available</i></label>
                   <input type="file" class="form-control" id="file0" name="file0" onchange="readURL1(this);" placeholder="Choose image" id="image">
                   <img id="image0" src="#" width="150px" class="mt-2" alt="your image" />
-                  {{-- <a href="#" id="deletePhoto" class="edit btn btn-danger btn-sm">Delete Photo</a> --}}
+                  {{-- <a href="#" id="deletePhoto0" data-toggle="modal" data-target="#deletedPhotoModal" class="edit btn btn-danger btn-sm">Delete Photo</a> --}}
                 </div>
                 <div class="form-group">
                   <input type="hidden" id="id_upload1" name="id_upload1">
@@ -383,6 +383,32 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="deletedPhotoModal" tabindex="-1" role="dialog" aria-labelledby="deletedPhotoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deletedPhotoModalLabel">Deleted Photo Asset</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="#" method="POST" id="deletedAssetForm">
+              @csrf
+              <input type="text" hidden class="form-control" id="id_upload" name="id_upload">
+              <div class="modal-body">
+                  <div class="form-group">
+                    <label id="title_alert">Are you sure you want to delete this photo ? </label>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" onclick="deletePhoto()" class="btn btn-primary">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
               </div>
             </form>
           </div>
@@ -646,8 +672,17 @@ $(function () {
       $("#image_stat1").show();
       $("#image_stat2").show();
     })
-    
+
+    $("#deletePhoto0").click(function() {
+      var id_upload = $('#id_upload0').val();
+      $("#id_upload").val(id_upload);
+    });
+
   })  
+
+  function deletePhoto(){
+    
+  }
   
 
 
