@@ -366,19 +366,24 @@
                   <label for="location_edit" class="col-form-label">Foto 1 : <i class="image_stat" id="image_stat0">No Data Available</i></label>
                   <input type="file" class="form-control" id="file0" name="file0" onchange="readURL1(this);" placeholder="Choose image" id="image">
                   <img id="image0" src="#" width="150px" class="mt-2" alt="your image" />
-                  {{-- <a href="#" id="deletePhoto0" data-toggle="modal" data-target="#deletedPhotoModal" class="edit btn btn-danger btn-sm">Delete Photo</a> --}}
-                </div>
+                  <a href="#" id="deletePhoto0" data-toggle="modal" data-target="#deletedPhotoModal" data-dismiss="modal" class="deletePhoto0 edit btn btn-danger btn-sm">Delete Photo</a>
+                  <a href="{{ route('download_asset_sample') }}" id="downloadImage0" class="deletePhoto0 edit btn btn-primary btn-sm">Download Sample Import</a>
+              </div>
                 <div class="form-group">
                   <input type="hidden" id="id_upload1" name="id_upload1">
                   <label for="location_edit" class="col-form-label">Foto 2 : <i class="image_stat" id="image_stat1">No Data Available</i></label>
                   <input type="file" class="form-control" id="file1" name="file1" onchange="readURL2(this);" placeholder="Choose image" id="image">
                   <img id="image1" src="#" width="150px" class="mt-2" alt="your image" />
+                  <a href="#" id="deletePhoto1" data-toggle="modal" data-target="#deletedPhotoModal" data-dismiss="modal" class="deletePhoto1 edit btn btn-danger btn-sm">Delete Photo</a>
+                  <a href="{{ route('download_asset_sample') }}" id="downloadImage1" class="deletePhoto1 edit btn btn-primary btn-sm">Download Sample Import</a>
                 </div>
                 <div class="form-group">
                   <input type="hidden" id="id_upload2" name="id_upload2">
                   <label for="location_edit" class="col-form-label">Foto 3 : <i class="image_stat" id="image_stat2">No Data Available</i></label>
                   <input type="file" class="form-control" id="file2" name="file2" onchange="readURL3(this);" placeholder="Choose image" id="image">
                   <img id="image2" src="#" width="150px" class="mt-2" alt="your image" />
+                  <a href="#" id="deletePhoto2" data-toggle="modal" data-target="#deletedPhotoModal" data-dismiss="modal" class="deletePhoto2 edit btn btn-danger btn-sm">Delete Photo</a>
+                  <a href="{{ route('download_asset_sample') }}" id="downloadImage2" class="deletePhoto2 edit btn btn-primary btn-sm">Download Sample Import</a>
                 </div>
               </div>
               <div class="modal-footer">
@@ -399,17 +404,21 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="#" method="POST" id="deletedAssetForm">
+            <form action="#" method="POST" id="deletedPhotoAssetForm">
               @csrf
-              <input type="text" hidden class="form-control" id="id_upload" name="id_upload">
+              <input type="text" hidden class="form-control" id="id_upload" name="id_upload" value="">
+              <input type="text" hidden class="form-control" id="id_asset_deleted" name="id_asset_deleted" value="">
+
               <div class="modal-body">
                   <div class="form-group">
                     <label id="title_alert">Are you sure you want to delete this photo ? </label>
                   </div>
               </div>
               <div class="modal-footer">
-                <button type="submit" onclick="deletePhoto()" class="btn btn-primary">Yes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <a href="#" data-dismiss="modal" onclick="deletePhoto()" class="edit btn btn-primary btn-sm">Yes</a>
+                  <a href="#" data-dismiss="modal" class="edit btn btn-secondary btn-sm">No</a>
+                  {{-- <button type="submit" onclick="deletePhoto()" class="btn btn-primary">Yes</button> --}}
+                {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button> --}}
               </div>
             </form>
           </div>
@@ -503,7 +512,6 @@ $(function () {
         _token : '{{ csrf_token() }}'
       },
       success: function(data){   
-        console.log(data); 
         $('#id_asset_edit').val(data.id)                
         $("#asset_number_edit").val(data.asset_number)
         $("#asset_serial_number_edit").val(data.asset_serial_number)
@@ -547,7 +555,11 @@ $(function () {
         _token : '{{ csrf_token() }}'
       },
       success: function(data){    
-        $('#id_asset_edit2').val(data.id)                
+        $('#id_asset_edit2').val(data.id)    
+        $(".deletePhoto0").hide();
+        $(".deletePhoto1").hide();
+        $(".deletePhoto2").hide();
+
         $.each(data.photo, function( index, value ) {
           var image_url = "{{ asset('/storage')}}/"+value.image;
           $("#id_upload"+index).val(value.id_image);
@@ -556,8 +568,13 @@ $(function () {
               $("#image"+index).show();
               $("#image"+index).attr("src",image_url);
               $("#image_stat"+index).hide();
+              $(".deletePhoto"+index).show();
+              var url = '{{ route("download_img",["url" => "dataurl"]) }}';
+              url1 = url.replace("dataurl", value.image);
+              $("#downloadImage"+index).attr("href", url1);
             }).fail(function() { 
               $("#image_stat"+index).show();
+              $(".deletePhoto"+index).hide();
               $("#image"+index).hide();
           })
         });
@@ -672,17 +689,106 @@ $(function () {
       $("#image_stat0").show();
       $("#image_stat1").show();
       $("#image_stat2").show();
+      $(".deletePhoto0").hide();
+      $(".deletePhoto1").hide();
+      $(".deletePhoto2").hide();
+
     })
 
-    $("#deletePhoto0").click(function() {
+    $('#deletedPhotoModal').on('hidden.bs.modal', function () {
+      var asset_id = $('#id_asset_deleted').val();
+      getupdate_image(asset_id);
+      $('#updateImage').modal('show');
+    })
+
+    // $('#updateImage').on('show.bs.modal', function () {
+    //   var check_empty0 = $('#image_stat0').is(":visible");
+    //   var check_empty1 = $('#image_stat1').is(":visible");
+    //   var check_empty2 = $('#image_stat2').is(":visible");
+    //   console.log(check_empty2);
+    //   if(check_empty0 ==  false){
+    //     $(".deletePhoto0").show();
+    //   }else{
+    //     $(".deletePhoto0").hide();
+    //   }
+    //   if(check_empty1 ==  false){
+    //     $(".deletePhoto1").show();
+    //   }else{
+    //     $(".deletePhoto1").hide();
+    //   }
+    //   if(check_empty2 ==  false){
+    //     $(".deletePhoto2").show();
+    //   }else{
+    //     $(".deletePhoto2").hide();
+    //   }
+    // })
+
+    
+    
+    $('#deletePhoto0').on('click', function(e){
       var id_upload = $('#id_upload0').val();
-      $("#id_upload").val(id_upload);
+      var id_asset = $('#id_asset_edit2').val();
+      
+      $('#id_asset_deleted').val(id_asset);
+      $('#id_upload').val(id_upload);
+    });
+
+    $('#deletePhoto1').on('click', function(e){
+      var id_upload = $('#id_upload1').val();
+      var id_asset = $('#id_asset_edit2').val();
+      
+      $('#id_asset_deleted').val(id_asset);
+      $('#id_upload').val(id_upload);
+    });
+
+    $('#deletePhoto2').on('click', function(e){
+      var id_upload = $('#id_upload2').val();
+      var id_asset = $('#id_asset_edit2').val();
+      
+      $('#id_asset_deleted').val(id_asset);
+      $('#id_upload').val(id_upload);
     });
 
   })  
 
+
+
   function deletePhoto(){
-    
+    $('#updateImage').modal('hide');
+    var id_upload = $('#id_upload').val();
+    var asset_id = $('#id_asset_deleted').val();
+
+    $.ajax({
+      url: "{{ route('asset.deleted_photo_asset') }}",
+      type: 'POST',
+      // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+      data: {
+        _method: 'POST',
+        id : id_upload,
+        _token : '{{ csrf_token() }}'
+      },
+      success: function(data){   
+        if(data.message == 'success'){ 
+          getupdate_image(asset_id);
+        }
+      // $('#updateImage').modal('show');
+      //   var image_url = "{{ asset('/storage')}}/"+data.upload_image;
+          // $("#id_upload"+index).val(value.id_image);
+          // $.get(image_url)
+          //   .done(function() { 
+          //     $("#image"+index).show();
+          //     $("#image"+index).attr("src",image_url);
+          //     $("#image_stat"+index).hide();
+          //   }).fail(function() { 
+          //     $("#image_stat"+index).show();
+          //     $("#image"+index).hide();
+          // })              
+      },
+      error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+          console.log(JSON.stringify(jqXHR));
+          console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+      }
+    })
   }
   
 

@@ -554,9 +554,25 @@ class AssetController extends Controller
       return response()->download($path);
   }
 
-  public function download_img($url){
-    $path = storage_path('app/public/sample_import_asset_excel/test.xlsx');
+  public function download_img(Request $request){
+    $url = $request->all()['url'];
+    $path = storage_path('app/public/'.$url);
     return response()->download($path);
+  }
+
+  public function deleted_photo_asset(Request $request){
+    $input = $request->all();
+    $get_image = json_decode(Upload::select('*')->where('id',$input['id'])->first());
+    $upload = Upload::find($get_image->id);
+    $upload->delete();
+    if($upload){
+      $stat = Storage::disk('public')->delete($get_image->upload_image);
+      $get_image->message = 'success';
+    }else{
+      $get_image->message = 'fail';
+      return back()->with('warning', 'Deleted asset photo fail');
+    }
+    return $get_image;
   }
 
   
