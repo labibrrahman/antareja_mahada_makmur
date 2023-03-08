@@ -209,7 +209,7 @@ class AssetController extends Controller
             }
             $query_upload = Upload::where('asset_id', $id)->get();
             foreach($query_upload as $data_query){
-                $data_query->upload_image = 'https://kitadev.xyz/storage/'.$data_query->upload_image;
+                $data_query->upload_image = 'https://monitoringassetamm.com/storage/'.$data_query->upload_image;
                 $data_check = $data_query;
             }
             if($data_check == ''){
