@@ -37,8 +37,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/asset/deleted_asset', [AssetController::class, 'destroy'])->name('asset.deleted_asset');
     Route::post('/asset/import', [AssetController::class, 'import'])->name('asset.import');
     Route::get('/download_asset_sample', [AssetController::class, 'download'])->name('download_asset_sample');
-    Route::get('/download_img/{url}', [AssetController::class, 'download_img'])->name('download_img');
+    Route::get('/download_img', [AssetController::class, 'download_img'])->name('download_img');
     Route::post('/asset/update_photo', [AssetController::class, 'update_photo'])->name('asset.update_photo');
+    Route::post('/asset/deleted_photo_asset', [AssetController::class, 'deleted_photo_asset'])->name('asset.deleted_photo_asset');
     
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
     Route::get('/berita_acara/tinjauan_asset/{id}', [BeritaAcaraController::class, 'tinjauan_asset']);
