@@ -520,6 +520,22 @@ class AssetController extends Controller
   public function destroy(Request $request){
     $input = $request->all();
     $id = $input['id_asset'];
+
+    $get_upload = json_decode(Upload::select('*')->where('asset_id',$id)->get());
+
+    foreach ($get_upload as $data_upload) {
+      $upload = Upload::find($data_upload->id);
+      $upload->delete();
+      if($upload){
+        $filesInFolder = Storage::disk('public')->exists($data_upload->upload_image); 
+        if($filesInFolder == true){
+          $stat = Storage::disk('public')->delete($data_upload->upload_image);
+        }
+      }else{
+        return back()->with('warning', 'Deleted asset photo fail');
+      }
+    }
+
     $asset = Asset::destroy($id);
     if($asset){
       return back()->with('success', "Deleted Asset successfully");
@@ -575,7 +591,29 @@ class AssetController extends Controller
     return $get_image;
   }
 
-  
+  public function get_name_file(){
+    $datas = array();
+    $filesInFolder = Storage::disk('public')->allFiles('asset');     
+    $replace_asset = str_replace("asset/",'', $filesInFolder);
+    $replace_extension = str_replace(".jpeg",'', $replace_asset);
+    foreach($replace_extension as $data){
+      $hehe = explode(" ",$data);
+      $datas[] = $hehe[0];
+      $sql_check_asset_number = json_decode(Asset::select('id')->where('asset_number', $hehe[0])->first());
+      if($sql_check_asset_number){
+        $input = [
+          'asset_id' => $sql_check_asset_number->id,
+          'user_id' => 1,
+          'upload_status' => 1,
+          'upload_image' => "asset/".$data.".jpeg",
+        ];
+        $asset = Upload::create($input);
+      }else{
+        $kosong[] = $data;
+      }
+    }
+    var_dump($kosong);
+  }
 
     /**
      * Show the application contact.

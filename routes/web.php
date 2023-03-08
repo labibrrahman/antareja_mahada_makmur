@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/download_img', [AssetController::class, 'download_img'])->name('download_img');
     Route::post('/asset/update_photo', [AssetController::class, 'update_photo'])->name('asset.update_photo');
     Route::post('/asset/deleted_photo_asset', [AssetController::class, 'deleted_photo_asset'])->name('asset.deleted_photo_asset');
+    Route::get('/asset/get_name_file', [AssetController::class, 'get_name_file'])->name('asset.get_name_file');
     
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
     Route::get('/berita_acara/tinjauan_asset/{id}', [BeritaAcaraController::class, 'tinjauan_asset']);
