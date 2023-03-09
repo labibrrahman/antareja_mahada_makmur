@@ -7,6 +7,8 @@ use App\Models\Upload;
 use App\Models\Counts;
 use App\Models\Categories;
 use App\Models\Departement;
+use App\Models\Mutations;
+use App\Models\MutationsDet;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use DataTables;
@@ -521,8 +523,15 @@ class AssetController extends Controller
     $input = $request->all();
     $id = $input['id_asset'];
 
+    $get_mutation = json_decode(MutationsDet::select('*')->where('asset_id',$id)->get());
+    if($get_mutation){
+      foreach ($get_mutation as $data_mutation) {
+        $mutation = MutationsDet::find($data_mutation->id);
+        $mutation->delete();
+      }
+    }
+    
     $get_upload = json_decode(Upload::select('*')->where('asset_id',$id)->get());
-
     foreach ($get_upload as $data_upload) {
       $upload = Upload::find($data_upload->id);
       $upload->delete();
@@ -534,6 +543,7 @@ class AssetController extends Controller
       }else{
         return back()->with('warning', 'Deleted asset photo fail');
       }
+      
     }
 
     $asset = Asset::destroy($id);
