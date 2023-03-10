@@ -53,6 +53,14 @@
             </a>
           </li>  
           <li class="nav-item">
+            <a href="/disposal_asset" class="nav-link  {{ $title == 'Disposal Asset' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-id-card-alt" ></i>
+              <p >
+                Disposal Asset
+              </p>
+            </a>
+          </li>  
+          <li class="nav-item">
             <a href="/berita_acara" class="nav-link  {{ $title == 'Berita Acara' ? 'active' : '' }}">
             <i class="nav-icon fas fa-id-card-alt" ></i>
               <p >

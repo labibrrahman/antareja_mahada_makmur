@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\AssetController;
 use App\Http\Controllers\Web\LoginController;
 use App\Http\Controllers\Web\BeritaAcaraController;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Web\DisposalAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::post('dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout');
+
     Route::get('/asset', [AssetController::class, 'index'])->name('asset');
     Route::get('/asset/data', [AssetController::class, 'getData'])->name('asset.data');
     Route::post('/asset/get_data_asset', [AssetController::class, 'getDataAsset'])->name('asset.get_data_asset');
@@ -41,6 +43,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/asset/update_photo', [AssetController::class, 'update_photo'])->name('asset.update_photo');
     Route::post('/asset/deleted_photo_asset', [AssetController::class, 'deleted_photo_asset'])->name('asset.deleted_photo_asset');
     Route::get('/asset/get_name_file', [AssetController::class, 'get_name_file'])->name('asset.get_name_file');
+
+    Route::get('/disposal_asset', [DisposalAssetController::class, 'index'])->name('disposal_asset');
+    Route::get('/disposal_asset/data', [AssetController::class, 'getData'])->name('disposal_asset.data');
+    Route::post('/disposal_asset/get_data_asset', [AssetController::class, 'getDataAsset'])->name('disposal_asset.get_data_asset');
+    Route::post('/disposal_asset/get_asset', [AssetController::class, 'getAsset'])->name('disposal_asset.update_asset');
+    Route::get('/disposal_asset/get_detail_mutation/{id}', [DisposalAssetController::class, 'getDataDetailMutations'])->name('disposal_asset.get_detail_mutation');
+    Route::get('/disposal_asset/ba_disposal_asset/{id}', [DisposalAssetController::class, 'ba_disposal_asset'])->name('disposal_asset.ba_disposal_asset');
     
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
     Route::get('/berita_acara/tinjauan_asset/{id}', [BeritaAcaraController::class, 'tinjauan_asset']);

@@ -62,19 +62,19 @@ td,tr, div{
                     <tr>
                         <td style="vertical-align:top">Jenis Asset</td>
                         <td style="vertical-align:top">:</td>
-                        <td style="vertical-align:top"> ..... </td>
+                        <td style="vertical-align:top"> ........ </td>
                         <td style="vertical-align:top"></td>
                     </tr>
                     <tr>
                         <td style="vertical-align:top">Diajuan Oleh</td>
                         <td style="vertical-align:top">:</td>
-                        <td style="vertical-align:top"> ..... </td>
+                        <td style="vertical-align:top">{{$user_req ?? "........"}}</td>
                         <td style="vertical-align:top"></td>
                     </tr>
                     <tr>
                         <td style="vertical-align:top">Lampiran</td>
                         <td style="vertical-align:top">:</td>
-                        <td style="vertical-align:top"> 3 Halaman </td>
+                        <td style="vertical-align:top"> .... Halaman </td>
                         <td style="vertical-align:top"></td>
                     </tr>
                     <tr>
@@ -89,22 +89,33 @@ td,tr, div{
                         <th>Class</th>
                         <th>Capitalized on</th>
                         <th>Asset description</th>
-                        <th>Merk </th>
-                        <th>Tipe </th>
-                        <th>No. SN </th>
-                        <th>No. Mesin </th>
                         <th>QTY </th>
                         <th>OUN </th>
                         <th>Price Unit </th>
-                        <th>Acquis.val. </th>
-                        <th>Nilai Buku </th>
-                        <th>Harga Pasar </th>
                         <th>Lokasi</th>
                         <th>Penilaian Kondisi</th>
                     </tr>
-                    <tr style="font-size:9px">
-                        <td colspan="17" style="text-align:center">No data available in table</td>
-                    </tr>
+                    <?php $i = 1;?>
+                    <?php if((isset($mutation_data)) && ($mutation_data != null)){ ?>
+                        @foreach ($mutation_data as $data)
+                            <tr style="font-size:9px">
+                                <td>{{$i++}}</td>
+                                <td>{{$data->asset_number}}</td>
+                                <td>{{$data->category_id ." - ". $data->category}}</td>
+                                <td>{{$data->asset_capitalized_on}}</td>
+                                <td>{{$data->asset_desc}}</td>
+                                <td>{{$data->asset_quantity}}</td>
+                                <td>{{$data->count}}</td>
+                                <td>{{$data->asset_price}}</td>
+                                <td>{{$data->location}}</td>
+                                <td>{{$data->assets_cond}}</td>
+                            </tr>
+                        @endforeach
+                    <?php } else{ ?>
+                        <tr style="font-size:9px">
+                            <td colspan="17" style="text-align:center">No data available in table</td>
+                        </tr>
+                    <?php } ?>
                 </table>
                 <br>
                 <br>
@@ -112,12 +123,12 @@ td,tr, div{
                     <tr>
                         <td width="15%">Hari/Tanggal pengajuan</td>
                         <td width="1px">:</td>
-                        <td> .... </td>
+                        <td> <?= date('d-M-Y')?> </td>
                     </tr>
                 </table>
                 <br>
                 <br>
-                <table width="100%" style="font-size:10px;">
+                {{-- <table width="100%" style="font-size:10px;">
                     <tr style="text-align:center">
                         <td width="15%">Diajukan Oleh,</td>
                         <td width="15%">Diajukan Oleh,</td>
@@ -142,7 +153,7 @@ td,tr, div{
                         <td><u>Budiman Angsanajaya</u><br>Finance & Accounting Manager<br><u>NIK : 10110084</u></td>
                         <td><u>Sujoko Martin</u><br>Finance Director<br><u>PT. PUTRA PERKASA ABADI</u></td>
                     </tr>
-                </table>
+                </table> --}}
             </div>
         </fieldset> 
 
