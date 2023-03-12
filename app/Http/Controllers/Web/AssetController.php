@@ -84,14 +84,18 @@ class AssetController extends Controller
       ]);
 
       if($validator->fails()){
-	        return back()->with('warning', implode(" ", $validator->messages()->all()));
+        // return back()->with('warning', implode(" ", $validator->messages()->all()));
+        $array_alert = array('status' => 'fail', 'error' => '', 'message' => implode(" ", $validator->messages()->all()));
       }
 
       $asset = Asset::find($input['id_asset']);   
       $asset->asset_price = $input['asset_price'];
       $asset->save();
 
-      return back()->with('success', "Input Asset Price successfully");
+      if($asset){
+        $array_alert = array('status' => 'success', 'error' => '', 'message' => 'Input Asset Price successfully');
+      }
+      echo json_encode($array_alert);
     }
 
     public function store(Request $request) {
@@ -118,18 +122,21 @@ class AssetController extends Controller
       ]);
 
       if($validator->fails()){
-        return back()->with('warning', implode(" ", $validator->messages()->all()));
+        // return back()->with('warning', implode(" ", $validator->messages()->all()));
+        $array_alert = array('status' => 'fail', 'error' => '', 'message' => implode(" ", $validator->messages()->all()));
       }else{
         $asset = Asset::create($input);
         if($asset){
-          return back()->with('success', "Input Asset successfully");
+          $array_alert = array('status' => 'success', 'error' => '', 'message' => 'Input Asset successfully');
         }
       }
+      echo json_encode($array_alert);
     }
 
   public function update(Request $request) {
       
       $input = $request->all();
+      dd($input);
       $id = $input['id_asset'];
       $input['asset_manager'] = "-";
       $input['asset_status'] = "-";
@@ -153,7 +160,7 @@ class AssetController extends Controller
       ]);
 
       if($validator->fails()){
-        return back()->with('warning', implode(" ", $validator->messages()->all()));
+        $array_alert = array('status' => 'fail', 'error' => '', 'message' => implode(" ", $validator->messages()->all()));
       }
 
       // if((isset($input['file0'])) && ($input['file0'] != null)){
@@ -333,9 +340,11 @@ class AssetController extends Controller
       $asset->save();
 
       if($asset){
-        return back()->with('success', "Input Asset successfully");
+        $array_alert = array('status' => 'success', 'error' => '', 'message' => 'Edit Asset successfully');
       }
+    echo json_encode($array_alert);
   }
+
 
   public function update_photo(Request $request) {
       
@@ -516,7 +525,9 @@ class AssetController extends Controller
         }
       }
     }
-      return back()->with('success', "Input Photo successfully");
+    $array_alert = array('status' => 'success', 'error' => '', 'message' => 'Update Photo successfully');
+    
+    echo json_encode($array_alert);
 }
 
   public function destroy(Request $request){
@@ -541,17 +552,19 @@ class AssetController extends Controller
           $stat = Storage::disk('public')->delete($data_upload->upload_image);
         }
       }else{
-        return back()->with('warning', 'Deleted asset photo fail');
+        // return back()->with('warning', 'Deleted asset photo fail');
+        $array_alert = array('status' => 'fail', 'error' => '', 'message' => 'Deleted Asset photo fail');
       }
       
     }
 
     $asset = Asset::destroy($id);
     if($asset){
-      return back()->with('success', "Deleted Asset successfully");
+      $array_alert = array('status' => 'success', 'error' => '', 'message' => 'Deleted Asset successfully');
     }else{
-      return back()->with('warning', 'Deleted Asset fail');
+      $array_alert = array('status' => 'fail', 'error' => '', 'message' => 'Deleted Asset fail');
     }
+    echo json_encode($array_alert);
   }
 
   public function import(Request $request)
