@@ -616,26 +616,40 @@ class AssetController extends Controller
 
   public function get_name_file(){
     $datas = array();
-    $filesInFolder = Storage::disk('public')->allFiles('asset');     
+    $filesInFolder = Storage::disk('public')->allFiles('asset');  
     $replace_asset = str_replace("asset/",'', $filesInFolder);
-    $replace_extension = str_replace(".jpeg",'', $replace_asset);
-    foreach($replace_extension as $data){
-      $hehe = explode(" ",$data);
-      $datas[] = $hehe[0];
-      $sql_check_asset_number = json_decode(Asset::select('id')->where('asset_number', $hehe[0])->first());
-      if($sql_check_asset_number){
-        $input = [
-          'asset_id' => $sql_check_asset_number->id,
-          'user_id' => 1,
-          'upload_status' => 1,
-          'upload_image' => "asset/".$data.".jpeg",
-        ];
-        $asset = Upload::create($input);
+    // $replace_extension = str_replace(".jpeg",'', $replace_asset);
+    foreach($replace_asset as $data){
+      $splitExtension = explode(".",$data);
+      $getNameFile = reset($splitExtension);
+      $getSerialPhoto = explode(" ",$getNameFile);
+      $serialNumberPhoto = (reset($getSerialPhoto));
+      $sql_check_upload_exsist = json_decode(Upload::select('id')->where('upload_image', "asset/".$data)->first());
+      if($sql_check_upload_exsist){
+        $exist[] = $data;
       }else{
-        $kosong[] = $data;
+        $sql_check_asset_number = json_decode(Asset::select('id')->where('asset_number', $serialNumberPhoto)->first());
+        // dd($sql_check_upload_exsist);
+        if($sql_check_asset_number){
+          $input = [
+            'asset_id' => $sql_check_asset_number->id,
+            'user_id' => 1,
+            'upload_status' => 1,
+            'upload_image' => "asset/".$data,
+          ];
+          $asset = Upload::create($input);
+        }else{
+          $kosong[] = $data;
+        }
       }
     }
+    // $getAllAssetNumber = json_decode(Asset::select('asset_number')->get());
+    // foreach($getAllAssetNumber as $asset_number){
+    //   $allAssetNumber[] = $asset_number->asset_number;
+    // }
+    // dd($sql_check_asset_number);
     var_dump($kosong);
+    // var_dump($exist);
   }
 
     /**
