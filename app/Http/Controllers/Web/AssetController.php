@@ -648,7 +648,8 @@ class AssetController extends Controller
     //   $allAssetNumber[] = $asset_number->asset_number;
     // }
     // dd($sql_check_asset_number);
-    var_dump($kosong);
+    $return = (['file yang tidak tersedia pada table asset' => $kosong]);
+    echo json_encode($return);
     // var_dump($exist);
   }
 
