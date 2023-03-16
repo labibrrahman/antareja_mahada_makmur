@@ -70,7 +70,7 @@ td,tr, div{
                     <tr>
                         <td style="vertical-align:top">Diajuan Oleh</td>
                         <td style="vertical-align:top">:</td>
-                        <td style="vertical-align:top"> ..... </td>
+                        <td style="vertical-align:top"> {{$user_req ?? "........"}} </td>
                         <td style="vertical-align:top"></td>
                         <td style="vertical-align:top">1. Berita Acara Mutasi Asset Ditandatangani 2 Pihak (wajib Ada)</td>
                     </tr>
@@ -101,7 +101,7 @@ td,tr, div{
                         <td style="vertical-align:top">5. BAPP (plant Khusus Unit yang memiliki Equipment No /No. Lambung Wajib Ada)</td>
                     </tr>
                     <tr>
-                        <td colspan="3">Bapak Margono</td>
+                        <td colspan="3"> .......... </td>
                         <td></td>
                         <td style="vertical-align:top">6. Lainnya,</td>
                     </tr>
@@ -124,16 +124,30 @@ td,tr, div{
                         <th>QTY </th>
                         <th>OUN </th>
                         <th>Price Unit </th>
-                        <th>Book Value </th>
-                        <th>PIC </th>
-                        <th>Tanggal Estimasi / Realisasi/ETD</th>
                         <th>Lokasi</th>
                         <th>Penilaian Kondisi</th>
-                        <th>Kesimpulan Kondisi</th>
                     </tr>
-                    <tr style="font-size:9px">
-                        <td colspan="16" style="text-align:center">No data available in table</td>
-                    </tr>
+                    <?php $i = 1;?>
+                    <?php if((isset($mutation_data)) && ($mutation_data != null)){ ?>
+                        @foreach ($mutation_data as $data)
+                            <tr style="font-size:9px">
+                                <td>{{$i++}}</td>
+                                <td>{{$data->asset_number}}</td>
+                                <td>{{$data->category_id ." - ". $data->category}}</td>
+                                <td>{{$data->asset_capitalized_on}}</td>
+                                <td>{{$data->asset_desc}}</td>
+                                <td>{{$data->asset_quantity}}</td>
+                                <td>{{$data->count}}</td>
+                                <td>{{$data->asset_price}}</td>
+                                <td>{{$data->location}}</td>
+                                <td>{{$data->assets_cond}}</td>
+                            </tr>
+                        @endforeach
+                    <?php } else{ ?>
+                        <tr style="font-size:9px">
+                            <td colspan="17" style="text-align:center">No data available in table</td>
+                        </tr>
+                    <?php } ?>
                 </table>
                 <br>
                 <br>
@@ -146,7 +160,7 @@ td,tr, div{
                 </table>
                 <br>
                 <br>
-                <table width="100%" style="font-size:10px;">
+                {{-- <table width="100%" style="font-size:10px;">
                     <tr style="text-align:center;font-size:9px">
                         <td width="15%">Diserahkan Oleh AMM Site ABP</td>
                         <td width="15%">Diterima Oleh AMM Site MHU</td>
@@ -198,7 +212,7 @@ td,tr, div{
                         <td><u>Muhammad Anwar Hasan Salasa</u><br>Site Manager<br><u>NIK : 22004256</u></td>
                         <td><u>Budi Utomo Burhanudin</u><br>Site Manager<br><u>NIK : 5090025</u></td>
                     </tr>
-                </table>
+                </table> --}}
             </div>
         </fieldset> 
 

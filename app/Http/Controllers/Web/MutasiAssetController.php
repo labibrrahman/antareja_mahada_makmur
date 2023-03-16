@@ -18,7 +18,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportAsset;
 use Illuminate\Support\Facades\Storage;
 
-class DisposalAssetController extends Controller
+class MutasiAssetController extends Controller
 {
 
     /**
@@ -31,7 +31,7 @@ class DisposalAssetController extends Controller
       if ($request->ajax()) {
         $data = Mutations::leftjoin('users', 'users.id', '=', 'mutations.user_id')
         ->orderBy('mutations.created_at', 'DESC')
-        ->where('mutations.status','r')
+        ->where('mutations.status','m')
         ->get(['mutations.id as id', 'users.full_name as name',DB::raw('DATE_FORMAT(mutations.created_at, "%d-%b-%Y") as created_ats'),
           DB::raw("(
           CASE 
@@ -44,7 +44,7 @@ class DisposalAssetController extends Controller
           ->addIndexColumn()
           ->addColumn('action', function($row){
                 $btn =  '<a href="" data-toggle="modal" onclick=getDetailMutation('.$row['id'].') data-target="#exampleModal" class="edit btn btn-success btn-sm">Detail Mutation</a>&nbsp;'.
-                        '<a href="/disposal_asset/ba_disposal_asset/'.$row['id'].'")" class="btnPrints btn btn-warning btn-sm" id=""><i class=\'fa fa-print\'></i>Print</a>';
+                        '<a href="/mutation_asset/ba_mutation_asset/'.$row['id'].'")" class="btnPrints btn btn-warning btn-sm" id=""><i class=\'fa fa-print\'></i>Print</a>';
                 return $btn;
           })
           ->rawColumns(['action'])
@@ -70,10 +70,10 @@ class DisposalAssetController extends Controller
       //   ]);
       //   
 
-      return view('pages.disposal_asset', ['title' => 'Disposal Asset']);
+      return view('pages.mutation_asset', ['title' => 'Mutasi Asset']);
     }
 
-    public function ba_disposal_asset($id){
+    public function ba_mutation_asset($id){
       $data = MutationsDet::leftJoin('assets','assets.id','=','detail_mutations.asset_id')
               ->leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
               ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
@@ -81,7 +81,7 @@ class DisposalAssetController extends Controller
               ->leftjoin('mutations', 'mutations.id', '=', 'detail_mutations.mutasi_id')
               ->leftjoin('users', 'users.id', '=', 'mutations.user_id')
               ->where('detail_mutations.mutasi_id',$id)
-              ->where('mutations.status','r')
+              ->where('mutations.status','m')
               ->get(['assets.*','users.full_name as name','departments.department','categories.id as category_id','categories.category','counts.count',
               DB::raw("(
                 CASE 
@@ -97,7 +97,7 @@ class DisposalAssetController extends Controller
       $json_data = json_decode($data);
       $user_req = reset($json_data)->name;
 
-      return view('pages.berita_acara.disposal_asset',['title' => 'Berita Acara'])
+      return view('pages.berita_acara.mutasi_asset',['title' => 'Berita Acara'])
       ->with('mutation_data', $json_data)
       ->with('user_req', $user_req);
     }

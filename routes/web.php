@@ -7,6 +7,7 @@ use App\Http\Controllers\Web\LoginController;
 use App\Http\Controllers\Web\BeritaAcaraController;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Web\DisposalAssetController;
+use App\Http\Controllers\Web\MutasiAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/disposal_asset/get_asset', [AssetController::class, 'getAsset'])->name('disposal_asset.update_asset');
     Route::get('/disposal_asset/get_detail_mutation/{id}', [DisposalAssetController::class, 'getDataDetailMutations'])->name('disposal_asset.get_detail_mutation');
     Route::get('/disposal_asset/ba_disposal_asset/{id}', [DisposalAssetController::class, 'ba_disposal_asset'])->name('disposal_asset.ba_disposal_asset');
+
+
+    Route::get('/mutation_asset', [MutasiAssetController::class, 'index'])->name('mutation_asset');
+    Route::get('/mutation_asset/data', [AssetController::class, 'getData'])->name('mutation_asset.data');
+    Route::post('/mutation_asset/get_data_asset', [AssetController::class, 'getDataAsset'])->name('mutation_asset.get_data_asset');
+    Route::post('/mutation_asset/get_asset', [AssetController::class, 'getAsset'])->name('mutation_asset.update_asset');
+    Route::get('/mutation_asset/get_detail_mutation/{id}', [MutasiAssetController::class, 'getDataDetailMutations'])->name('mutation_asset.get_detail_mutation');
+    Route::get('/mutation_asset/ba_mutation_asset/{id}', [MutasiAssetController::class, 'ba_mutation_asset'])->name('mutation_asset.ba_mutation_asset');
     
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
     Route::get('/berita_acara/tinjauan_asset/{id}', [BeritaAcaraController::class, 'tinjauan_asset']);
