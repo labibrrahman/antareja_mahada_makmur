@@ -112,6 +112,7 @@ $(function () {
   });
 
   function getDetailMutation($id = 0){
+    $('.detailMutation').DataTable().destroy();
     var url = '{{ route("disposal_asset.get_detail_mutation",["dataurl"]) }}';
     url1 = url.replace("dataurl", $id);
     var table = $('.detailMutation').DataTable({
