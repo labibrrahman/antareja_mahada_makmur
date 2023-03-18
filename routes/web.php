@@ -65,6 +65,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/berita_acara/disposal_asset', [BeritaAcaraController::class, 'disposal_asset']);
     Route::get('/berita_acara/mutasi_asset', [BeritaAcaraController::class, 'mutasi_asset']);
 
+    
+    Route::get('/asset/noImage', [AssetController::class, 'noImage']);
+
 });
 
 

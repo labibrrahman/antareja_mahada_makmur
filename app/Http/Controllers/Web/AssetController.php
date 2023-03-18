@@ -652,6 +652,15 @@ class AssetController extends Controller
     // var_dump($exist);
   }
 
+  public function noImage(){
+    $getAsset = Asset::select('id')->whereNotIn('assets.id', Upload::select('asset_id'))->get();
+    dd(json_decode($getAsset));
+    foreach($geteAss as $data){
+      $data->id;
+    }
+    
+  }
+
     /**
      * Show the application contact.
      *
