@@ -396,8 +396,9 @@ class AssetController extends Controller
         $image = $request->file('file0');
 
         $get_image = json_decode(Upload::select('upload_image')->where('id',$input['id_upload0'])->first());
-        $stat = Storage::disk('public')->delete($get_image->upload_image);
-
+        if(!str_contains($get_image->upload_image, "default_photo/")){
+          $deleted_photo_storage = Storage::disk('public')->delete($get_image->upload_image);
+        }
         $image_uploaded_path = $image->store($uploadFolder, 'public');
         $set_data_upload["upload_image"] = $image_uploaded_path;
 
@@ -450,8 +451,9 @@ class AssetController extends Controller
         $image = $request->file('file1');
 
         $get_image = json_decode(Upload::select('upload_image')->where('id',$input['id_upload1'])->first());
-        $stat = Storage::disk('public')->delete($get_image->upload_image);
-
+        if(!str_contains($get_image->upload_image, "default_photo/")){
+          $deleted_photo_storage = Storage::disk('public')->delete($get_image->upload_image);
+        }
         $image_uploaded_path = $image->store($uploadFolder, 'public');
         $set_data_upload["upload_image"] = $image_uploaded_path;
 
@@ -504,8 +506,9 @@ class AssetController extends Controller
         $image = $request->file('file2');
 
         $get_image = json_decode(Upload::select('upload_image')->where('id',$input['id_upload2'])->first());
-        $stat = Storage::disk('public')->delete($get_image->upload_image);
-
+        if(!str_contains($get_image->upload_image, "default_photo/")){
+          $deleted_photo_storage = Storage::disk('public')->delete($get_image->upload_image);
+        }
         $image_uploaded_path = $image->store($uploadFolder, 'public');
         $set_data_upload["upload_image"] = $image_uploaded_path;
 
@@ -546,9 +549,11 @@ class AssetController extends Controller
       $upload = Upload::find($data_upload->id);
       $upload->delete();
       if($upload){
-        $filesInFolder = Storage::disk('public')->exists($data_upload->upload_image); 
-        if($filesInFolder == true){
-          $stat = Storage::disk('public')->delete($data_upload->upload_image);
+        if(!str_contains($data_upload->upload_image, "default_photo/")){
+          $filesInFolder = Storage::disk('public')->exists($data_upload->upload_image); 
+          if($filesInFolder == true){
+            $stat = Storage::disk('public')->delete($data_upload->upload_image);
+          }
         }
       }else{
         // return back()->with('warning', 'Deleted asset photo fail');
@@ -604,8 +609,13 @@ class AssetController extends Controller
     $upload = Upload::find($get_image->id);
     $upload->delete();
     if($upload){
-      $stat = Storage::disk('public')->delete($get_image->upload_image);
-      $get_image->message = 'success';
+      if(!str_contains($get_image->upload_image, "default_photo/")){
+        $stat = Storage::disk('public')->delete($get_image->upload_image);
+        $get_image->message = 'success';
+      }else{
+        $get_image->message = 'cannot deleted iamge default';
+        return back()->with('warning', 'Deleted asset photo fail');
+      }
     }else{
       $get_image->message = 'fail';
       return back()->with('warning', 'Deleted asset photo fail');
@@ -653,12 +663,22 @@ class AssetController extends Controller
   }
 
   public function noImage(){
-    $getAsset = Asset::select('id')->whereNotIn('assets.id', Upload::select('asset_id'))->get();
-    dd(json_decode($getAsset));
-    foreach($geteAss as $data){
-      $data->id;
+    $getAsset = json_decode(Asset::select('id')->whereNotIn('assets.id', Upload::select('asset_id'))->get());
+    foreach($getAsset as $data){
+      $asset_id = $data->id;
+      $input = [
+        'asset_id' => $asset_id,
+        'user_id' => 1,
+        'upload_status' => 1,
+        'upload_image' => "default_photo/default.jpg",
+      ];
+      $asset = Upload::create($input);
     }
-    
+    if(isset($asset)){
+      echo $asset;
+    }else{
+      echo "false";
+    }
   }
 
     /**
