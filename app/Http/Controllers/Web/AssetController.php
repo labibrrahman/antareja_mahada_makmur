@@ -681,6 +681,49 @@ class AssetController extends Controller
     }
   }
 
+  public function tinjauan_asset($departement_id , $date_from, $date_to){
+    if(($date_from != "-") && ($date_to == "-")){
+        $date_to = date("Y-m-d");
+    }
+    if(($date_from == "-") && ($date_to != "-")){
+        $date_from = date("1990-01-01");
+    }
+    $query_asset = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+                    ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
+                    ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+                    ->when($departement_id != 0, function ($query_) use ($departement_id) {
+                        return $query_->where('assets.departement_id', $departement_id);
+                    })
+                    ->when($date_from != "-", function ($query_) use ($date_from, $date_to) {
+                        return $query_->whereBetween('assets.asset_capitalized_on', [$date_from, $date_to]);
+                    })
+                    ->whereIn('assets.id',Upload::select('asset_id'))
+                    ->orderBy('assets.asset_capitalized_on')
+                    ->get(['assets.*','departments.department','categories.id as category_id','categories.category','counts.count']);
+
+    $asset = json_decode($query_asset);
+    // dd($asset);
+    foreach($asset as $data_asset){
+        $query_upload = Upload::where('asset_id', $data_asset->id)->get();
+        $get_photo = json_decode($query_upload);
+        foreach($get_photo as $set_photo){
+            $data_asset->photo[] = $set_photo->upload_image;
+        }
+        $data_asset->count_photo = count($get_photo);
+    }
+
+    $getDept = json_decode(Departement::select('department')->where('id', $departement_id)->get());
+    if($getDept == null){
+        $getDept = 'ALL';
+    }else{
+        $getDept = reset($getDept)->department;
+    }
+    return view('pages.berita_acara.tinjauan_asset',['title' => 'Berita Acara'])
+    ->with('dept', $getDept)
+    ->with('asset_data', $asset);
+
+}
+
     /**
      * Show the application contact.
      *

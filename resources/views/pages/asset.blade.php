@@ -54,7 +54,33 @@
     </div>
     <!-- /.card-footer-->
   </div>
-      <!-- /.card -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">&nbsp;<b>Berita Acara Tinjauan Asset</b></h5>
+    </div>
+    <div class="card-body row" style="padding-bottom:0px">
+      <div class="card-body" >
+        <div class="form-group row col-sm-6" id = "select_filter_dept">
+            <label class="mt-2">Show By : &nbsp;&nbsp;</label>
+            <select class="status form-control" name="filter_dept" id="filter_dept" style="width:300px;" onchange="ba_bydept()">
+                <option value="0" selected id="option_show">-- Show All --</option>
+                @foreach ($departement as $data)
+                  <option value="<?= $data->id ?>" id="option_show" ><?= $data->department ?></option>
+                @endforeach
+            </select>
+        </div>
+        <div class="input-group row col-sm-6">
+          <label for="ba_capitalized_on" class="col-form-label">Capitalized on from : &nbsp;</label>
+          <input type="date" class="form-control" id="ba_capitalized_on" name="asset_capitalized_on" onchange="ba_bydept()">
+          <label for="ba_capitalized_on_to" class="col-form-label">&nbsp;&nbsp;to : &nbsp;</label>
+          <input type="date" class="form-control" id="ba_capitalized_on_to" name="asset_capitalized_on" onchange="ba_bydept()">
+        </div>
+        <div class="input-group row">
+          <a href="#" id="tinjauanAsset" class="btn btn-sm btn-warning mt-2"><i class="fa fa-print"></i> Print</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -449,6 +475,7 @@
 //   })
 // });
 $(document).ready(function () {
+
   $('#updateImageForm').on('submit', (function (e) {
     e.preventDefault();
       $.ajax({
@@ -651,7 +678,35 @@ $(document).ready(function () {
   
 });
 
+function ba_bydept(){
+  var filter_dept = document.getElementById('filter_dept').value;
+  var ba_capitalized_on = document.getElementById('ba_capitalized_on').value;
+  var ba_capitalized_on_to = document.getElementById('ba_capitalized_on_to').value;
+  if(ba_capitalized_on == ''){
+    var ba_capitalized_on = "-";
+  }
+  if(ba_capitalized_on_to == ''){
+    var ba_capitalized_on_to = "-";
+  }
+  document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept+'/'+ba_capitalized_on+'/'+ba_capitalized_on_to;
+};
+
+window.onload = function(){  
+  var filter_dept = document.getElementById('filter_dept').value;
+  var ba_capitalized_on = document.getElementById('ba_capitalized_on').value;
+  var ba_capitalized_on_to = document.getElementById('ba_capitalized_on_to').value;
+  if(ba_capitalized_on == ''){
+    var ba_capitalized_on = "-";
+  }
+  if(ba_capitalized_on_to == ''){
+    var ba_capitalized_on_to = "-";
+  }
+  document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept+'/'+ba_capitalized_on+'/'+ba_capitalized_on_to;
+};
+
 $(function () {
+  $("#tinjauanAsset").printPage();
+
   $("#image0").hide();
   $("#image1").hide();
   $("#image2").hide();
