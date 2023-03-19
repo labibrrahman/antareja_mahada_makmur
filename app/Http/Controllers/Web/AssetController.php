@@ -608,12 +608,20 @@ class AssetController extends Controller
     $get_image = json_decode(Upload::select('*')->where('id',$input['id'])->first());
     $upload = Upload::find($get_image->id);
     $upload->delete();
+
+    $check_asset_exist_on_upload = json_decode(Upload::select('*')->where('asset_id',$get_image->asset_id)->get());
+    if(!$check_asset_exist_on_upload){
+      $update_asset = Asset::find($get_image->asset_id);
+      $update_asset->asset_status = "-";
+      $update_asset->save();
+    }
+
     if($upload){
       if(!str_contains($get_image->upload_image, "default_photo/")){
         $stat = Storage::disk('public')->delete($get_image->upload_image);
         $get_image->message = 'success';
       }else{
-        $get_image->message = 'cannot deleted iamge default';
+        $get_image->message = 'cannot deleted image default';
         return back()->with('warning', 'Deleted asset photo fail');
       }
     }else{
