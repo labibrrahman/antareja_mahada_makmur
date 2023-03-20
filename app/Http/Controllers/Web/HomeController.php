@@ -76,6 +76,7 @@ class HomeController extends Controller
                 $category_count = count(Asset::select('id')
                                     // ->where('departement_id',Session::get('departement_id'))
                                     ->where('category_id',json_decode($get_category_name)[0]->id)
+                                    ->whereYear('asset_capitalized_on', $year_monitoring)
                                     ->get());
                 
                 $dataByCategory[$i] = [$category_name, $category_count];
