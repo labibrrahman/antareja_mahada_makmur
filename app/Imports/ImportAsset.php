@@ -46,7 +46,6 @@ class ImportAsset implements ToModel, WithHeadingRow
         if($row['qty'] == null){
             $row['qty'] = '0';
         }
-        
         return new Asset([
             'asset_number' => $row['asset_number'],
             'category_id' => $row['category'],
@@ -58,7 +57,7 @@ class ImportAsset implements ToModel, WithHeadingRow
             'asset_quantity' => $row['qty'],
             'count_id' => $row['oun'],
             'asset_po' => $row['po'],
-            'asset_price' => $row['accuisition_value']
+            'asset_price' => (string)$row['accuisition_value']
         ]);
     }
 }

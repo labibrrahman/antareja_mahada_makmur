@@ -22,5 +22,6 @@ class Asset extends Model
     'count_id',
     'location',
     "asset_condition",
+    "asset_price",
     ];
 }
