@@ -613,6 +613,8 @@ class AssetController extends Controller
     if(!$check_asset_exist_on_upload){
       $update_asset = Asset::find($get_image->asset_id);
       $update_asset->asset_status = "-";
+      $update_asset->location = null;
+      $update_asset->asset_condition = null;
       $update_asset->save();
     }
 
