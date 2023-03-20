@@ -191,6 +191,14 @@
 
   function asset_category() {
     var data = google.visualization.arrayToDataTable(asset_by_category);
+    console.log(asset_by_category);
+    var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" }
+                        ]);
     var options = {
       title: 'Asset By Category Tahun <?= $set_year ?>',
       curveType: 'function',
@@ -200,7 +208,7 @@
       height:300,
     };
     var chart = new google.visualization.BarChart(document.getElementById('category'));
-    chart.draw(data, options);
+    chart.draw(view, options);
   }
 
 </script>
