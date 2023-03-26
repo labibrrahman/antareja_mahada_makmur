@@ -91,7 +91,7 @@ td,tr, div{
                             <th>Asset description</th>
                             <th>Acquis.val. </th>
                             <th>Jenis</th>
-                            <th>Status</th>
+                            <th>Kondisi</th>
                             <th>Lokasi</th>
                             <th>PIC</th>
                             <th>FOTO 1</th>
