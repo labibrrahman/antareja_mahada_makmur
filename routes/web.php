@@ -8,6 +8,7 @@ use App\Http\Controllers\Web\BeritaAcaraController;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Web\DisposalAssetController;
 use App\Http\Controllers\Web\MutasiAssetController;
+use App\Http\Controllers\Web\BeritaAcaraTinjauanAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,13 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/disposal_asset/get_asset', [AssetController::class, 'getAsset'])->name('disposal_asset.update_asset');
     Route::get('/disposal_asset/get_detail_mutation/{id}', [DisposalAssetController::class, 'getDataDetailMutations'])->name('disposal_asset.get_detail_mutation');
     Route::get('/disposal_asset/ba_disposal_asset/{id}', [DisposalAssetController::class, 'ba_disposal_asset'])->name('disposal_asset.ba_disposal_asset');
+
+    Route::get('/tinjauan_asset', [BeritaAcaraTinjauanAssetController::class, 'index'])->name('tinjauan_asset');
+    Route::post('/tinjauan_asset/store', [BeritaAcaraTinjauanAssetController::class, 'store'])->name('tinjauan_asset.store');
+    Route::get('/tinjauan_asset/get_ba_number', [BeritaAcaraTinjauanAssetController::class, 'get_ba_number'])->name('tinjauan_asset.get_ba_number');
+    Route::get('/tinjauan_asset_print/{id}', [BeritaAcaraTinjauanAssetController::class, 'tinjauan_asset_print']);
+    Route::post('/tinjauan_asset/deleted', [BeritaAcaraTinjauanAssetController::class, 'destroy'])->name('tinjauan_asset.deleted');
+    // Route::get('/tinjauan_asset/{id}/{datefrom}/{dateto}', [BeritaAcaraTinjauanAssetController::class, 'tinjauan_asset_print']);
 
 
     Route::get('/mutation_asset', [MutasiAssetController::class, 'index'])->name('mutation_asset');

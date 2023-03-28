@@ -44,13 +44,8 @@ td,tr, div{
                     <tr>
                         <td style="text-align:center;font-size:12px">BERITA ACARA TINJAUAN ASSET AMM SITE ABP</td>
                     </tr>
-                    <?php
-                        $array_bln = array(1=>"I","II","III", "IV", "V","VI","VII","VIII","IX","X", "XI","XII");
-                        $bln = $array_bln[date('n')];
-                       ;
-                    ?>
                     <tr>
-                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/1/FA-PENINJAWAN ASSET/<?=$bln?>/<?php echo date("Y"); ?></u></td>
+                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/{{$no_ba}}/FA-PENINJAWAN ASSET/{{$bln}}/{{$year}}</u></td>
                     </tr>
                 </table>
                 <br><br>

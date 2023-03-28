@@ -46,15 +46,23 @@
           </li>
           <li class="nav-item">
             <a href="/asset" class="nav-link  {{ $title == 'Asset' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-id-card-alt" ></i>
+            <i class="nav-icon fas fa fa-box-archive" ></i>
               <p >
                 Asset
               </p>
             </a>
           </li>  
           <li class="nav-item">
+            <a href="/tinjauan_asset" class="nav-link  {{ $title == 'Berita Acara Tinjauan Asset' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-file-text" ></i>
+              <p >
+                BA Tinjauan Asset
+              </p>
+            </a>
+          </li>  
+          <li class="nav-item">
             <a href="/disposal_asset" class="nav-link  {{ $title == 'Disposal Asset' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-id-card-alt" ></i>
+            <i class="nav-icon fas fa-file-text" ></i>
               <p >
                 Disposal Asset
               </p>
@@ -62,7 +70,7 @@
           </li>  
           <li class="nav-item">
             <a href="/mutation_asset" class="nav-link  {{ $title == 'Mutasi Asset' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-id-card-alt" ></i>
+            <i class="nav-icon fas fa-file-text" ></i>
               <p >
                 Mutation Asset
               </p>
