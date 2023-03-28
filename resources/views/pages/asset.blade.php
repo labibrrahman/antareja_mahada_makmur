@@ -40,6 +40,7 @@
               <th>Asset</th>
               <th>Quantity</th>
               <th>Department</th>
+              <th>Status</th>
               <th>Capitalized On</th>
               <th>Price</th>
               <th>Action</th>
@@ -730,6 +731,7 @@ $(function () {
           {data: 'asset_desc'},
           {data: 'asset_quantity'},
           {data: 'department'},
+          {data: 'asset_status_desc'},
           {data: 'asset_capitalized_on'},
           {data: 'asset_price', render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp' )},
           {data: 'action', orderable: false, searchable: false},

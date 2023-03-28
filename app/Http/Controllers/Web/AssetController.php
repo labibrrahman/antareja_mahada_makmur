@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use DataTables;
 use Session;
+use DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportAsset;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +33,14 @@ class AssetController extends Controller
         ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
         ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
         ->orderBy('assets.asset_capitalized_on', 'DESC')
-        ->get(['assets.*','departments.department as department','category','counts.count as count']);
+        ->get(['assets.*','departments.department as department','category','counts.count as count', 
+        DB::raw("(CASE 
+        WHEN assets.asset_status = 'u' THEN 'Upload'
+        WHEN assets.asset_status = 'm' THEN 'Mutation'
+        WHEN assets.asset_status = 'r' THEN 'Disposal'
+        ELSE ''
+        END) as asset_status_desc")
+        ]);
         return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
