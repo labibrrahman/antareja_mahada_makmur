@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mutation_asset/get_detail_mutation/{id}', [MutasiAssetController::class, 'getDataDetailMutations'])->name('mutation_asset.get_detail_mutation');
     Route::get('/mutation_asset/ba_mutation_asset/{id}', [MutasiAssetController::class, 'ba_mutation_asset'])->name('mutation_asset.ba_mutation_asset');
     
-    Route::get('/berita_acara/tinjauan_asset/{id}/{datefrom}/{dateto}', [AssetController::class, 'tinjauan_asset']);
+    // Route::get('/berita_acara/tinjauan_asset/{id}/{datefrom}/{dateto}', [AssetController::class, 'tinjauan_asset']);
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
     Route::get('/berita_acara/disposal_asset', [BeritaAcaraController::class, 'disposal_asset']);
     Route::get('/berita_acara/mutasi_asset', [BeritaAcaraController::class, 'mutasi_asset']);

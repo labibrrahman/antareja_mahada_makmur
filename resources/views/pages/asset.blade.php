@@ -55,7 +55,7 @@
     </div>
     <!-- /.card-footer-->
   </div>
-  <div class="card">
+  {{-- <div class="card">
     <div class="card-header">
       <h5 class="card-title">&nbsp;<b>Berita Acara Tinjauan Asset</b></h5>
     </div>
@@ -81,7 +81,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
 
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -679,18 +679,18 @@ $(document).ready(function () {
   
 });
 
-function ba_bydept(){
-  var filter_dept = document.getElementById('filter_dept').value;
-  var ba_capitalized_on = document.getElementById('ba_capitalized_on').value;
-  var ba_capitalized_on_to = document.getElementById('ba_capitalized_on_to').value;
-  if(ba_capitalized_on == ''){
-    var ba_capitalized_on = "-";
-  }
-  if(ba_capitalized_on_to == ''){
-    var ba_capitalized_on_to = "-";
-  }
-  document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept+'/'+ba_capitalized_on+'/'+ba_capitalized_on_to;
-};
+// function ba_bydept(){
+//   var filter_dept = document.getElementById('filter_dept').value;
+//   var ba_capitalized_on = document.getElementById('ba_capitalized_on').value;
+//   var ba_capitalized_on_to = document.getElementById('ba_capitalized_on_to').value;
+//   if(ba_capitalized_on == ''){
+//     var ba_capitalized_on = "-";
+//   }
+//   if(ba_capitalized_on_to == ''){
+//     var ba_capitalized_on_to = "-";
+//   }
+//   document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept+'/'+ba_capitalized_on+'/'+ba_capitalized_on_to;
+// };
 
 window.onload = function(){  
   var filter_dept = document.getElementById('filter_dept').value;
