@@ -75,8 +75,12 @@ class BeritaAcaraTinjauanAssetController extends Controller
 
     public function get_ba_number(){
       $getDataBATInjauanAsset = json_decode(BeritaAcaraTinjauanAsset::select('*')->orderBy('ba_number', 'DESC')->first());
-      $setNumberBA = $getDataBATInjauanAsset->ba_number + 1;
-
+      if($getDataBATInjauanAsset == null){
+        $setNumberBA = 1;
+      }else{
+        $setNumberBA = $getDataBATInjauanAsset->ba_number + 1;
+      }
+      
       return json_decode($setNumberBA);
     }
 
