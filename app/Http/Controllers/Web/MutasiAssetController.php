@@ -74,6 +74,10 @@ class MutasiAssetController extends Controller
     }
 
     public function ba_mutation_asset($id){
+      $get_mutation = json_decode(Mutations::select("*")->where('id', $id)->first());
+      // dd($get_mutation);
+      $no_ba = count(json_decode(Mutations::select("id")->where('status', 'm')->whereDate('created_at', '<=', $get_mutation->created_at)->get()));
+
       $data = MutationsDet::leftJoin('assets','assets.id','=','detail_mutations.asset_id')
               ->leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
               ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
@@ -92,12 +96,13 @@ class MutasiAssetController extends Controller
                 WHEN assets.asset_condition='h' THEN 'Hilang'
                 ELSE ''
                 END) as assets_cond")
-                ]);
+              ]);
 
       $json_data = json_decode($data);
       $user_req = reset($json_data)->name;
 
       return view('pages.berita_acara.mutasi_asset',['title' => 'Berita Acara'])
+      ->with('no_ba', $no_ba)
       ->with('mutation_data', $json_data)
       ->with('user_req', $user_req);
     }

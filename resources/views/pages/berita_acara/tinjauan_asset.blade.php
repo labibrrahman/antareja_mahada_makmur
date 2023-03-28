@@ -50,7 +50,7 @@ td,tr, div{
                        ;
                     ?>
                     <tr>
-                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/1/FA-PENINJAsAN ASSET/<?=$bln?>/<?php echo date("Y"); ?></u></td>
+                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/1/FA-PENINJAWAN ASSET/<?=$bln?>/<?php echo date("Y"); ?></u></td>
                     </tr>
                 </table>
                 <br><br>

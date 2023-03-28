@@ -45,7 +45,7 @@ td,tr, div{
                         <td style="text-align:center;font-size:12px">Berita Acara Mutasi Asset</td>
                     </tr>
                     <tr>
-                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/1/FA-MUTASI ASSET/IX/2022</u></td>
+                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/{{$no_ba}}/FA-MUTASI ASSET/IX/2022</u></td>
                     </tr>
                 </table>
                 <br><br>

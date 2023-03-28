@@ -74,6 +74,10 @@ class DisposalAssetController extends Controller
     }
 
     public function ba_disposal_asset($id){
+      $get_disposal = json_decode(Mutations::select("*")->where('id', $id)->first());
+      // dd($get_mutation);
+      $no_ba = count(json_decode(Mutations::select("id")->where('status', 'r')->whereDate('created_at', '<=', $get_disposal->created_at)->get()));
+
       $data = MutationsDet::leftJoin('assets','assets.id','=','detail_mutations.asset_id')
               ->leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
               ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
@@ -98,6 +102,7 @@ class DisposalAssetController extends Controller
       $user_req = reset($json_data)->name;
 
       return view('pages.berita_acara.disposal_asset',['title' => 'Berita Acara'])
+      ->with('no_ba', $no_ba)
       ->with('mutation_data', $json_data)
       ->with('user_req', $user_req);
     }
