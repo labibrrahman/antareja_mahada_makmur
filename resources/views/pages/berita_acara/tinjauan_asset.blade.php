@@ -45,7 +45,7 @@ td,tr, div{
                         <td style="text-align:center;font-size:12px">BERITA ACARA TINJAUAN ASSET AMM SITE ABP</td>
                     </tr>
                     <tr>
-                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/{{$no_ba}}/FA-PENINJAWAN ASSET/{{$bln}}/{{$year}}</u></td>
+                        <td style="text-align:center;font-size:10px"><u>Nomor : ABP/{{$no_ba}}/FA-PENINJAUAN ASSET/{{$bln}}/{{$year}}</u></td>
                     </tr>
                 </table>
                 <br><br>
