@@ -53,7 +53,7 @@ td,tr, div{
                     <tr >
                         <td width="50px">Site Code</td>
                         <td width="1px">:</td>
-                        <td width="500px"> ..... </td>
+                        <td width="500px"> AM01 </td>
                         <td width="150px"></td>
                         <td>Penilaian Kondisi :</td>
                     </tr>
@@ -86,7 +86,7 @@ td,tr, div{
                             <th>Asset description</th>
                             <th>Acquis.val. </th>
                             <th>Jenis</th>
-                            <th>Kondisi</th>
+                            {{-- <th>Kondisi</th> --}}
                             <th>Lokasi</th>
                             <th>PIC</th>
                             <th>FOTO 1</th>
@@ -108,7 +108,6 @@ td,tr, div{
                                 <td>{{$data->asset_desc}}</td>
                                 <td>{{$data->asset_price}}</td>
                                 <td>{{$data->category}}</td>
-                                <td>{{$data->asset_condition}}</td>
                                 <td>{{$data->location}}</td>
                                 <td></td>
                                 @for ($i = 1; $i <= 3; $i++)
@@ -129,8 +128,9 @@ td,tr, div{
                                         <td></td>
                                     <?php }?>
                                 @endfor
-                                <td>{{$data->asset_status}}</td>
-                                <td></td>
+                                <td>{{$data->asset_condition}}</td>
+                                {{-- <td>{{$data->asset_status}}</td> --}}
+                                <td>AMM</td>
                             </tr>
                             @endforeach
                         <?php }else{ ?>

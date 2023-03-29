@@ -80,7 +80,7 @@ class BeritaAcaraTinjauanAssetController extends Controller
       }else{
         $setNumberBA = $getDataBATInjauanAsset->ba_number + 1;
       }
-      
+
       return json_decode($setNumberBA);
     }
 
@@ -105,8 +105,17 @@ class BeritaAcaraTinjauanAssetController extends Controller
                       })
                       ->whereIn('assets.id',Upload::select('asset_id'))
                       ->orderBy('assets.asset_capitalized_on')
-                      ->get(['assets.*','departments.department','categories.id as category_id','categories.category','counts.count']);
-  
+                      ->get(['assets.*','departments.department','categories.id as category_id','categories.category','counts.count',
+                      DB::raw("(
+                        CASE 
+                        WHEN assets.asset_condition = 'sb' THEN 'Sangat Baik'
+                        WHEN assets.asset_condition = 'b' THEN 'Baik'
+                        WHEN assets.asset_condition = 'rd' THEN 'Rusak, dapat diperbaiki'
+                        WHEN assets.asset_condition = 'rt' THEN 'Rusak, tidak dapat diperbaiki'
+                        WHEN assets.asset_condition = 'h' THEN 'Hilang'
+                        ELSE ''
+                        END) as asset_condition")
+                    ]);
       $asset = json_decode($query_asset);
       // dd($asset);
       foreach($asset as $data_asset){
