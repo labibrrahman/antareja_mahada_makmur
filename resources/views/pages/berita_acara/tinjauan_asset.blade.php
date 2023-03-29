@@ -80,7 +80,7 @@ td,tr, div{
                         <tr style="text-align:center;font-size:9px">
                             <th>Asset</th>
                             <th>Class</th>
-                            <th>Capitalized on</th>
+                            <th style="white-space: nowrap;">Capitalized on</th>
                             <th>QTY </th>
                             <th>OUN </th>
                             <th>Asset description</th>
