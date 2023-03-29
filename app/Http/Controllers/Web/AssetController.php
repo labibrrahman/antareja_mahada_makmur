@@ -145,8 +145,8 @@ class AssetController extends Controller
       
       $input = $request->all();
       $id = $input['id_asset'];
-      $input['asset_manager'] = "-";
-      $input['asset_status'] = "-";
+      // $input['asset_manager'] = "-";
+      // $input['asset_status'] = "-";
       $input['asset_serial_number'] = $input['asset_serial_number'] ?? "-";
       $input['asset_po'] = $input['asset_po'] ?? "-";
       $input['updated_at'] = date('Y-m-d H:i:s');
@@ -333,11 +333,11 @@ class AssetController extends Controller
       $asset->asset_number = $input['asset_number'];
       $asset->asset_serial_number = $input['asset_serial_number'];
       $asset->asset_capitalized_on = $input['asset_capitalized_on'];
-      $asset->asset_manager = $input['asset_manager'];
+      // $asset->asset_manager = $input['asset_manager'];
       $asset->asset_desc = $input['asset_desc'];
       $asset->asset_quantity = $input['asset_quantity'];
       $asset->asset_po = $input['asset_po'];
-      $asset->asset_status = $input['asset_status'];
+      // $asset->asset_status = $input['asset_status'];
       $asset->departement_id = $input['departement_id'];
       $asset->category_id = $input['category_id'];
       $asset->count_id = $input['count_id'];
