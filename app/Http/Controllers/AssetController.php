@@ -232,6 +232,8 @@ class AssetController extends Controller
 
     public function store(Request $request) {
         $input = $request->all();
+        $input['asset_status'] = "-";
+        $input['status_pengguna'] = $input['status_pengguna'] == '' ? "AMM":$input['status_pengguna'];
         $input['created_at'] = date('Y-m-d H:i:s');
         $input['asset_status'] = (($input['asset_status'] == null) || ($input['asset_status'] == '') ? "-":$input['asset_status']);
         $validator = Validator::make($input, [
@@ -337,6 +339,11 @@ class AssetController extends Controller
         $asset->departement_id = $input['departement_id'];
         $asset->category_id = $input['category_id'];
         $asset->count_id = $input['count_id'];
+        if($input['status_pengguna'] != ''){
+            $asset->status_pengguna = $input['status_pengguna'];
+        }else{
+            $asset->status_pengguna = 'AMM';
+        }
         $asset->save();
 
         return response()->json([

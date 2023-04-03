@@ -23,5 +23,6 @@ class Asset extends Model
     'location',
     "asset_condition",
     "asset_price",
+    "status_pengguna",
     ];
 }

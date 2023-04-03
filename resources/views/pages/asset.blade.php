@@ -200,6 +200,10 @@
                         <option value="h">Hilang</option>
                     </select>
                   </div>
+                  <div class="form-group">
+                    <label for="status_pengguna" class="col-form-label">Pengguna Asset :</label>
+                    <input type="text" class="form-control" id="status_pengguna" name="status_pengguna">
+                  </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -288,6 +292,10 @@
                     <option value="rt">Rusak, tidak dapat diperbaiki</option>
                     <option value="h">Hilang</option>
                   </select>
+                </div>
+                <div class="form-group">
+                  <label for="status_pengguna_edit" class="col-form-label">Pengguna Asset :</label>
+                  <input type="text" class="form-control" id="status_pengguna_edit" name="status_pengguna">
                 </div>
                 {{-- <div class="form-group">
                   <input type="hidden" id="id_upload0" name="id_upload0">
@@ -692,18 +700,18 @@ $(document).ready(function () {
 //   document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept+'/'+ba_capitalized_on+'/'+ba_capitalized_on_to;
 // };
 
-window.onload = function(){  
-  var filter_dept = document.getElementById('filter_dept').value;
-  var ba_capitalized_on = document.getElementById('ba_capitalized_on').value;
-  var ba_capitalized_on_to = document.getElementById('ba_capitalized_on_to').value;
-  if(ba_capitalized_on == ''){
-    var ba_capitalized_on = "-";
-  }
-  if(ba_capitalized_on_to == ''){
-    var ba_capitalized_on_to = "-";
-  }
-  document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept+'/'+ba_capitalized_on+'/'+ba_capitalized_on_to;
-};
+// window.onload = function(){  
+//   var filter_dept = document.getElementById('filter_dept').value;
+//   var ba_capitalized_on = document.getElementById('ba_capitalized_on').value;
+//   var ba_capitalized_on_to = document.getElementById('ba_capitalized_on_to').value;
+//   if(ba_capitalized_on == ''){
+//     var ba_capitalized_on = "-";
+//   }
+//   if(ba_capitalized_on_to == ''){
+//     var ba_capitalized_on_to = "-";
+//   }
+//   document.getElementById("tinjauanAsset").href='/berita_acara/tinjauan_asset/'+filter_dept+'/'+ba_capitalized_on+'/'+ba_capitalized_on_to;
+// };
 
 $(function () {
   $("#tinjauanAsset").printPage();
@@ -785,6 +793,7 @@ function getupdate_ajax(id){
       _token : '{{ csrf_token() }}'
     },
     success: function(data){   
+      console.log(data);
       $('#id_asset_edit').val(data.id)                
       $("#asset_number_edit").val(data.asset_number)
       $("#asset_serial_number_edit").val(data.asset_serial_number)
@@ -796,6 +805,7 @@ function getupdate_ajax(id){
       $("#count_id_edit").val(data.count_id)
       $("#category_id_edit").val(data.category_id)
       $("#location_edit").val(data.location)
+      $("#status_pengguna_edit").val(data.status_pengguna)
       $("#asset_condition_edit").val(data.asset_condition)
       $.each(data.photo, function( index, value ) {
         var image_url = "{{ asset('/storage')}}/"+value.image;
