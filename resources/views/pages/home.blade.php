@@ -13,6 +13,7 @@
           <label for="" class="mt-2">Select Year : &nbsp;</label>
           <select id="set_year" name="set_year" class=" form-control" onchange="filterChange()">
             <option value="">- This Year -</option>
+            <option value="all">- All -</option>
             @foreach ($year as $data_year)
                 <option value="{{$data_year->year}}" <?php if ($set_year == $data_year->year) {echo 'selected';}  ?>>{{$data_year->year}}</option>
             @endforeach
@@ -25,8 +26,8 @@
       <div class="col-lg-6 col-6">
         <div class="small-box bg-danger">
           <div class="inner">
-            <h3>{{$count_asset}}</h3>
-            <p>Total Asset Tahun <?= $set_year ?></p>
+            <h3>{{$total_asset}}</h3>
+            <p>Total Asset <?= $set_year != 'all' ? 'Tahun '.$set_year:'Tahun' ?></p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
@@ -38,12 +39,48 @@
         <div class="small-box bg-danger">
           <div class="inner">
             <h3>Rp. {{$asset_price}}</h3>
-            <p>Total Harga Asset Tahun <?= $set_year ?></p>
+            <p>Total Harga Asset <?= $set_year != 'all' ? 'Tahun '.$set_year:'Tahun' ?></p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
           </div>
           {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body row">
+      <div class="col-12">
+        <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">&nbsp;Total Harga Asset By Departement</h3>
+              <div class="box-tools">
+              </div>
+            </div>
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tbody>
+                  <tr>
+                    <th width="1%">No</th>
+                    <th>Departement</th>
+                    <th>Total Asset</th>
+                    <th>Total Harga</th>
+                  </tr>
+                  <?php $i = 1; ?>
+                  @foreach ($get_total_haraga_by_dept as $data)
+                    <tr>
+                      <td><?= $i ?></td>
+                      <td><?= $data['dept'] ?></td>
+                      <td><?= $data['total_asset'] ?></td>
+                      <td><?= $data['total'] ?></td>
+                    </tr>
+                  <?php $i++; ?>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
         </div>
       </div>
     </div>
@@ -114,15 +151,15 @@
 
   <div class="card">
     <div>
-      <div id="pemasukan" class="page_speed_392943554"></div>
+      <div id="pemasukan" class=""></div>
     </div>
     <br>
     <div>
-      <div id="label" class="page_speed_392943554"></div>
+      <div id="label" class=""></div>
     </div>
     <br>
     <div>
-      <div id="category" class="page_speed_392943554"></div>
+      <div id="category" class=""></div>
     </div>
     <!-- /.card-body -->
     <div class="card-footer">
@@ -161,7 +198,7 @@
           role: "annotation"
     },]);
     var options = {
-      title: 'Asset Masukan/Bulan Tahun <?= $set_year ?>',
+      title: "Asset Masukan/<?= $set_year != 'all' ? 'Bulan Tahun '.$set_year:'Tahun' ?>",
       curveType: 'function',
       legend: { position: 'bottom' },
       colors: ['#d14e49'],
@@ -180,7 +217,7 @@
           role: "annotation"
     },]);
     var options = {
-      title: 'Label Asset/Bulan Tahun <?= $set_year ?>',
+      title: "Label Asset/<?= $set_year != 'all' ? 'Bulan Tahun '.$set_year:'Tahun' ?>",
       curveType: 'function',
       legend: { position: 'bottom' },
       colors: ['#d14e49'],
@@ -200,7 +237,7 @@
                          role: "annotation" }
                         ]);
     var options = {
-      title: 'Asset By Category Tahun <?= $set_year ?>',
+      title: "Asset By Category <?= $set_year != 'all' ? 'Tahun '.$set_year:$set_year ?>",
       curveType: 'function',
       legend: { position: 'bottom' },
       hAxis: {format:''},

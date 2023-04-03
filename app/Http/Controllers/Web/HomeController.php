@@ -29,14 +29,65 @@ class HomeController extends Controller
         $set_year = $year_monitoring;
         // $year_monitoring = '2022'; 
         // $year_monitoring = date("Y"); 
-        $month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Des"];
+
+        $countAsset = $this->getAllAsset($year_monitoring);
+
+        $setPrice = $this->setPrice($year_monitoring);
+
+        $get_total_haraga_by_dept = $this->get_total_haraga_by_dept($year_monitoring);
+
+        $departement = json_decode(Departement::all());
+        $dept_count_upload = array();
+        $dept_count_non_upload = array();
+        foreach ($departement as $data_dept) {
+
+            $query_getnonupload = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+                            ->where('departement_id', $data_dept->id)
+                            ->when($year_monitoring != 'all', function ($query) use($year_monitoring) {
+                                return $query->whereYear('asset_capitalized_on', $year_monitoring);
+                            })
+                            ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
+                            ->whereNotIn('assets.id',Upload::select('asset_id'))
+                            ->get();
+
+            $query_getupload = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+                            ->where('departement_id', $data_dept->id)   
+                            ->when($year_monitoring != 'all', function ($query) use($year_monitoring) {
+                                return $query->whereYear('asset_capitalized_on', $year_monitoring);
+                            })
+                            ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
+                            ->whereIn('assets.id',Upload::select('asset_id'))
+                            ->get();
+
+            $dept_count_non_upload[] = ['dept' => $data_dept->department, 'total'=>count($query_getnonupload)];
+            $dept_count_upload[] = ['dept' => $data_dept->department, 'total'=>count($query_getupload)];
+        }
+
+        $queryYear = Asset::select(DB::raw('YEAR(asset_capitalized_on) as year'))
+                    ->groupBy('year')
+                    ->get();
+        
+        if($year_monitoring != 'all'){
+            $setLable = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Des"];
+            $max_data = $month_monitoring;
+        }else{
+            foreach(json_decode($queryYear) as $getYear){
+                $setLable[] = (string)$getYear->year;
+            }
+            $max_data = count($setLable);
+        }
         $pemasukanAsset = array();
         $pemasukanAsset[0] = ['Month','Asset'];
-        for ($i=1; $i <= $month_monitoring; $i++) { 
-            $pemasukanAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
+        for ($i=1; $i <= $max_data; $i++) { 
+            $pemasukanAsset[$i] = [$setLable[$i-1], (int)count(Asset::select('id')
                                                             // ->where('assets.departement_id',Session::get('departement_id'))
-                                                            ->whereMonth('asset_capitalized_on', $i)
-                                                            ->whereYear('asset_capitalized_on', $year_monitoring)
+                                                            ->when($year_monitoring != 'all', function ($query) use($i,$year_monitoring) {
+                                                                return $query->whereMonth('asset_capitalized_on', $i)
+                                                                            ->whereYear('asset_capitalized_on', $year_monitoring);
+                                                            })
+                                                            ->when($year_monitoring == 'all', function ($query) use($i,$setLable) {
+                                                                return $query->whereYear('asset_capitalized_on', $setLable[$i-1]);
+                                                            })
                                                             ->get())];
 
                 //dummy
@@ -45,13 +96,18 @@ class HomeController extends Controller
 
         $labelAsset = array();
         $labelAsset[0] = ['Month','Asset'];
-        for ($i=1; $i <= $month_monitoring; $i++) { 
-            $labelAsset[$i] = [$month[$i-1], (int)count(Asset::select('id')
+        for ($i=1; $i <= $max_data; $i++) { 
+            $labelAsset[$i] = [$setLable[$i-1], (int)count(Asset::select('id')
                                                     // ->where('assets.departement_id',Session::get('departement_id'))
                                                     ->whereIn('assets.id',Upload::select('asset_id'))
                                                     ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
-                                                    ->whereMonth('asset_capitalized_on', $i)
-                                                    ->whereYear('asset_capitalized_on', $year_monitoring)
+                                                    ->when($year_monitoring != 'all', function ($query) use($i,$year_monitoring) {
+                                                        return $query->whereMonth('asset_capitalized_on', $i)
+                                                                    ->whereYear('asset_capitalized_on', $year_monitoring);
+                                                    })
+                                                    ->when($year_monitoring == 'all', function ($query) use($i,$setLable) {
+                                                        return $query->whereYear('asset_capitalized_on', $setLable[$i-1]);
+                                                    })
                                                     ->get())];
 
             //dummy
@@ -62,7 +118,9 @@ class HomeController extends Controller
         $dataByCategory[0] = ['Category','data'];
         $getCategory = Asset::select('category_id')
                         // ->where('departement_id',Session::get('departement_id'))
-                        ->whereYear('asset_capitalized_on', $year_monitoring)
+                        ->when($year_monitoring != 'all', function ($query) use($year_monitoring) {
+                            return $query->whereYear('asset_capitalized_on', $year_monitoring);
+                        })
                         ->groupBy('category_id')->get();
         $getCategoryCode = array();
         $dataCategory = json_decode($getCategory);
@@ -76,7 +134,9 @@ class HomeController extends Controller
                 $category_count = count(Asset::select('id')
                                     // ->where('departement_id',Session::get('departement_id'))
                                     ->where('category_id',json_decode($get_category_name)[0]->id)
-                                    ->whereYear('asset_capitalized_on', $year_monitoring)
+                                    ->when($year_monitoring != 'all', function ($query) use($year_monitoring) {
+                                        return $query->whereYear('asset_capitalized_on', $year_monitoring);
+                                    })
                                     ->get());
                 
                 $dataByCategory[$i] = [$category_name, $category_count];
@@ -88,59 +148,67 @@ class HomeController extends Controller
             }
         }
 
-        // $getAllAsset = Asset::all();
-        $getAllAsset = Asset::select('*')->whereYear('asset_capitalized_on', $year_monitoring)->get();
-        $countAsset = count($getAllAsset);
 
-        // $getPrice = Asset::select('asset_price')->get();
-        $getPrice = Asset::select('asset_price')->whereYear('asset_capitalized_on', $year_monitoring)->get();
+        return view('pages.home',['title' => 'Dashboard'])
+            ->with('total_asset',$countAsset)
+            ->with('asset_price',$setPrice)
+            ->with('get_total_haraga_by_dept',$get_total_haraga_by_dept)
+            ->with('count_asset_noupload',$dept_count_non_upload)
+            ->with('count_asset_upload',$dept_count_upload)
+            ->with('data_pemasukan',json_encode($pemasukanAsset))
+            ->with('label_asset',json_encode($labelAsset))
+            ->with('asset_by_category',json_encode($dataByCategory))
+            ->with('year',$queryYear)
+            ->with('set_year',$set_year);
+    }
+
+    public function getAllAsset($year_monitoring){
+        $getAllAsset = Asset::select('*')
+                        ->when($year_monitoring != 'all', function ($query) use($year_monitoring) {
+                            return $query->whereYear('asset_capitalized_on', $year_monitoring);
+                        })
+                        ->get();
+        return count($getAllAsset);
+    }
+
+    public function setPrice($year_monitoring){
+        $getPrice = Asset::select('asset_price')
+                    ->when($year_monitoring != 'all', function ($query) use($year_monitoring) {
+                        return $query->whereYear('asset_capitalized_on', $year_monitoring);
+                    })
+                    ->get();
         $getPrice = json_decode($getPrice);
         $setPrice = 0;
         foreach($getPrice as $price){
             $data_price = (int)$price->asset_price;
             $setPrice = $data_price + $setPrice;
         }
-        $setPrice = number_format($setPrice, 2);
+        return number_format($setPrice, 2);
+    }
 
-
-        $getAllYear = '';
-        $queryYear = Asset::select(DB::raw('YEAR(asset_capitalized_on) as year'))
-                    ->groupBy('year')
-                    ->get();
-
+    public function get_total_haraga_by_dept($year_monitoring){
         $departement = json_decode(Departement::all());
-        $dept_count_upload = array();
-        $dept_count_non_upload = array();
+        $harga_by_dept = array();
         foreach ($departement as $data_dept) {
-
-            $query_getnonupload = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
-                            ->where('departement_id', $data_dept->id)
-                            ->whereYear('asset_capitalized_on', $year_monitoring)
-                            ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
-                            ->whereNotIn('assets.id',Upload::select('asset_id'))
-                            ->get();
-
             $query_getupload = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                             ->where('departement_id', $data_dept->id)   
-                            ->whereYear('asset_capitalized_on', $year_monitoring)
+                            ->when($year_monitoring != 'all', function ($query) use($year_monitoring) {
+                                return $query->whereYear('asset_capitalized_on', $year_monitoring);
+                            })
                             ->whereNotIn('assets.id',MutationsDet::select('asset_id'))
-                            ->whereIn('assets.id',Upload::select('asset_id'))
-                            ->get();
+                            // ->whereIn('assets.id',Upload::select('asset_id'))
+                            ->get(['department','assets.asset_price']);
 
-            $dept_count_non_upload[] = ['dept' => $data_dept->department, 'total'=>count($query_getnonupload)];
-            $dept_count_upload[] = ['dept' => $data_dept->department, 'total'=>count($query_getupload)];
+            $getPrice = json_decode($query_getupload);
+            $setPrice = 0;
+            foreach($getPrice as $price){
+                $data_price = (int)$price->asset_price;
+                $setPrice = $data_price + $setPrice;
+            }
+            $harga_by_dept[] = ['dept' => $data_dept->department, 'total_asset'=>count($query_getupload), 'total'=>'Rp. '.number_format($setPrice, 2)];
         }
 
-        return view('pages.home',['title' => 'Dashboard'])
-            ->with('data_pemasukan',json_encode($pemasukanAsset))
-            ->with('label_asset',json_encode($labelAsset))
-            ->with('asset_by_category',json_encode($dataByCategory))
-            ->with('asset_price',$setPrice)
-            ->with('year',$queryYear)
-            ->with('count_asset',$countAsset)
-            ->with('count_asset_upload',$dept_count_upload)
-            ->with('count_asset_noupload',$dept_count_non_upload)
-            ->with('set_year',$set_year);
+        return $harga_by_dept;
     }
 
     /**
