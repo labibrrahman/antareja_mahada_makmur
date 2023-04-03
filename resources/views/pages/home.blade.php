@@ -13,7 +13,7 @@
           <label for="" class="mt-2">Select Year : &nbsp;</label>
           <select id="set_year" name="set_year" class=" form-control" onchange="filterChange()">
             <option value="">- This Year -</option>
-            <option value="all">- All -</option>
+            <option value="all" <?php if ($set_year == 'all') {echo 'selected';}  ?>>- All -</option>
             @foreach ($year as $data_year)
                 <option value="{{$data_year->year}}" <?php if ($set_year == $data_year->year) {echo 'selected';}  ?>>{{$data_year->year}}</option>
             @endforeach
