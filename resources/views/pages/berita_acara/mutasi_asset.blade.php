@@ -74,7 +74,7 @@ td,tr, div{
                     <tr>
                         <td style="vertical-align:top">Lampiran</td>
                         <td style="vertical-align:top">:</td>
-                        <td style="vertical-align:top"> 3 Halaman </td>
+                        <td style="vertical-align:top"> - </td>
                         <td style="vertical-align:top"></td>
                         <td style="vertical-align:top">2. Surat jalan (wajib ada)</td>
                     </tr>
