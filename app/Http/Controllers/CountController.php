@@ -72,6 +72,7 @@ class CountController extends Controller
                             'assets.created_at',
                             'assets.created_by',
                             'assets.updated_at',
+                            'assets.status_pengguna',
                             'assets.updated_by','departments.department','categories.category','counts.count'
                         ]
                     )
@@ -105,6 +106,7 @@ class CountController extends Controller
                             'assets.created_at',
                             'assets.created_by',
                             'assets.updated_at',
+                            'assets.status_pengguna',
                             'assets.updated_by','departments.department','categories.category','counts.count'
                         ]
                     )
@@ -218,6 +220,7 @@ class CountController extends Controller
                             'assets.asset_condition',
                             'assets.created_at',
                             'assets.created_by',
+                            'assets.status_pengguna',
                             'assets.updated_at',
                             'assets.updated_by','departments.department','categories.category','counts.count'
                         ]
@@ -250,6 +253,7 @@ class CountController extends Controller
                             'assets.asset_condition',
                             'assets.created_at',
                             'assets.created_by',
+                            'assets.status_pengguna',
                             'assets.updated_at',
                             'assets.updated_by','departments.department','categories.category','counts.count'
                         ]
