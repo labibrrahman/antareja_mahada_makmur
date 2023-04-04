@@ -50,20 +50,17 @@ td,tr, div{
                 </table>
                 <br><br>
                 <table width="100%" style="font-size:10px;">
-                    <tr>
-                        <td>KT08</td>
+                    <tr >
+                        <td width="80px">Site Code</td>
+                        <td width="1px">:</td>
+                        <td width="500px"> AM01 </td>
+                        <td width="150px"></td>
+                        <td width="500px"><i>Coret Apabila Tidak Perlu</i></td>
                     </tr>
                     <tr >
                         <td width="80px">Jenis Pengajuan</td>
                         <td width="1px">:</td>
-                        <td width="500px"> Disposal Asset </td>
-                        <td width="150px"></td>
-                        <td width="500px"><i>Coret Apabila Tidak Perlu</i></td>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align:top">Jenis Asset</td>
-                        <td style="vertical-align:top">:</td>
-                        <td style="vertical-align:top"> ..... </td>
+                        <td width="500px"> Mutasi Asset </td>
                         <td style="vertical-align:top"></td>
                         <td style="vertical-align:top"><u>Lampiran Berupa :</u></td>
                     </tr>
@@ -94,6 +91,12 @@ td,tr, div{
                         <td></td>
                         <td></td>
                         <td style="vertical-align:top">4. Foto Asset (wajib ada)</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
                     </tr>
                     <tr>
                         <td colspan="3">Kepada Yth.</td>
