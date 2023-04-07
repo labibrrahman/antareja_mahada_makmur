@@ -189,7 +189,6 @@ class AssetController extends Controller
       if($input['status_pengguna'] != ''){
         $asset->status_pengguna = $input['status_pengguna'];
       }
-      $asset->location = $input['status_pengguna'];
       
       $asset->save();
 
