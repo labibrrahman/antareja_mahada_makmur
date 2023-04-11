@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\AssetController;
@@ -31,6 +32,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout');
 
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+    Route::post('/user/update', [UserController::class, 'update'])->name('user.update');
+    Route::post('/user/destroy', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::post('/user/detail', [UserController::class, 'getDetail'])->name('user.detail');
     Route::get('/asset', [AssetController::class, 'index'])->name('asset');
     Route::get('/asset/data', [AssetController::class, 'getData'])->name('asset.data');
     Route::post('/asset/get_data_asset', [AssetController::class, 'getDataAsset'])->name('asset.get_data_asset');
@@ -67,15 +73,14 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/mutation_asset/get_asset', [AssetController::class, 'getAsset'])->name('mutation_asset.update_asset');
     Route::get('/mutation_asset/get_detail_mutation/{id}', [MutasiAssetController::class, 'getDataDetailMutations'])->name('mutation_asset.get_detail_mutation');
     Route::get('/mutation_asset/ba_mutation_asset/{id}', [MutasiAssetController::class, 'ba_mutation_asset'])->name('mutation_asset.ba_mutation_asset');
-    
+
     // Route::get('/berita_acara/tinjauan_asset/{id}/{datefrom}/{dateto}', [AssetController::class, 'tinjauan_asset']);
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
     Route::get('/berita_acara/disposal_asset', [BeritaAcaraController::class, 'disposal_asset']);
     Route::get('/berita_acara/mutasi_asset', [BeritaAcaraController::class, 'mutasi_asset']);
 
-    
-    Route::get('/asset/noImage', [AssetController::class, 'noImage']);
 
+    Route::get('/asset/noImage', [AssetController::class, 'noImage']);
 });
 
 

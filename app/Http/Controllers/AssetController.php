@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Storage;
 
 class AssetController extends Controller
 {
-    public function assetall(Request $request) {
+    public function assetall(Request $request)
+    {
         $search = $request->input('search');
         $offset = $request->input('offset') ?? 1;
         $limit = $request->input('limit') ?? 10000;
-        if ($search){
+        if ($search) {
             // $query = Asset::where('departement_id', $departement_id)->get();
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
@@ -27,7 +28,7 @@ class AssetController extends Controller
                 ->orWhere('asset_desc', 'like', '%' . $search . '%')
                 ->offset($offset)->limit($limit)
                 // ->forPage($offset, $limit)
-                ->get(['assets.*','departments.department','categories.category','counts.count']);
+                ->get(['assets.*', 'departments.department', 'categories.category', 'counts.count']);
 
             $query_count = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
@@ -35,35 +36,35 @@ class AssetController extends Controller
                 // ->where('departement_id', $departement_id)
                 ->where('asset_number', 'like', '%' . $search . '%')
                 ->orWhere('asset_desc', 'like', '%' . $search . '%')
-            ->get(['assets.*','departments.department','categories.category','counts.count']);
-            
+                ->get(['assets.*', 'departments.department', 'categories.category', 'counts.count']);
+
             $count = count($query_count);
-            if($count == 0){
+            if ($count == 0) {
                 $status = false;
                 $message = "No Data Avaiable";
-            }else{
+            } else {
                 $status = true;
                 $message = "here is data";
             }
-        }else{
+        } else {
             $query = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
                 ->join('categories', 'categories.id', '=', 'assets.category_id')
                 ->join('counts', 'counts.id', '=', 'assets.count_id')
                 ->offset($offset)->limit($limit)
                 // ->forPage($offset, $limit)
-                ->get(['assets.*','departments.department','categories.category','counts.count']);
+                ->get(['assets.*', 'departments.department', 'categories.category', 'counts.count']);
 
             $query_count = Asset::join('departments', 'departments.id', '=', 'assets.departement_id')
                 ->join('categories', 'categories.id', '=', 'assets.category_id')
                 ->join('counts', 'counts.id', '=', 'assets.count_id')
                 ->offset($offset)->limit($limit)
                 // ->forPage($offset, $limit)
-                ->get(['assets.*','departments.department','categories.category','counts.count']);
+                ->get(['assets.*', 'departments.department', 'categories.category', 'counts.count']);
             $count = count($query_count);
-            if($count == 0){
+            if ($count == 0) {
                 $status = false;
                 $message = "No Data Avaiable";
-            }else{
+            } else {
                 $status = true;
                 $message = "here is data";
             }
@@ -76,108 +77,109 @@ class AssetController extends Controller
         ]);
     }
 
-    public function assetbydepartement(Request $request) {
+    public function assetbydepartement(Request $request)
+    {
         $departement_id = $request->input('departement_id');
         $search = $request->input('search');
         $offset = $request->input('offset') ?? 1;
         $limit = $request->input('limit') ?? 10000;
         $mode = $request->input('mode');
 
-        if ($departement_id){
+        if ($departement_id) {
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                 ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
                 ->where('departement_id', $departement_id)
-                ->when($search != '', function($query_or) use ($search) {
+                ->when($search != '', function ($query_or) use ($search) {
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
-                            ->orWhere('asset_desc', 'like', '%' . $search . '%');
+                        ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
 
                 ->when($mode == 'all_upload', function ($query_) {
-                    return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                    return $query_->whereNotIn('assets.id', MutationsDet::select('asset_id'));
                 })
 
                 ->when($mode == 'hide', function ($query_) {
-                    return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                    return $query_->whereNotIn('assets.id', MutationsDet::select('asset_id'));
                 })
 
                 ->when($mode == 'hide', function ($query_) {
-                    return $query_->whereNotIn('assets.id',Upload::select('asset_id'));
+                    return $query_->whereNotIn('assets.id', Upload::select('asset_id'));
                 })
 
                 ->when($mode == 'mutation', function ($query) {
-                    $query->where(function($query) {
-                        $query->whereIn('assets.id',MutationsDet::select('asset_id'));
+                    $query->where(function ($query) {
+                        $query->whereIn('assets.id', MutationsDet::select('asset_id'));
                     });
                 })
                 ->when($mode == 'upload', function ($query) {
-                    $query->where(function($query) {
-                        $query->whereIn('assets.id',Upload::select('asset_id'));
+                    $query->where(function ($query) {
+                        $query->whereIn('assets.id', Upload::select('asset_id'));
                     });
                 })
                 ->when($mode == 'upload', function ($query) {
-                    $query->where(function($query) {
-                        $query->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                    $query->where(function ($query) {
+                        $query->whereNotIn('assets.id', MutationsDet::select('asset_id'));
                     });
                 })
 
                 ->offset($offset)->limit($limit)
                 // ->forPage($offset, $limit)
-                ->get(['assets.*','departments.department','categories.category','counts.count']);
+                ->get(['assets.*', 'departments.department', 'categories.category', 'counts.count']);
 
             $query_count = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                 ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
-                ->when($search != '', function($query_or) use ($search) {
+                ->when($search != '', function ($query_or) use ($search) {
                     $query_or->where('asset_number', 'like', '%' . $search . '%')
-                            ->orWhere('asset_desc', 'like', '%' . $search . '%');
+                        ->orWhere('asset_desc', 'like', '%' . $search . '%');
                 })
                 ->when($mode == 'all_upload', function ($query_) {
-                    return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                    return $query_->whereNotIn('assets.id', MutationsDet::select('asset_id'));
                 })
 
                 ->when($mode == 'hide', function ($query_) {
-                    return $query_->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                    return $query_->whereNotIn('assets.id', MutationsDet::select('asset_id'));
                 })
 
                 ->when($mode == 'hide', function ($query_) {
-                    return $query_->whereNotIn('assets.id',Upload::select('asset_id'));
+                    return $query_->whereNotIn('assets.id', Upload::select('asset_id'));
                 })
 
                 ->when($mode == 'mutation', function ($query) {
-                    $query->where(function($query) {
-                        $query->whereIn('assets.id',MutationsDet::select('asset_id'));
+                    $query->where(function ($query) {
+                        $query->whereIn('assets.id', MutationsDet::select('asset_id'));
                     });
                 })
                 ->when($mode == 'upload', function ($query) {
-                    $query->where(function($query) {
-                        $query->whereIn('assets.id',Upload::select('asset_id'));
+                    $query->where(function ($query) {
+                        $query->whereIn('assets.id', Upload::select('asset_id'));
                     });
                 })
                 ->when($mode == 'upload', function ($query) {
-                    $query->where(function($query) {
-                        $query->whereNotIn('assets.id',MutationsDet::select('asset_id'));
+                    $query->where(function ($query) {
+                        $query->whereNotIn('assets.id', MutationsDet::select('asset_id'));
                     });
                 })
 
                 ->where('departement_id', $departement_id)
                 // ->forPage($offset, $limit)
-                ->get(['assets.*','departments.department','categories.category','counts.count']);
+                ->get(['assets.*', 'departments.department', 'categories.category', 'counts.count']);
             $count = count($query_count);
-            if($count == 0){
+            if ($count == 0) {
                 $status = false;
                 $message = "No Data Avaiable";
-            }else{
+            } else {
                 $status = true;
                 $message = "here is data";
             }
-        }else{
+        } else {
             return response()->json([
                 'status' => false,
                 'message' => 'Parameter is null'
             ]);
         }
-        
+
         return response()->json([
             "status" => $status,
             "message" => $message,
@@ -186,40 +188,40 @@ class AssetController extends Controller
         ]);
     }
 
-    public function asset_id(Request $request) {
+    public function asset_id(Request $request)
+    {
         $id = $request->input('id');
         $data = '';
         $data_check = '';
         $query = '';
 
-        if ($id){
+        if ($id) {
             $query = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
                 ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
                 ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
                 ->where('assets.id', $id)
-                ->get(['assets.*','departments.department','categories.category','counts.count']);
-            foreach($query as $data_query){
+                ->get(['assets.*', 'departments.department', 'categories.category', 'counts.count']);
+            foreach ($query as $data_query) {
                 $data = $data_query;
             }
-            if($data == ''){
+            if ($data == '') {
                 return response()->json([
                     "status" => false,
                     "message" => "No Data Avaiable"
                 ]);
             }
             $query_upload = Upload::where('asset_id', $id)->get();
-            foreach($query_upload as $data_query){
-                $data_query->upload_image = 'https://monitoringassetamm.com/storage/'.$data_query->upload_image;
+            foreach ($query_upload as $data_query) {
+                $data_query->upload_image = 'https://monitoringassetamm.com/storage/' . $data_query->upload_image;
                 $data_check = $data_query;
             }
-            if($data_check == ''){
-
-            }else{
+            if ($data_check == '') {
+            } else {
                 $data['image_upload'] = $query_upload;
             }
             $status = true;
             $message = "here is data";
-        }else{
+        } else {
             $status = false;
             $message = "No Data Avaiable";
         }
@@ -230,33 +232,34 @@ class AssetController extends Controller
         ]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $input = $request->all();
         $input['asset_status'] = "-";
-        $input['status_pengguna'] = $input['status_pengguna'] == '' ? "AMM":$input['status_pengguna'];
+        $input['status_pengguna'] = $input['status_pengguna'] == '' ? "AMM" : $input['status_pengguna'];
         $input['created_at'] = date('Y-m-d H:i:s');
-        $input['asset_status'] = (($input['asset_status'] == null) || ($input['asset_status'] == '') ? "-":$input['asset_status']);
+        $input['asset_status'] = (($input['asset_status'] == null) || ($input['asset_status'] == '') ? "-" : $input['asset_status']);
         $validator = Validator::make($input, [
             "asset_number" => "required",
-            "asset_serial_number"=> "required",
-            "asset_capitalized_on"=> "required",
-            "asset_manager"=> "required",
-            "asset_desc"=> "required",
-            "asset_quantity"=> "required",
-            "asset_po"=> "required",
-            "departement_id"=> "required",
-            "count_id"=> "required",
-            "category_id"=> "required",
-            "location"=> "required",
-            "asset_condition"=> "required",
+            "asset_serial_number" => "required",
+            "asset_capitalized_on" => "required",
+            "asset_manager" => "required",
+            "asset_desc" => "required",
+            "asset_quantity" => "required",
+            "asset_po" => "required",
+            "departement_id" => "required",
+            "count_id" => "required",
+            "category_id" => "required",
+            "location" => "required",
+            "asset_condition" => "required",
         ]);
 
-        if($validator->fails()){
-            return $validator->errors();       
+        if ($validator->fails()) {
+            return $validator->errors();
         }
 
         $asset = Asset::create($input);
-        if($asset){
+        if ($asset) {
             return response()->json([
                 "status" => true,
                 "message" => "Asset created successfully.",
@@ -282,7 +285,7 @@ class AssetController extends Controller
         //     "departement_id"=> "required",
         //     "count_id"=> "required"
         // ],$messages);
-        
+
         // $flight = Asset::create([
         //     "asset_number" => '',
         //     "asset_serial_number"=> "",
@@ -307,16 +310,16 @@ class AssetController extends Controller
 
         $validator = Validator::make($input, [
             "asset_number" => "required",
-            "asset_serial_number"=> "required",
-            "asset_capitalized_on"=> "required",
-            "asset_manager"=> "required",
-            "asset_desc"=> "required",
-            "asset_quantity"=> "required",
-            "asset_po"=> "required",
-            "asset_status"=> "required",
-            "departement_id"=> "required",
-            "category_id"=> "required",
-            "count_id"=> "required"
+            "asset_serial_number" => "required",
+            "asset_capitalized_on" => "required",
+            "asset_manager" => "required",
+            "asset_desc" => "required",
+            "asset_quantity" => "required",
+            "asset_po" => "required",
+            "asset_status" => "required",
+            "departement_id" => "required",
+            "category_id" => "required",
+            "count_id" => "required"
         ]);
 
         if ($validator->fails()) {
@@ -327,7 +330,7 @@ class AssetController extends Controller
             ]);
         }
 
-        $asset = Asset::find($id);   
+        $asset = Asset::find($id);
         $asset->asset_number = $input['asset_number'];
         $asset->asset_serial_number = $input['asset_serial_number'];
         $asset->asset_capitalized_on = $input['asset_capitalized_on'];
@@ -339,9 +342,9 @@ class AssetController extends Controller
         $asset->departement_id = $input['departement_id'];
         $asset->category_id = $input['category_id'];
         $asset->count_id = $input['count_id'];
-        if($input['status_pengguna'] != ''){
+        if ($input['status_pengguna'] != '') {
             $asset->status_pengguna = $input['status_pengguna'];
-        }else{
+        } else {
             $asset->status_pengguna = 'AMM';
         }
         $asset->save();
@@ -352,36 +355,38 @@ class AssetController extends Controller
         ]);
     }
 
-    public function destroy(Request $request){
+    public function destroy(Request $request)
+    {
         $input = $request->all();
 
         $deleted = Asset::where('id', $input['id'])->delete();
-        
+
         return response()->json([
-        "status" => true,
-        "message" => "Asset deleted successfully.",
-        "data" => $deleted
+            "status" => true,
+            "message" => "Asset deleted successfully.",
+            "data" => $deleted
         ]);
     }
 
-    public function get_upload_image($id_asset = null){
-        if ($id_asset){
+    public function get_upload_image($id_asset = null)
+    {
+        if ($id_asset) {
             $query = Upload::where('id_asset', $id_asset)->get();
             $count = count($query);
-            if($count == 0){
+            if ($count == 0) {
                 $status = false;
                 $message = "No Data Avaiable";
-            }else{
+            } else {
                 $status = true;
                 $message = "here is data";
             }
-        }else{
+        } else {
             $query = Upload::all();
             $count = count($query);
-            if($count == 0){
+            if ($count == 0) {
                 $status = false;
                 $message = "No Data Avaiable";
-            }else{
+            } else {
                 $status = true;
                 $message = "here is data";
             }
@@ -395,7 +400,8 @@ class AssetController extends Controller
         ]);
     }
 
-    public function upload_image(Request $request){
+    public function upload_image(Request $request)
+    {
 
         //BUAT VALIDASI JIKA INPUT DATA GAGAL ATAU UPLOAD FILE GAGAL
 
@@ -404,16 +410,16 @@ class AssetController extends Controller
         $id = $input['asset_id'];
 
         $validator = Validator::make($request->all(), [
-            "asset_id"=> "required",
-            "user_id"=> "required",
-            "upload_status"=> "required",
-            "upload_image"=> "required|image|mimes:jpg,png,jpeg,gif,svg|max:5048",
-            "location"=> "required",
-            "asset_condition"=> "required",
-         ]);
-         
-         if($validator->fails()){
-            return $validator->errors();       
+            "asset_id" => "required",
+            "user_id" => "required",
+            "upload_status" => "required",
+            "upload_image" => "required|image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+            "location" => "required",
+            "asset_condition" => "required",
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors();
         }
 
 
@@ -428,19 +434,19 @@ class AssetController extends Controller
 
         $input["upload_image"] = $image_uploaded_path;
 
-        $asset = Asset::find($id);   
+        $asset = Asset::find($id);
         $asset->location = $input['location'];
         $asset->asset_condition = $input['asset_condition'];
         $asset->asset_status = "u";
         $asset->save();
 
-        if($asset){
+        if ($asset) {
             unset($input['location']);
             unset($input['asset_condition']);
             $data = Upload::create($input);
 
             // $asset = Asset::create($input);
-            if($data){
+            if ($data) {
                 return response()->json([
                     "status" => true,
                     "message" => "Asset created successfully.",
@@ -456,21 +462,20 @@ class AssetController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($request->all(), [
-            "asset_id"=> "required",
-            "user_id"=> "required",
-            "upload_status"=> "required",
-            "upload_image"=> "image|mimes:jpg,png,jpeg,gif,svg|max:5048",
-            "location"=> "required",
-            "asset_condition"=> "required",
+            "asset_id" => "required",
+            "user_id" => "required",
+            "upload_status" => "required",
+            "upload_image" => "image|mimes:jpg,png,jpeg,gif,svg|max:5048",
+            "location" => "required",
+            "asset_condition" => "required",
         ]);
-        if($validator->fails()){
-            return $validator->errors();       
+        if ($validator->fails()) {
+            return $validator->errors();
         }
 
         $data = Upload::select('upload_image')->where('id', $input['id'])->get();
-        foreach($data as $datas){
+        foreach ($data as $datas) {
             dd($data);
-
         }
 
         // file_exists(public_path('path/to/asset.png'));
@@ -496,7 +501,7 @@ class AssetController extends Controller
         //     "data" => $data
         // ]);
 
-        // $asset = Asset::find($id);   
+        // $asset = Asset::find($id);
         // $asset->asset_number = $input['asset_number'];
         // $asset->asset_serial_number = $input['asset_serial_number'];
         // $asset->asset_capitalized_on = $input['asset_capitalized_on'];
@@ -515,5 +520,4 @@ class AssetController extends Controller
         //     'message' => 'updated successfully'
         // ]);
     }
-
 }
