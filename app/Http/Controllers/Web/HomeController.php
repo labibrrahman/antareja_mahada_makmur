@@ -24,10 +24,10 @@ class HomeController extends Controller
     {
         $titlechart = "Asset Masuk/Bulan";
         $month_monitoring = 12;
-        $year_monitoring = date("2022");
-        // if (isset($request->all()['set_year'])) {
-        //     $year_monitoring = $request->all()['set_year'];
-        // }
+        $year_monitoring = date("Y");
+        if (isset($request->all()['set_year'])) {
+            $year_monitoring = $request->all()['set_year'];
+        }
         $set_year = $year_monitoring;
         // $year_monitoring = '2022';
         // $year_monitoring = date("Y");

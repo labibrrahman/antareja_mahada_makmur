@@ -194,7 +194,9 @@
         Chart.register(ChartDataLabels);
 
         var dataCharts = <?php echo $arr_chart; ?>;
-        var year = <?= $set_year != 'all' ? '' . $set_year : 'Tahun' ?>;
+        var year = $('#set_year').val();;
+
+        console.info(year);
         const ctx = document.getElementById('stackedBarChart').getContext('2d');
 
         new Chart(ctx, {
