@@ -58,12 +58,15 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/disposal_asset/get_asset', [AssetController::class, 'getAsset'])->name('disposal_asset.update_asset');
     Route::get('/disposal_asset/get_detail_mutation/{id}', [DisposalAssetController::class, 'getDataDetailMutations'])->name('disposal_asset.get_detail_mutation');
     Route::get('/disposal_asset/ba_disposal_asset/{id}', [DisposalAssetController::class, 'ba_disposal_asset'])->name('disposal_asset.ba_disposal_asset');
-
+    Route::get('/disposal_asset_excel/{id}', [DisposalAssetController::class, 'disposal_asset_excel']);
+    
     Route::get('/tinjauan_asset', [BeritaAcaraTinjauanAssetController::class, 'index'])->name('tinjauan_asset');
     Route::post('/tinjauan_asset/store', [BeritaAcaraTinjauanAssetController::class, 'store'])->name('tinjauan_asset.store');
     Route::get('/tinjauan_asset/get_ba_number', [BeritaAcaraTinjauanAssetController::class, 'get_ba_number'])->name('tinjauan_asset.get_ba_number');
     Route::get('/tinjauan_asset_print/{id}', [BeritaAcaraTinjauanAssetController::class, 'tinjauan_asset_print']);
     Route::post('/tinjauan_asset/deleted', [BeritaAcaraTinjauanAssetController::class, 'destroy'])->name('tinjauan_asset.deleted');
+    Route::get('/tinjauan_asset_excel/{id}', [BeritaAcaraTinjauanAssetController::class, 'tinjauan_asset_excel']);
+
     // Route::get('/tinjauan_asset/{id}/{datefrom}/{dateto}', [BeritaAcaraTinjauanAssetController::class, 'tinjauan_asset_print']);
 
 
@@ -73,7 +76,8 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/mutation_asset/get_asset', [AssetController::class, 'getAsset'])->name('mutation_asset.update_asset');
     Route::get('/mutation_asset/get_detail_mutation/{id}', [MutasiAssetController::class, 'getDataDetailMutations'])->name('mutation_asset.get_detail_mutation');
     Route::get('/mutation_asset/ba_mutation_asset/{id}', [MutasiAssetController::class, 'ba_mutation_asset'])->name('mutation_asset.ba_mutation_asset');
-
+    Route::get('/mutation_asset_excel/{id}', [MutasiAssetController::class, 'mutation_asset_excel']);
+    
     // Route::get('/berita_acara/tinjauan_asset/{id}/{datefrom}/{dateto}', [AssetController::class, 'tinjauan_asset']);
     Route::get('/berita_acara', [BeritaAcaraController::class, 'index'])->name('berita_acara');
     Route::get('/berita_acara/disposal_asset', [BeritaAcaraController::class, 'disposal_asset']);

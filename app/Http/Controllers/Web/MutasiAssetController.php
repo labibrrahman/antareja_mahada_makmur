@@ -10,6 +10,7 @@ use App\Models\Departement;
 use App\Models\Mutations;
 use App\Models\MutationsDet;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\MutationAsset;
 use Validator;
 use DataTables;
 use Session;
@@ -43,9 +44,10 @@ class MutasiAssetController extends Controller
           return Datatables::of($data)
           ->addIndexColumn()
           ->addColumn('action', function($row){
-                $btn =  '<a href="" data-toggle="modal" onclick=getDetailMutation('.$row['id'].') data-target="#exampleModal" class="edit btn btn-success btn-sm">Detail Mutation</a>&nbsp;'.
-                        '<a href="/mutation_asset/ba_mutation_asset/'.$row['id'].'")" class="btnPrints btn btn-warning btn-sm" id=""><i class=\'fa fa-print\'></i>Print</a>';
-                return $btn;
+                $btn =  '<a href="" data-toggle="modal" onclick=getDetailMutation('.$row['id'].') data-target="#exampleModal" class="edit btn btn-info btn-sm">Detail Mutation</a>&nbsp;'.
+                        '<a href="/mutation_asset/ba_mutation_asset/'.$row['id'].'")" class="btnPrints btn btn-warning btn-sm" id=""><i class=\'fa fa-print\'></i>Print</a>&nbsp;'.
+                        '<a href="/mutation_asset_excel/'.$row['id'].'")" class=" btn btn-success btn-sm" id=""><i class=\'fa fa-file-excel\'></i> Excel</a> &nbsp;';
+                        return $btn;
           })
           ->rawColumns(['action'])
           ->make(true);
@@ -105,6 +107,12 @@ class MutasiAssetController extends Controller
       ->with('no_ba', $no_ba)
       ->with('mutation_data', $json_data)
       ->with('user_req', $user_req);
+    }
+
+    public function mutation_asset_excel($id)
+    {
+      $get_mutasi = json_decode(Mutations::select(DB::raw('DATE_FORMAT(mutations.created_at, "%d-%b-%Y") as created_ats'))->where('id', $id)->first());
+      return Excel::download(new MutationAsset($id), "exportMutationAsset_".$get_mutasi->created_ats.".xlsx");
     }
 
     public function getDataDetailMutations($id){

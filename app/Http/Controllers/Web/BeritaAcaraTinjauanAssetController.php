@@ -7,6 +7,8 @@ use App\Models\BeritaAcaraTinjauanAsset;
 use App\Models\Departement;
 use App\Models\Upload;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TinjauanAsset;
 use Validator;
 use DataTables;
 use Session;
@@ -34,8 +36,9 @@ class BeritaAcaraTinjauanAssetController extends Controller
           ->addColumn('action', function($row){
                 // $btn =  '<a href="/tinjauan_asset_print/'.$row['departement_id'].'/'.$row['tgl_awal'].'/'.$row['tgl_akhir'].'")" class="btnPrints btn btn-warning btn-sm" id=""><i class=\'fa fa-print\'></i>Print</a>';
                 $btn =  '<a href="/tinjauan_asset_print/'.$row['id'].'")" class="btnPrints btn btn-warning btn-sm" id=""><i class=\'fa fa-print\'></i></a> &nbsp;'.
-                        '<a href="" data-toggle="modal" onclick=confirmDelete('.$row['id'].','.$row['ba_number'].') data-target="#deletedModal" class="edit btn btn-danger btn-sm"><i class=\'fa fa-trash\'></i></a>';
-
+                        '<a href="/tinjauan_asset_excel/'.$row['id'].'")" class=" btn btn-success btn-sm" id=""><i class=\'fa fa-file-excel\'></i></a> &nbsp;'.
+                        '<a href="" data-toggle="modal" onclick=confirmDelete('.$row['id'].','.$row['ba_number'].') data-target="#deletedModal" class="edit btn btn-danger btn-sm"><i class=\'fa fa-trash\'></i></a> &nbsp;';
+                        
                 return $btn;
           })
           ->rawColumns(['action'])
@@ -140,6 +143,70 @@ class BeritaAcaraTinjauanAssetController extends Controller
       ->with('no_ba', $get_data_ba_tinjauan_asset->ba_number)
       ->with('asset_data', $asset);
     }
+
+    public function tinjauan_asset_excel($id)
+    {
+      // dd(new TinjauanAsset($id));
+      $get_data_ba_tinjauan_asset = json_decode(BeritaAcaraTinjauanAsset::find($id));
+      return Excel::download(new TinjauanAsset($id), "exportTinjauanAsset_".$get_data_ba_tinjauan_asset->ba_number.".xlsx");
+    }
+
+    // public function tinjauan_asset_excel($id){
+    //   $get_data_ba_tinjauan_asset = json_decode(BeritaAcaraTinjauanAsset::find($id));
+    //   $date_from = $get_data_ba_tinjauan_asset->tgl_awal;
+    //   $date_to = $get_data_ba_tinjauan_asset->tgl_akhir;
+    //   $departement_id = $get_data_ba_tinjauan_asset->departement_id;
+
+    //   $array_bln = array(1=>"I","II","III", "IV", "V","VI","VII","VIII","IX","X", "XI","XII");
+    //   $bln = $array_bln[date("n",strtotime($date_to))];
+    //   $year = date("Y",strtotime($date_to));
+
+    //   $query_asset = Asset::leftjoin('departments', 'departments.id', '=', 'assets.departement_id')
+    //                   ->leftjoin('categories', 'categories.id', '=', 'assets.category_id')
+    //                   ->leftjoin('counts', 'counts.id', '=', 'assets.count_id')
+    //                   ->when($departement_id != 0, function ($query_) use ($departement_id) {
+    //                       return $query_->where('assets.departement_id', $departement_id);
+    //                   })
+    //                   ->when($date_from != "-", function ($query_) use ($date_from, $date_to) {
+    //                       return $query_->whereBetween('assets.asset_capitalized_on', [$date_from, $date_to]);
+    //                   })
+    //                   ->whereIn('assets.id',Upload::select('asset_id'))
+    //                   ->orderBy('assets.asset_capitalized_on')
+    //                   ->get(['assets.*','departments.department','categories.id as category_id','categories.category','counts.count',
+    //                   DB::raw("(
+    //                     CASE 
+    //                     WHEN assets.asset_condition = 'sb' THEN 'Sangat Baik'
+    //                     WHEN assets.asset_condition = 'b' THEN 'Baik'
+    //                     WHEN assets.asset_condition = 'rd' THEN 'Rusak, dapat diperbaiki'
+    //                     WHEN assets.asset_condition = 'rt' THEN 'Rusak, tidak dapat diperbaiki'
+    //                     WHEN assets.asset_condition = 'h' THEN 'Hilang'
+    //                     ELSE ''
+    //                     END) as asset_condition")
+    //                 ]);
+    //   $asset = json_decode($query_asset);
+    //   // dd($asset);
+    //   foreach($asset as $data_asset){
+    //       $query_upload = Upload::where('asset_id', $data_asset->id)->get();
+    //       $get_photo = json_decode($query_upload);
+    //       foreach($get_photo as $set_photo){
+    //           $data_asset->photo[] = $set_photo->upload_image;
+    //       }
+    //       $data_asset->count_photo = count($get_photo);
+    //   }
+  
+    //   $getDept = json_decode(Departement::select('department')->where('id', $departement_id)->get());
+    //   if($getDept == null){
+    //       $getDept = 'ALL';
+    //   }else{
+    //       $getDept = reset($getDept)->department;
+    //   }
+    //   return view('pages.berita_acara.tinjauan_asset',['title' => 'Berita Acara'])
+    //   ->with('dept', $getDept)
+    //   ->with('bln', $bln)
+    //   ->with('year', $year)
+    //   ->with('no_ba', $get_data_ba_tinjauan_asset->ba_number)
+    //   ->with('asset_data', $asset);
+    // }
 
     public function destroy(Request $request){
       $input = $request->all();
